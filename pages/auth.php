@@ -16,7 +16,7 @@
 
     <section class="flex">
 
-    <form class="hidden flex-col w-[400px] my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
+    <form id="loginid" class="hidden flex-col w-[400px] my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
         <h2 class="text-2xl font-extrabold text-center">Login Form</h2>
         <input type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
         <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
@@ -30,7 +30,7 @@
         </div>
     </form>
 
-    <form class="flex flex-col w-[400px] my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
+    <form id="registerid" class="hidden flex-col w-[400px] my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
         <h2 class="text-2xl font-extrabold text-center">Register Form</h2>
         <input type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
         <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
@@ -42,6 +42,26 @@
             <p class="text-gray-400 w-3/4 text-center">By continuing, you agree to Me2You's Privacy Policy and our principals established on our about page</p>
 
             <p>Are you perhaps a seller instead? Go Here!</p>
+        </div>
+    </form>
+
+    <form id="buyerRegister" class="flex flex-col w-3/5 my-5 mx-auto py-10 px-12 space-y-4 bg-white rounded-md">
+        <h2 class="text-2xl font-extrabold text-center">Buyer Registration</h2>
+        <input type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
+        
+        <input type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Full Name">
+
+        <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
+        <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Confirm Password">
+        
+        <button type="submit" class="bg-red-600 p-3 rounded-md text-white">Login</button>
+
+        <div class="flex flex-col justify-center items-center">
+            <p>New to Me2You? Then <span id="switch2LoginFromBuyer" class="text-red-800">Login</span></p>
+            <p class="text-gray-400 w-3/4 text-center">By continuing, you agree to Me2You's Privacy Policy and our principals established on our about page</p>
+            <p>Do note that once you register as a seller, you can log in like any other end user.</p>
+
+            <p>Are you perhaps a buyer instead? Go Here!</p>
         </div>
     </form>
     </section>

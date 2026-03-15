@@ -1,4 +1,16 @@
+<?php
+//This is code to protect the page once I set up auth
+//session_start();
+
+//if (!isset($_SESSION["user_id"])) {
+  //  header("Location: /pages/auth.php");
+   // exit();
+//}
+?>
+
+
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -10,7 +22,7 @@
     <script src="../javascript/includetopnav.js"></script>
 </head>
 
-<body>
+<body class="[&_button]:text-white">
     <div id="topnav"></div>
 
     <section class="grid grid-cols-[400px_1fr] m-5 [&_*]:duration-200">
@@ -116,31 +128,32 @@
 
         <div id="security-section" class="login-security w-4/5 flex flex-col space-y-5">
             <h4 class="text-2xl" >Login & Security</h4>
-            <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+            <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
 
                 <span class="text-lg font-semibold">Change User Password</span>
                 <input type="email" placeholder="Type Existing Email">
 
                 <input type="password" placeholder="Type New Password">
                 <input type="password" placeholder="Confirm New Password">
-            </div>
+                <button type="submit" class="self-end bg-normalred w-5/12 p-4">Change Password</button>
+            </form>
 
-            <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+            <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
 
                 <span class="text-lg font-semibold">Change Email</span>
                 <input type="password" placeholder="Type Existing Password">
 
                 <input type="email" placeholder="Type New Email">
                 <input type="email" placeholder="Type Old Email">
-            </div>
+
+                <button type="submit" class="self-end bg-normalred w-5/12 p-4">Change Email</button>
+            </form>
 
               <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
 
                 <span class="text-lg font-semibold">Device Management</span>
-                <input type="password" placeholder="Type Existing Password">
-
-                <input type="email" placeholder="Type New Email">
-                <input type="email" placeholder="Type Old Email">
+                <p>Laptop - Online NOW</p>
+                <p>iphone 14 - Online 2 days ago</p>
             </div>
         </div>
     </div>
