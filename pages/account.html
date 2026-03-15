@@ -1,35 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./dist/output.css" />
+    <title>My Account</title>
+    <link rel="stylesheet" href="../dist/output.css" />
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
 </head>
+
 <body>
     <div id="topnav"></div>
 
+    <section class="grid grid-cols-[400px_1fr] m-5 [&_*]:duration-200">
 
-    <footer class=" [&>*]:text-white w-full grid grid-cols-2 grid-rows-1 gap-x-5 min-h-fit p-5 bg-slate-800">
+        <nav class="profile-nav space-y-5 flex flex-col row-span-full px-5 py-8 bg-white w-4/5 mx-auto my-0 border sticky top-4 h-fit">
+            <h1 class="text-3xl">Profile Navigation</h1>
+            <div>
+                <span class="text-lg font-semibold hover:text-hoverbtnred">Logout</span>
+                <p>You can now get out of here! By clicking this you're deleting the cookies and auth that keep you
+                    logged in</p>
+            </div>
 
-        <div class="left-section">
-            <h2>MeToYou</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus impedit accusamus voluptates. Praesentium ratione.</p>
-            <button type="button">Back To Top</button>
+            <div>
+                <a href="#address-section" class="text-lg font-semibold hover:text-hoverbtnred">Set Home Address</a>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
+                    voluptates neque maiores ea iste quis? Ut, sequi?</p>
+            </div>
+
+
+            <div>
+                <a href="#orders-section" class="text-lg font-semibold hover:text-hoverbtnred">My Orders</a>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae delectus doloribus dolores quo
+                    voluptas nisi?</p>
+            </div>
+
+            <div>
+                <span class="text-lg font-semibold hover:text-hoverbtnred">Message Buyers / Sellers</span>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
+                    voluptates neque maiores ea iste quis? Ut, sequi?</p>
+            </div>
+
+            <div>
+                <a href="#security-section" class="text-lg font-semibold hover:text-hoverbtnred" >Login & Security</a>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
+                    voluptates neque maiores ea iste quis? Ut, sequi?</p>
+            </div>
+
+        </nav>
+
+
+    <div class="space-y-5">
+        <div class="home-address w-4/5 h-fit flex flex-col">
+            <h3 class="text-2xl" id="address-section">Your Address</h3>
+            <div class="bg-white px-5 py-8 rounded-md shadow-sm shadow-red-100">
+                <span class="text-lg">END USER</span>
+                <p>108, 16th Blank, Melkbosstrand, Western Cape 7588, South Africa</p>
+                <p>Phone Number: +27 000 000 000</p>
+            </div>
+
+            <form action="" class="address-form flex flex-col space-y-3 my-2 p-2 [&>*]:p-3 [&>*]:border-b-2 [&>*]:border-gray-500 bg-white">
+                <input type="tel" id="phone-num" placeholder="Phone Number">
+                <input type="text" id="streetadd" placeholder="Street Address">
+                <input type="text" id="suburb" placeholder="Suburb">
+                <input type="text" placeholder="City">
+                <select title="Select Province" name="province-selector" id="provinceselect">
+                    <option value="">Western Cape</option>
+                    <option value="">Eastern Cape</option>
+                    <option value="">Gauteng</option>
+                    <option value="">Mmpumalanga</option>
+                    <option value="">Kwa-Zulu Natal</option>
+                </select>
+                <input type="text" placeholder="Postal Code">
+                <textarea name="del-instructions" id="del-instruct" placeholder="Add Delivery Instructions (OPTIONAL)"></textarea>
+                <button type="submit" class="bg-red-600">Confirm</button>
+            </form>
+
         </div>
 
-        <div>
-            <h4>Site Map</h4>
-            <p>Login or Register</p>
-            <p>My Account</p>
-            <p>About Us</p>
-            
+        <div class="my-orders flex flex-col w-4/5 my-4 space-y-5">
+            <h3 id="orders-section" class="text-2xl">Your Orders</h3>
+            <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
+                <img class="object-contain" src="/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png" alt="">
+                
+                <div class="flex flex-col">
+                    <h4 class="text-xl font-bold">Order #01</h4>
+                    <span class="flex flex-row"><p class="text-green-600 mr-2">Delivered </p> 14 March 2026</span>
+                    <ul>
+                        <li>Love Bullet Vol. 2</li>
+                    </ul>
+
+                    <p>ORDER PLACED: 13 March 2026</p>
+                    <p>Total: R310.00</p>
+                </div>
+            </article>
+
+            <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
+                <img class="object-contain" src="/images/SHYVol8.webp" alt="">
+                
+                <div class="flex flex-col">
+                    <h4 class="text-xl font-bold">Order #02</h4>
+                    <span class="flex flex-row"><p class="text-green-600 mr-2">Delivered </p> 16 March 2026</span>
+                    <ul>
+                        <li>SHY; Vol. 8</li>
+                    </ul>
+
+                    <p>ORDER PLACED: 15 March 2026</p>
+                    <p>Total: R310.00</p>
+                </div>
+            </article>
         </div>
 
-    </footer>
-    <div class="bg-red-500 w-full h-fit flex flex-row items-center">Copyrighted @ 2026, Me2You.co.za, All Rights Reserved</div>
-    
+        <div class="messaging-page"></div>
+
+        <div id="security-section" class="login-security w-4/5 flex flex-col space-y-5">
+            <h4 class="text-2xl" >Login & Security</h4>
+            <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+
+                <span class="text-lg font-semibold">Change User Password</span>
+                <input type="email" placeholder="Type Existing Email">
+
+                <input type="password" placeholder="Type New Password">
+                <input type="password" placeholder="Confirm New Password">
+            </div>
+
+            <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+
+                <span class="text-lg font-semibold">Change Email</span>
+                <input type="password" placeholder="Type Existing Password">
+
+                <input type="email" placeholder="Type New Email">
+                <input type="email" placeholder="Type Old Email">
+            </div>
+
+              <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+
+                <span class="text-lg font-semibold">Device Management</span>
+                <input type="password" placeholder="Type Existing Password">
+
+                <input type="email" placeholder="Type New Email">
+                <input type="email" placeholder="Type Old Email">
+            </div>
+        </div>
+    </div>
+
+    </section>
+
+
+    <div id="footer"></div>
+
 </body>
+
 </html>

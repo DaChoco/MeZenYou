@@ -5,6 +5,12 @@
 
 @layer base {
   body {
-    @apply bg-slate-200;
+    @apply bg-slate-200 scroll-smooth;
+  }
+}
+
+@layer components {
+  .add-to-cart-or-buy {
+    @apply [&>*]:flex [&>*]:flex-col p-7 space-y-4;
   }
 }

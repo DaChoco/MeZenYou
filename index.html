@@ -11,14 +11,18 @@
 </head>
 
 <body class="bg-slate-200">
+    <!--Reusable component-->
     <div id="topnav"></div>
 
     <div class="grid grid-cols-3 grid-rows-1">
-
         <div class="sidenav col-span-1 justify-start flex flex-col items-start p-10 w-4/5 bg-white">
-            <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400">Shop By Department</h4>
+            <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400">
+                Shop By Department
+            </h4>
 
-            <ul class="[&>*]:w-full [&>*]:text-xl justify-start [&>*]:px-1 [&>*]:py-2">
+            <ul
+                class="w-full [&>*]:w-full [&>*]:text-xl justify-start [&>*]:px-1 [&>*]:py-2 duration-200 hover:[&>*]:bg-red-700  hover:[&>*]:text-white">
+                <li class="font-bold">All Departments</li>
                 <li>Novels</li>
                 <li>Comics/Manga</li>
                 <li>Video Games</li>
@@ -27,42 +31,50 @@
                 <li>Office</li>
                 <li>Beauty</li>
             </ul>
+
+            <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Shop By Price Tag</h4>
+            <div class="space-y-4 [&>input]:border-2 [&>input]:border-normalred">
+                <input type="number" placeholder="Min" class="p-2 outline-none">
+                <p>to</p>
+                <input type="number" placeholder="Max" class="p-2 outline-none">
+            </div>
+
         </div>
 
-
-        
-        <section class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] grid-rows-2 gap-6 col-span-2 p-10 max-h-full [&>*]:shadow-sm">
+        <section
+            class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] grid-rows-2 gap-6 col-span-2 p-10 max-h-full [&>*]:shadow-sm">
             <!--EXAMPLE OF CHARACTER CARD-->
-            <article class="p-3 h-fitrounded-md h-auto bg-white">
-                
+            <article class="p-4 h-fitrounded-md h-auto bg-white">
                 <a href="./pages/product.html">
-                <div class="w-auto">
-                    <img class="object-contain w-full" src="./images/SHYVol8.webp" alt="Item Card" />
-                </div>
+                    <div class="w-auto">
+                        <img class="object-contain w-full" src="./images/SHYVol8.webp" alt="Item Card" />
+                    </div>
 
-                <div class="text-section w-full flex flex-col justify-center items-center">
-                    <span class="text-lg">SHY Vol. 8</span>
-                    <p class="font-bold">R280</p>
-                    <p class="text-gray-800">Cape Town</p>
-                    <p class="text-gray-500">ReviewRating</p>
-                </div>
-            </a>
+                    <div class="text-section w-full flex flex-col justify-center items-center">
+                        <span class="text-lg">SHY Vol. 8</span>
+                        <p class="font-bold">R280</p>
+                        <p class="font-semibold text-normalred">Comics/Manga</p>
+                        <p class="text-gray-800">Cape Town</p>
+                        <p class="text-gray-500">ReviewRating</p>
+                    </div>
+                </a>
             </article>
 
-            <article class="p-3 rounded-md h-auto bg-white">
+            <article class="p-4 rounded-md h-auto bg-white">
                 <div class="w-auto">
-                    <img class="w-full object-contain" src="./images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png" alt="Item Card" />
+                    <img class="w-full object-contain" src="./images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png"
+                        alt="Item Card" />
                 </div>
 
                 <div class="text-section py-3 w-full flex flex-col justify-center items-center">
                     <span class="text-lg">Love Bullet Vol. 2</span>
                     <p class="font-bold">R310</p>
+                    <p class="font-semibold text-normalred">Comics/Manga</p>
                     <p class="text-gray-800">Durban</p>
                     <p class="text-gray-500">ReviewRating</p>
                 </div>
             </article>
         </section>
-
     </div>
 
     <!--Reusable component-->

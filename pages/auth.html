@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sign In</title>
     <link rel="stylesheet" href="../dist/output.css" />
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
@@ -11,34 +11,8 @@
 </head>
 <body>
 
-   <nav class="bg-slate-800 [&>*]:text-white w-full h-fit p-8 flex flex-row justify-between">
-        <h1 class="my-1 mr-11 font-bold text-xl">
-            <a href="../index.html">Me2You</a>
-        </h1>
-
-        <div class="flex flex-row w-1/3 bg-slate-100 relative">
-            <input class="bg-slate-100 text-black p-2 flex-1 border-4 border-red-400" placeholder="Search For an Item..." type="text" />
-
-            <div class="absolute hidden rounded-sm border-b border-gray-800 z-50 max-h-[150px] text-gray-700 top-full left-0 right-0 bg-white">
-                <ul id="autocomplete-srch" class="[&*>]:border-b-2 [&>*]:border-gray-400 [&>*]:p-2">
-                    
-                </ul>
-            </div>
-
-            <svg class="fill-slate-50 bg-red-500 w-12 h-full" xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960">
-                <path
-                    d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
-            </svg>
-        </div>
-
-        <ul
-            class="flex [&>*]:items-center [&>*]:align-middle flex-row justify-between [&>li]:my-1 [&>li]:mx-auto w-[300px]">
-            <li><a href="./pages/about.html">About</a></li>
-            <li><a href="./pages/auth.html">Login/Register</a></li>
-            <li>My Account</li>
-        </ul>
-    </nav>
+     <!--Reusable component-->
+    <div id="topnav"></div>
 
     <section class="flex">
 
@@ -73,26 +47,7 @@
     </section>
 
     
-    <footer class="[&>*]:text-white w-full grid grid-cols-2 grid-rows-1 gap-x-5 min-h-fit p-5 bg-slate-800">
-        <div class="left-section">
-            <h2>MeToYou</h2>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-                impedit accusamus voluptates. Praesentium ratione.
-            </p>
-            <button type="button">Back To Top</button>
-        </div>
-
-        <div>
-            <h4>Site Map</h4>
-            <p>Login or Register</p>
-            <p>My Account</p>
-            <p>About Us</p>
-        </div>
-    </footer>
-    <div class="bg-red-500 w-full h-fit flex flex-row items-center">
-        Copyrighted @ 2026, Me2You.co.za, All Rights Reserved
-    </div>
+    <div id="footer"></div>
     
 </body>
 </html>
