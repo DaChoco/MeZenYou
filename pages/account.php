@@ -3,9 +3,11 @@
 //session_start();
 
 //if (!isset($_SESSION["user_id"])) {
-  //  header("Location: /pages/auth.php");
-   // exit();
+//  header("Location: /pages/auth.php");
+// exit();
 //}
+$role = $_SESSION["role"] ?? "buyer";
+$role = "seller";
 ?>
 
 
@@ -55,108 +57,139 @@
             </div>
 
             <div>
-                <a href="#security-section" class="text-lg font-semibold hover:text-hoverbtnred" >Login & Security</a>
+                <a href="#security-section" class="text-lg font-semibold hover:text-hoverbtnred">Login & Security</a>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
                     voluptates neque maiores ea iste quis? Ut, sequi?</p>
             </div>
 
+            <?php if ($role === "seller"): ?>
+                <div>
+                <a href="#seller-section" class="text-lg font-semibold hover:text-hoverbtnred">Add New Listing</a>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
+                    voluptates neque maiores ea iste quis? Ut, sequi?</p>
+                </div>
+            <?php endif; ?>
+
         </nav>
 
 
-    <div class="space-y-5">
-        <div class="home-address w-4/5 h-fit flex flex-col">
-            <h3 class="text-2xl" id="address-section">Your Address</h3>
-            <div class="bg-white px-5 py-8 rounded-md shadow-sm shadow-red-100">
-                <span class="text-lg">END USER</span>
-                <p>108, 16th Blank, Melkbosstrand, Western Cape 7588, South Africa</p>
-                <p>Phone Number: +27 000 000 000</p>
+        <div class="space-y-5">
+            <div class="home-address w-4/5 h-fit flex flex-col">
+                <h3 class="text-2xl" id="address-section">Your Address</h3>
+                <div class="bg-white px-5 py-8 rounded-md shadow-sm shadow-red-100">
+                    <span class="text-lg">END USER</span>
+                    <p>108, 16th Blank, Melkbosstrand, Western Cape 7588, South Africa</p>
+                    <p>Phone Number: +27 000 000 000</p>
+                </div>
+
+                <form action="" class="address-form flex flex-col space-y-3 my-2 p-2 [&>*]:p-3 [&>*]:border-b-2 [&>*]:border-gray-500 bg-white">
+                    <input type="tel" id="phone-num" placeholder="Phone Number">
+                    <input type="text" id="streetadd" placeholder="Street Address">
+                    <input type="text" id="suburb" placeholder="Suburb">
+                    <input type="text" placeholder="City">
+                    <select title="Select Province" name="province-selector" id="provinceselect">
+                        <option value="">Western Cape</option>
+                        <option value="">Kwa-Zulu Natal</option>
+                        <option value="">Gauteng</option>
+                        <option value="">Eastern Cape</option>
+                        <option value="">Mmpumalanga</option>
+                        <option value="">Northern Cape</option>
+                        <option value="">Free State</option>
+                        <option value="">North-West</option>
+                        
+                    </select>
+                    <input type="text" placeholder="Postal Code">
+                    <textarea name="del-instructions" id="del-instruct" placeholder="Add Delivery Instructions (OPTIONAL)"></textarea>
+                    <button type="submit" class="bg-red-600">Confirm</button>
+                </form>
+
             </div>
 
-            <form action="" class="address-form flex flex-col space-y-3 my-2 p-2 [&>*]:p-3 [&>*]:border-b-2 [&>*]:border-gray-500 bg-white">
-                <input type="tel" id="phone-num" placeholder="Phone Number">
-                <input type="text" id="streetadd" placeholder="Street Address">
-                <input type="text" id="suburb" placeholder="Suburb">
-                <input type="text" placeholder="City">
-                <select title="Select Province" name="province-selector" id="provinceselect">
-                    <option value="">Western Cape</option>
-                    <option value="">Eastern Cape</option>
-                    <option value="">Gauteng</option>
-                    <option value="">Mmpumalanga</option>
-                    <option value="">Kwa-Zulu Natal</option>
-                </select>
-                <input type="text" placeholder="Postal Code">
-                <textarea name="del-instructions" id="del-instruct" placeholder="Add Delivery Instructions (OPTIONAL)"></textarea>
-                <button type="submit" class="bg-red-600">Confirm</button>
-            </form>
+            <div class="my-orders flex flex-col w-4/5 my-4 space-y-5">
+                <h3 id="orders-section" class="text-2xl">Your Orders</h3>
+                <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
+                    <img class="object-contain" src="/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png" alt="">
 
-        </div>
+                    <div class="flex flex-col">
+                        <h4 class="text-xl font-bold">Order #01</h4>
+                        <span class="flex flex-row">
+                            <p class="text-green-600 mr-2">Delivered </p> 14 March 2026
+                        </span>
+                        <ul>
+                            <li>Love Bullet Vol. 2</li>
+                        </ul>
 
-        <div class="my-orders flex flex-col w-4/5 my-4 space-y-5">
-            <h3 id="orders-section" class="text-2xl">Your Orders</h3>
-            <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
-                <img class="object-contain" src="/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png" alt="">
-                
-                <div class="flex flex-col">
-                    <h4 class="text-xl font-bold">Order #01</h4>
-                    <span class="flex flex-row"><p class="text-green-600 mr-2">Delivered </p> 14 March 2026</span>
-                    <ul>
-                        <li>Love Bullet Vol. 2</li>
-                    </ul>
+                        <p>ORDER PLACED: 13 March 2026</p>
+                        <p>Total: R310.00</p>
+                    </div>
+                </article>
 
-                    <p>ORDER PLACED: 13 March 2026</p>
-                    <p>Total: R310.00</p>
-                </div>
-            </article>
+                <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
+                    <img class="object-contain" src="/images/SHYVol8.webp" alt="">
 
-            <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
-                <img class="object-contain" src="/images/SHYVol8.webp" alt="">
-                
-                <div class="flex flex-col">
-                    <h4 class="text-xl font-bold">Order #02</h4>
-                    <span class="flex flex-row"><p class="text-green-600 mr-2">Delivered </p> 16 March 2026</span>
-                    <ul>
-                        <li>SHY; Vol. 8</li>
-                    </ul>
+                    <div class="flex flex-col">
+                        <h4 class="text-xl font-bold">Order #02</h4>
+                        <span class="flex flex-row">
+                            <p class="text-green-600 mr-2">Delivered </p> 16 March 2026
+                        </span>
+                        <ul>
+                            <li>SHY; Vol. 8</li>
+                        </ul>
 
-                    <p>ORDER PLACED: 15 March 2026</p>
-                    <p>Total: R310.00</p>
-                </div>
-            </article>
-        </div>
-
-        <div class="messaging-page"></div>
-
-        <div id="security-section" class="login-security w-4/5 flex flex-col space-y-5">
-            <h4 class="text-2xl" >Login & Security</h4>
-            <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
-
-                <span class="text-lg font-semibold">Change User Password</span>
-                <input type="email" placeholder="Type Existing Email">
-
-                <input type="password" placeholder="Type New Password">
-                <input type="password" placeholder="Confirm New Password">
-                <button type="submit" class="self-end bg-normalred w-5/12 p-4">Change Password</button>
-            </form>
-
-            <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
-
-                <span class="text-lg font-semibold">Change Email</span>
-                <input type="password" placeholder="Type Existing Password">
-
-                <input type="email" placeholder="Type New Email">
-                <input type="email" placeholder="Type Old Email">
-
-                <button type="submit" class="self-end bg-normalred w-5/12 p-4">Change Email</button>
-            </form>
-
-              <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
-
-                <span class="text-lg font-semibold">Device Management</span>
-                <p>Laptop - Online NOW</p>
-                <p>iphone 14 - Online 2 days ago</p>
+                        <p>ORDER PLACED: 15 March 2026</p>
+                        <p>Total: R310.00</p>
+                    </div>
+                </article>
             </div>
+
+            <div class="messaging-page"></div>
+
+            <div id="security-section" class="login-security w-4/5 flex flex-col space-y-5">
+                <h4 class="text-2xl">Login & Security</h4>
+                <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+
+                    <span class="text-lg font-semibold">Change User Password</span>
+                    <input type="email" placeholder="Type Existing Email">
+
+                    <input type="password" placeholder="Type New Password">
+                    <input type="password" placeholder="Confirm New Password">
+                    <button type="submit" class="self-end bg-normalred w-5/12 p-4">Change Password</button>
+                </form>
+
+                <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+
+                    <span class="text-lg font-semibold">Change Email</span>
+                    <input type="password" placeholder="Type Existing Password">
+
+                    <input type="email" placeholder="Type New Email">
+                    <input type="email" placeholder="Type Old Email">
+
+                    <button type="submit" class="self-end bg-normalred w-5/12 p-4">Change Email</button>
+                </form>
+
+                <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+
+                    <span class="text-lg font-semibold">Device Management</span>
+                    <p>Laptop - Online NOW</p>
+                    <p>iphone 14 - Online 2 days ago</p>
+                </div>
+            </div>
+
+            <?php if ($role === "seller"): ?>
+
+                <div class="seller-tools w-4/5 bg-white p-5 shadow-sm border">
+                    <h3 id="seller-section" class="text-2xl">Seller Tools</h3>
+                    <p>Manage your listings and sell new products.</p>
+
+                    <a href="/pages/create-listing.php">
+                        <button class="bg-red-600 px-5 py-3 rounded-sm">
+                            + Add New Listing
+                        </button>
+                    </a>
+                </div>
+
+            <?php endif; ?>
         </div>
-    </div>
 
     </section>
 

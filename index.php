@@ -59,13 +59,13 @@ $products = [
             <ul
                 class="w-full [&>*]:w-full [&>*]:text-xl justify-start [&>*]:px-1 [&>*]:py-2 duration-200 hover:[&>*]:bg-red-700  hover:[&>*]:text-white">
                 <li class="font-bold">All Departments</li>
-                <li>Novels</li>
-                <li>Comics/Manga</li>
-                <li>Video Games</li>
-                <li>Electronics</li>
-                <li>Furniture</li>
-                <li>Office</li>
-                <li>Beauty</li>
+                <li><a href="/index.php?category=novels">Novels</a></li>
+                <li><a href="/index.php?category=comicsmanga">Comics/Manga</a></li>
+                <li><a href="/index.php?category=videogames">Video Games</a></li>
+                <li><a href="/index.php?category=electronics">Electronics</a></li>
+                <li><a href="/index.php?category=furniture">Furniture</a></li>
+                <li><a href="/index.php?category=office">Office</a></li>
+                <li><a href="/index.php?category=beauty">Beauty</a></li>
             </ul>
 
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Shop By Price Tag</h4>
@@ -78,7 +78,7 @@ $products = [
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Help & Settings</h4>
             <ul class="[&>*]:text-gray-600">
                 <li><a href="/pages/account.php">My Account</a></li>
-                <li><a href="/pages/auth.php"></a>Become a Seller</li>
+                <li><a href="/pages/auth.php?type=seller">Become a Seller</a></li>
             </ul>
 
         </div>
