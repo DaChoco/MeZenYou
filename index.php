@@ -51,7 +51,7 @@ $products = [
     <div id="topnav"></div>
 
     <div class="grid grid-cols-3 grid-rows-1">
-        <div class="sidenav col-span-1 justify-start flex flex-col items-start p-10 w-4/5 bg-white">
+        <div class="sidenav col-span-1 justify-start flex flex-col items-start p-10 w-4/5 bg-white space-y-3">
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400">
                 Shop By Department
             </h4>
@@ -73,7 +73,11 @@ $products = [
                 <input type="number" placeholder="Min" class="p-2 outline-none">
                 <p>to</p>
                 <input type="number" placeholder="Max" class="p-2 outline-none">
+
+                
             </div>
+
+            <button class="bg-normalred p-4 text-white font-semibold w-2/5">Apply</button>
 
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Help & Settings</h4>
             <ul class="[&>*]:text-gray-600">
@@ -86,20 +90,20 @@ $products = [
         <section class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] grid-rows-2 gap-6 col-span-2 p-10 max-h-full [&>*]:shadow-sm">
             <?php foreach ($products as $product): ?>
         <!--EXAMPLE OF CHARACTER CARD-->
-            <article class="p-4 h-fitrounded-md h-auto bg-white">
+            <article class="p-4 h-fitrounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr]">
                 <a href="./pages/product.php?id=<?php echo $product['id']; ?>">
-                    <div class="w-auto">
-                        <img class="object-contain w-full" src="<?php echo $product['image']; ?>" alt="Item Card" />
+                    <div class="w-full h-52 flex items-center justify-center overflow-hidden bg-gray-100">
+                        <img class="object-contain max-h-full" src="<?php echo $product['image']; ?>" alt="Item Card" />
                     </div>
+                </a>
 
-                    <div class="text-section w-full flex flex-col justify-center items-center">
-                        <span class="text-lg"><?php echo $product['name']; ?></span>
+                <div class="text-section w-full flex flex-col justify-center items-center">
+                        <span class=""><?php echo $product['name']; ?></span>
                         <p class="font-bold">R<?php echo $product['price']; ?></p>
                         <p class="font-semibold text-normalred"><?php echo $product['category']; ?></p>
                         <p class="text-gray-800"><?php echo $product['location']; ?></p>
                         <p class="text-yellow-600"><?php echo $product['rating']; ?></p>
                     </div>
-                </a>
             </article>
             <?php endforeach; ?>
         </section>

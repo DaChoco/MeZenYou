@@ -13,4 +13,28 @@
   .add-to-cart-or-buy {
     @apply [&>*]:flex [&>*]:flex-col p-7 space-y-4;
   }
+
+  #layout-admin{
+    @apply grid-cols-[250px_1fr] transition-all duration-300;
+  }
+
+  #layout-admin.sidebar-collapsed {
+  @apply grid-cols-[80px_1fr];
+}
+
+.sidebar-collapsed #sidebar a,
+.sidebar-collapsed #sidebar span,
+.sidebar-collapsed #sidebar h1 {
+  display: none;
+}
+
+.sidebar-collapsed #sidebar ul li {
+  justify-content: center;
+}
+
+
+
+.sidebar-collapsed #sidebar ul li svg {
+  margin: auto;
+}
 }

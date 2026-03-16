@@ -1,4 +1,3 @@
-
 <?php
 // Example: Dummy Output
 $products = [
@@ -34,8 +33,8 @@ $products = [
 $id = $_GET['id'] ?? null;
 
 $selectedProduct = null;
-for ($i = 0; $i < count($products); $i++){
-    if ($id == $products[$i]['id']){
+for ($i = 0; $i < count($products); $i++) {
+    if ($id == $products[$i]['id']) {
         $selectedProduct = $products[$i];
         break;
     }
@@ -49,6 +48,7 @@ if (!$selectedProduct) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,6 +57,7 @@ if (!$selectedProduct) {
     <script src="/javascript/includefooter.js"></script>
     <script src="/javascript/includetopnav.js"></script>
 </head>
+
 <body>
     <div id="topnav"></div>
 
@@ -69,10 +70,10 @@ if (!$selectedProduct) {
         <div class="add-to-cart-or-buy row-span-2 bg-white border-2 border-red-500">
 
             <div class="top-fourth border-b-2 border-gray-400">
-            <h1 class="text-4xl"><?php echo $selectedProduct['name']; ?></h1>
-            <p>By Inee</p>
-            <p class="text-xl">February 2026</p>
-            
+                <h1 class="text-4xl"><?php echo $selectedProduct['name']; ?></h1>
+                <p>By Inee</p>
+                <p class="text-xl">February 2026</p>
+
             </div>
 
             <div class="middle-fourth border-b-2 border-gray-400 py-2">
@@ -111,12 +112,24 @@ if (!$selectedProduct) {
     <section class="review-section w-8/12 h-auto mx-auto p-2 flex flex-col space-y-5 ">
         <span class="text-xl">Reviews</span>
         <div class="border-2 border-current p-5">
-        <span class="flex flex-row"><p>USERNAME</p> - <p>USER REVIEW</p></span>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi nisi culpa impedit veritatis placeat reiciendis nihil cupiditate odit delectus reprehenderit.</p>
+            <span class="flex flex-row">
+                <p>USERNAME</p> - <p>USER REVIEW</p>
+            </span>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi nisi culpa impedit veritatis placeat reiciendis nihil cupiditate odit delectus reprehenderit.</p>
+        </div>
+
+        <span>Add A Review</span>
+        <div class="flex flex-col space-y-5">
+        <div class="border-2 border-current p-5 bg-white">
+            <textarea class="w-full h-full outline-none"></textarea>
+        </div>
+
+        <button class="bg-normalred p-3 text-white">Add Review</button>
         </div>
     </section>
 
     <div id="footer"></div>
-    
+
 </body>
+
 </html>

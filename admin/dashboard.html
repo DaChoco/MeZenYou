@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="../dist/output.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+
     <script src="/adminjs/provincial.js" defer></script>
+    <script src="/adminjs/adminstyles.js" defer></script>
 
     <!--This is font awesome. A free supply of icons-->
     <script
@@ -15,18 +17,19 @@
     ></script>
   </head>
   <body>
-    <section class="grid grid-cols-[250px_1fr] h-screen">
+    <section id="layout-admin" class="grid h-screen transition-all duration-100">
       <nav
         id="sidebar"
-        class="flex flex-col space-y-4 bg-darkgray w-full [&>*]:text-gray-100 p-6 [&>span]:text-lg" 
+        class="flex flex-col space-y-4 bg-darkgray [&>*]:text-gray-100 p-6 [&>span]:text-lg" 
       >
+        <i id="menuToggle" class="fa-solid fa-bars fa-3x self-end"></i>
         <h1 class="text-2xl font-bold border-b border-white">Me2YouADMIN</h1>
         <span>Main Menu</span>
 
         <ul class="[&>*]:flex [&>*]:flex-row [&>*]:space-x-5 [&>*]:p-2">
-          <li><i class="fa-solid fa-chart-area"></i><a href="">Dashboard overview</a></li>
+          <li><i class="fa-solid fa-chart-area hover:text-blue-500"></i><a href="">Dashboard overview</a></li>
           <li>
-            <svg class="fill-white w-4 h-4" xmlns="http://www.w3.org/2000/svg" 
+            <svg class="fill-white w-4 h-4 custom-fa hover:fill-blue-500" xmlns="http://www.w3.org/2000/svg" 
                 xmlns:xlink="http://www.w3.org/1999/xlink" 
                 version="1.1" id="Layer_1" 
                 viewBox="0 0 103.12 122.88"
@@ -37,8 +40,8 @@
             
             <a href="">View Reports</a>
         </li>
-          <li><i class="fa-solid fa-message"></i><a href="">Messages</a></li>
-          <li><i class="fa-solid fa-database"></i><a href="">Database Tables</a></li>
+          <li><i class="fa-solid fa-message hover:text-blue-500"></i><a href="">Messages</a></li>
+          <li><i class="fa-solid fa-database hover:text-blue-500"></i><a href="">Database Tables</a></li>
         </ul>
 
       </nav>
@@ -50,13 +53,13 @@
         >
           <div class="h-1/2 align-middle ">
             <ul class="flex flex-row space-x-2 [&>*]:text-sm">
-              <li>Sign Out</li>
+              <li><a href="/index.php">Sign Out</a></li>
               <li>Notifications</li>
             </ul>
           </div>
 
           <div class="flex flex-row w-2/5 relative h-fit">
-            <input type="text" placeholder="Search for a user or listing" class="bg-slate-100 text-black p-2 flex-1 border-4 border-r-0 border-slate-800 outline-none"/>
+            <input type="text" placeholder="Search for a user or listing" class="bg-slate-100 text-black p-2 flex-1 border-4 border-r-0 border-slate-800 outline-none focus:border-blue-700"/>
             <button type="button" aria-label="Search">
               <span class="sr-only">Search</span>
               <svg
@@ -149,7 +152,7 @@
             </table>
           </div>
 
-          <div id="provincial-demo" class="col-span-1">
+          <div id="completed-orders" class="col-span-1">
             <span class="text-2xl">Completed Orders</span>
           </div>
         </div>
