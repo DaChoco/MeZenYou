@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../dist/output.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+    <script src="/adminjs/provincial.js" defer></script>
 
     <!--This is font awesome. A free supply of icons-->
     <script
@@ -14,12 +15,12 @@
     ></script>
   </head>
   <body>
-    <section class="grid grid-cols-[300px_1fr] h-screen">
+    <section class="grid grid-cols-[250px_1fr] h-screen">
       <nav
         id="sidebar"
         class="flex flex-col space-y-4 bg-darkgray w-full [&>*]:text-gray-100 p-6 [&>span]:text-lg" 
       >
-        <h1 class="text-2xl font-bold border-b-2 border-white">Me2YouADMIN</h1>
+        <h1 class="text-2xl font-bold border-b border-white">Me2YouADMIN</h1>
         <span>Main Menu</span>
 
         <ul class="[&>*]:flex [&>*]:flex-row [&>*]:space-x-5 [&>*]:p-2">
@@ -48,7 +49,7 @@
           class="w-full flex flex-row h-[100px] bg-white [&>*]:p-2 items-center justify-between"
         >
           <div class="h-1/2 align-middle ">
-            <ul class="flex flex-row space-x-5">
+            <ul class="flex flex-row space-x-2 [&>*]:text-sm">
               <li>Sign Out</li>
               <li>Notifications</li>
             </ul>
@@ -84,32 +85,68 @@
         </div>
 
         <div
-          class="grid grid-cols-3 [&>*]:flex [&>*]:flex-col [&>*]:justify-between [&>*]:items-center [&>*]:h-fit [&>*]:bg-white gap-6 m-5 [&>*]:shadow-md [&>*]:p-5"
+          class="grid grid-cols-4 [&>*]:flex [&>*]:flex-col [&>*]:justify-between [&>*]:items-center  [&>*]:bg-white gap-6 m-5 [&>*]:shadow-md [&>*]:p-5"
         >
           <div id="total-traffic">
-            <i class="fa-solid fa-eye"></i>
-            <span class="text-xl font-extrabold">16.3K</span>
+            <i class="fa-solid fa-eye fa-2x"></i>
+            <span class="text-xl font-extrabold">41.3K</span>
             <span>User Traffic</span>
           </div>
 
-          <div id="commission">
-            <i class="fa-solid fa-money-bill"></i>
+          <div id="commission" class="col-span-2">
+            <i class="fa-solid fa-money-bill fa-2x"></i>
             <span class="text-xl font-extrabold">R30.6K</span>
             <span>Total Commission Fees</span>
           </div>
 
-          <!--Lets me see how many users come from each province-->
-          <div id="provincial-demo" class="col-span-3">
-            <span class="text-2xl">Provincial Data</span>
-          </div>
-
           <!--Tracks my all my expenses from hosting this site-->
           <div id="system-expenses">
-            <span class="text-2xl">Expenses</span>
+            <i class="fa-solid fa-arrow-trend-down fa-2x"></i>
+            <span class="text-xl font-extrabold">R3.6K</span>
+            <span >Expenses</span>
           </div>
 
-          <div id="new-signups">
+          <!--Lets me see how many users come from each province-->
+          <div id="provincial-demo" class="col-span-4">
+            <span class="text-2xl">Provincial Data</span>
+            <canvas id="myChart" role="img" aria-label="A bar chart showing data."></canvas>
+          </div>
+
+          <div id="new-signups" class="col-span-3">
             <span class="text-2xl">New Signups</span>
+            <table class="border-collapse border-solid [&_*]:border-black [&_*]:border [&_*]:text-sm [&_*]:p-2">
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                </tr>
+
+                <tr>
+                    <td>#01</td>
+                    <td>MaileEnFranklin@yahoo.com</td>
+                    <td>ADMIN</td>
+                    <td>Active</td>
+                    <td>13 Jan 2025</td>
+                </tr>
+
+                <tr>
+                    <td>#01</td>
+                    <td>MaileEnFranklin@yahoo.com</td>
+                    <td>ADMIN</td>
+                    <td>Active</td>
+                    <td>13 Jan 2025</td>
+                </tr>
+
+                <tr>
+                    <td>#01</td>
+                    <td>MaileEnFranklin@yahoo.com</td>
+                    <td>ADMIN</td>
+                    <td>Active</td>
+                    <td>13 Jan 2025</td>
+                </tr>
+            </table>
           </div>
 
           <div id="provincial-demo" class="col-span-1">
