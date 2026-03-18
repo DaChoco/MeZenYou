@@ -2,7 +2,6 @@ document.addEventListener("sidebarLoaded", () => {
   const toggleBtn = document.getElementById("menuToggle");
   const layout = document.getElementById("layout-admin");
 
-  // Guard clause (prevents crashes if something fails)
   if (!toggleBtn || !layout) return;
 
   toggleBtn.addEventListener("click", () => {
@@ -26,4 +25,25 @@ document.addEventListener("sidebarLoaded", () => {
       }
     });
   });
+  const reportclose = document.getElementById("report-x")
+  const reportlogs = document.getElementById("report-logs")
+  
+  reportclose.addEventListener("click", ()=>{
+    if (reportlogs.classList.contains("flex")){
+      reportlogs.classList.replace("flex", "hidden")
+    }
+  })
+
+  const viewreports = document.querySelectorAll(".view-reports")
+  viewreports.forEach((links)=>{
+    links.addEventListener("click", ()=>{
+      if (reportlogs.classList.contains("hidden")){
+      reportlogs.classList.replace("hidden", "flex")
+    }
+    else{
+      reportlogs.classList.replace("flex", "hidden")
+    }
+    })
+  })
+
 });
