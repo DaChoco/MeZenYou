@@ -1,162 +1,149 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../dist/output.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
 
-    <script src="/adminjs/provincial.js" defer></script>
-    <script src="/adminjs/adminstyles.js" defer></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../dist/output.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
 
-    <!--This is font awesome. A free supply of icons-->
-    <script
-      src="https://kit.fontawesome.com/dad52afab5.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    <section id="layout-admin" class="grid h-screen transition-all duration-100">
-      <nav
-        id="sidebar"
-        class="flex flex-col space-y-4 bg-darkgray [&>*]:text-gray-100 p-6 [&>span]:text-lg" 
-      >
-        <i id="menuToggle" class="fa-solid fa-bars fa-3x self-end"></i>
-        <h1 class="text-2xl font-bold border-b border-white">Me2YouADMIN</h1>
-        <span>Main Menu</span>
 
-        <ul class="[&>*]:flex [&>*]:flex-row [&>*]:space-x-5 [&>*]:p-2">
-          <li><i class="fa-solid fa-chart-area hover:text-blue-500"></i><a href="">Dashboard overview</a></li>
-          <li>
-            <svg class="fill-white w-4 h-4 custom-fa hover:fill-blue-500" xmlns="http://www.w3.org/2000/svg" 
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
-                version="1.1" id="Layer_1" 
-                viewBox="0 0 103.12 122.88"
-                xml:space="preserve">
-                <g><path class="st0" d="M72.17,35.82l16.44,0.06c-0.02,4.38-1.78,8.58-4.9,11.65c-0.74,0.73-1.54,1.38-2.4,1.96L72.17,35.82 L72.17,35.82z M1.18,122.01C0.49,121.69,0,121,0,120.18V2c0-1.1,0.89-2,2-2H21.4h79.72c1.1,0,2,0.89,2,2v107.73 c0,0.11-0.01,0.21-0.02,0.31c-0.28,3.93-1.56,6.99-3.86,9.18c-2.3,2.18-5.53,3.4-9.72,3.64c-0.09,0.01-0.17,0.02-0.26,0.02H2.83 C2.15,122.88,1.54,122.53,1.18,122.01L1.18,122.01z M35.5,34.9h5.01c0.27,0,0.48,0.22,0.48,0.48v9.85c0,0.27-0.22,0.48-0.48,0.48 H35.5c-0.27,0-0.48-0.22-0.48-0.48v-9.85C35.02,35.12,35.23,34.9,35.5,34.9L35.5,34.9z M16.85,28.87h5.01 c0.27,0,0.48,0.22,0.48,0.48v15.89c0,0.27-0.22,0.48-0.48,0.48h-5.01c-0.27,0-0.48-0.22-0.48-0.48V29.35 C16.36,29.09,16.58,28.87,16.85,28.87L16.85,28.87L16.85,28.87z M26.18,25.48h5.01c0.27,0,0.48,0.22,0.48,0.48v19.28 c0,0.27-0.22,0.48-0.48,0.48h-5.01c-0.27,0-0.48-0.22-0.48-0.48V25.96C25.69,25.69,25.91,25.48,26.18,25.48L26.18,25.48z M99.13,109.68V3.99H21.4H3.99v114.9h85.26l0.04,0c3.21-0.18,5.61-1.04,7.2-2.55C98.06,114.85,98.93,112.62,99.13,109.68 L99.13,109.68z M16.82,106.64c-1.09,0-1.98-0.89-1.98-2c0-1.1,0.88-1.99,1.98-1.99h70.5c1.09,0,1.98,0.89,1.98,1.99 c0,1.1-0.88,2-1.98,2H16.82L16.82,106.64z M17.14,92.08c-1.09,0-1.98-0.89-1.98-2c0-1.1,0.88-2,1.98-2h70c1.09,0,1.98,0.89,1.98,2 c0,1.1-0.88,2-1.98,2H17.14L17.14,92.08z M16.82,77.52c-1.09,0-1.98-0.89-1.98-2c0-1.1,0.88-1.99,1.98-1.99h30.13 c1.09,0,1.98,0.89,1.98,1.99c0,1.1-0.88,2-1.98,2H16.82L16.82,77.52z M54.64,77.52c-1.09,0-1.98-0.89-1.98-2 c0-1.1,0.88-1.99,1.98-1.99h32.5c1.09,0,1.98,0.89,1.98,1.99c0,1.1-0.88,2-1.98,2H54.64L54.64,77.52z M16.82,64.53 c-1.09,0-1.98-0.89-1.98-2c0-1.1,0.88-2,1.98-2h24.84c1.09,0,1.98,0.89,1.98,2c0,1.1-0.88,2-1.98,2H16.82L16.82,64.53z M16.82,13.91c-1.09,0-1.98-0.89-1.98-2s0.88-2,1.98-2h14.84c1.09,0,1.98,0.89,1.98,2s-0.88,2-1.98,2H16.82L16.82,13.91z M70.49,32.56l-0.88-17.57c-0.02-0.35,0.25-0.64,0.6-0.66c0.1-0.01,0.22-0.01,0.35-0.01c0.11,0,0.23-0.01,0.35-0.01 c4.83-0.05,9.25,1.78,12.56,4.82c3.31,3.05,5.5,7.31,5.84,12.13c0.02,0.35-0.24,0.65-0.58,0.67l-17.58,1.26 c-0.35,0.02-0.65-0.24-0.67-0.58C70.49,32.59,70.49,32.57,70.49,32.56L70.49,32.56z M70.9,15.57l0.82,16.32l16.3-1.16 c-0.46-4.23-2.45-7.96-5.38-10.66c-3.08-2.84-7.21-4.54-11.7-4.49L70.9,15.57L70.9,15.57z M68.52,35.06l8.81,15.26 c-2.68,1.55-5.72,2.36-8.81,2.36c-9.73,0-17.62-7.89-17.62-17.62c0-8.74,6.41-16.17,15.06-17.43L68.52,35.06L68.52,35.06z"/>
-                </g>
-            </svg>
-            
-            <a href="">View Reports</a>
-        </li>
-          <li><i class="fa-solid fa-message hover:text-blue-500"></i><a href="">Messages</a></li>
-          <li><i class="fa-solid fa-database hover:text-blue-500"></i><a href="">Database Tables</a></li>
-        </ul>
 
-      </nav>
+  <!--This is font awesome. A free supply of icons-->
+  <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
 
-      <div>
-        <div
-          id="topbar"
-          class="w-full flex flex-row h-[100px] bg-white [&>*]:p-2 items-center justify-between"
-        >
-          <div class="h-1/2 align-middle ">
-            <ul class="flex flex-row space-x-2 [&>*]:text-sm">
-              <li><a href="/index.php">Sign Out</a></li>
-              <li>Notifications</li>
-            </ul>
-          </div>
+  <script src="/adminjs/provincial.js" defer></script>
+  <script src="/adminjs/includesidenav.js"></script>
 
-          <div class="flex flex-row w-2/5 relative h-fit">
-            <input type="text" placeholder="Search for a user or listing" class="bg-slate-100 text-black p-2 flex-1 border-4 border-r-0 border-slate-800 outline-none focus:border-blue-700"/>
-            <button type="button" aria-label="Search">
-              <span class="sr-only">Search</span>
-              <svg
-                class="fill-slate-50 bg-slate-800 w-12 h-full hover:bg-blue-800 duration-300"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960"
-              >
-                <path
-                  d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
-                />
-              </svg>
-            </button>
-          </div>
 
-          <div class="h-full w-5/12 grid grid-rows-1 grid-cols-[80px_1fr] gap-x-5">
-            <img
-              class="object-contain rounded-full"
-              src="/images/teruicon.jpg"
-              alt=""
-            />
-            <div class="flex flex-col">
-              <span class="text-lg font-semibold">Maile Chokoe</span>
-              <p>Head Website Administrator</p>
-            </div>
-          </div>
+</head>
+
+<body>
+  <section id="layout-admin" class="grid h-auto transition-all duration-100">
+    <div id="sidebar-container" class="h-full"></div>
+
+    <div>
+      <div id="topbar" class="w-full flex flex-row h-[100px] bg-white [&>*]:p-2 items-center justify-between">
+        <div class="h-1/2 align-middle ">
+          <ul class="flex flex-row space-x-2 [&>*]:text-sm">
+            <li><a href="/index.php">Sign Out</a></li>
+            <li>Notifications</li>
+          </ul>
         </div>
 
-        <div
-          class="grid grid-cols-4 [&>*]:flex [&>*]:flex-col [&>*]:justify-between [&>*]:items-center  [&>*]:bg-white gap-6 m-5 [&>*]:shadow-md [&>*]:p-5"
-        >
-          <div id="total-traffic">
-            <i class="fa-solid fa-eye fa-2x"></i>
-            <span class="text-xl font-extrabold">41.3K</span>
-            <span>User Traffic</span>
-          </div>
+        <div class="flex flex-row w-2/5 relative h-fit">
+          <input type="text" placeholder="Search for a user or listing"
+            class="bg-slate-100 text-black p-2 flex-1 border-4 border-r-0 border-slate-800 outline-none focus:border-blue-700" />
+          <button type="button" aria-label="Search">
+            <span class="sr-only">Search</span>
+            <svg class="fill-slate-50 bg-slate-800 w-12 h-full hover:bg-blue-800 duration-300"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+              <path
+                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+            </svg>
+          </button>
+        </div>
 
-          <div id="commission" class="col-span-2">
-            <i class="fa-solid fa-money-bill fa-2x"></i>
-            <span class="text-xl font-extrabold">R30.6K</span>
-            <span>Total Commission Fees</span>
-          </div>
-
-          <!--Tracks my all my expenses from hosting this site-->
-          <div id="system-expenses">
-            <i class="fa-solid fa-arrow-trend-down fa-2x"></i>
-            <span class="text-xl font-extrabold">R3.6K</span>
-            <span >Expenses</span>
-          </div>
-
-          <!--Lets me see how many users come from each province-->
-          <div id="provincial-demo" class="col-span-4">
-            <span class="text-2xl">Provincial Data</span>
-            <canvas id="myChart" role="img" aria-label="A bar chart showing data."></canvas>
-          </div>
-
-          <div id="new-signups" class="col-span-3">
-            <span class="text-2xl">New Signups</span>
-            <table class="border-collapse border-solid [&_*]:border-black [&_*]:border [&_*]:text-sm [&_*]:p-2">
-                <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Registered</th>
-                </tr>
-
-                <tr>
-                    <td>#01</td>
-                    <td>MaileEnFranklin@yahoo.com</td>
-                    <td>ADMIN</td>
-                    <td>Active</td>
-                    <td>13 Jan 2025</td>
-                </tr>
-
-                <tr>
-                    <td>#01</td>
-                    <td>MaileEnFranklin@yahoo.com</td>
-                    <td>ADMIN</td>
-                    <td>Active</td>
-                    <td>13 Jan 2025</td>
-                </tr>
-
-                <tr>
-                    <td>#01</td>
-                    <td>MaileEnFranklin@yahoo.com</td>
-                    <td>ADMIN</td>
-                    <td>Active</td>
-                    <td>13 Jan 2025</td>
-                </tr>
-            </table>
-          </div>
-
-          <div id="completed-orders" class="col-span-1">
-            <span class="text-2xl">Completed Orders</span>
+        <div class="h-full w-5/12 grid grid-rows-1 grid-cols-[80px_1fr] gap-x-5">
+          <img class="object-contain rounded-full" src="/images/teruicon.jpg" alt="" />
+          <div class="flex flex-col">
+            <span class="text-lg font-semibold">Maile Chokoe</span>
+            <p>Head Website Administrator</p>
           </div>
         </div>
       </div>
-    </section>
-  </body>
+
+      <div class="lg:h-screen lg:overflow-y-auto grid lg:grid-cols-4 [&>*]:flex [&>*]:flex-col [&>*]:items-center  [&>*]:bg-white gap-6 m-5 [&>*]:shadow-md [&>*]:p-5">
+        <div id="total-traffic">
+          <i class="fa-solid fa-eye fa-2x"></i>
+          <span class="text-xl font-extrabold">41.3K</span>
+          <span>User Traffic</span>
+        </div>
+
+        <div id="commission" class="lg:col-span-2 md:col-span-1">
+          <i class="fa-solid fa-money-bill fa-2x"></i>
+          <span class="text-xl font-extrabold">R30.6K</span>
+          <span>Total Commission Fees</span>
+        </div>
+
+        <!--Tracks my all my expenses from hosting this site-->
+        <div id="system-expenses">
+          <i class="fa-solid fa-arrow-trend-down fa-2x"></i>
+          <span class="text-xl font-extrabold">R3.6K</span>
+          <span>Expenses</span>
+        </div>
+
+        <!--Lets me see how many users come from each province-->
+        <div id="provincial-demo" class="col-span-4">
+          <span class="text-2xl">Provincial Data</span>
+          <canvas id="myProvinceChart" role="img" aria-label="A bar chart showing data."></canvas>
+        </div>
+
+        <div id="new-signups" class="col-span-3">
+          <span class="text-2xl">New Signups</span>
+          <table class="border-collapse border-solid [&_*]:border-black [&_*]:border [&_*]:text-sm [&_*]:p-2 w-full">
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Registered</th>
+            </tr>
+
+            <tr>
+              <td>#01</td>
+              <td>MaileEnFranklin@yahoo.com</td>
+              <td>ADMIN</td>
+              <td>Active</td>
+              <td>13 Jan 2025</td>
+            </tr>
+
+            <tr>
+              <td>#01</td>
+              <td>MaileEnFranklin@yahoo.com</td>
+              <td>ADMIN</td>
+              <td>Active</td>
+              <td>13 Jan 2025</td>
+            </tr>
+
+            <tr>
+              <td>#01</td>
+              <td>MaileEnFranklin@yahoo.com</td>
+              <td>ADMIN</td>
+              <td>Active</td>
+              <td>13 Jan 2025</td>
+            </tr>
+          </table>
+        </div>
+
+
+        <!--Displays buyer seller pairs + how much was exchanged-->
+        <div id="misc" class="row-span-2 col-span-1 justify-start space-y-6">
+          <span class="text-2xl">Completed Orders</span>
+
+          <ul class="text-sm space-y-5">
+            <li>Maile - Jeffery - R12000</li>
+            <li>Welt - Bronya - R8000</li>
+            <li>Kiana - Mei - R1321</li>
+            <li>Otto - Fu Hua - R121000</li>
+            <li>Maile - Jeffery - R12000</li>
+          </ul>
+
+          <span class="text-2xl">Conversion Rate</span>
+          <canvas id="pieconversion" aria-label="Doughnut"></canvas>
+        </div>
+
+        <div id="current-listings" class="col-span-3 ">
+          <span class="text-2xl">Sales By Category</span>
+          <canvas id="mySalesChart" role="img" aria-label="A bar chart showing data."></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="/adminjs/adminstyles.js"></script>
+</body>
+
+
 </html>

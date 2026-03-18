@@ -9,32 +9,48 @@
   }
 }
 
-@layer components {
-  .add-to-cart-or-buy {
-    @apply [&>*]:flex [&>*]:flex-col p-7 space-y-4;
-  }
-
-  #layout-admin{
-    @apply grid-cols-[250px_1fr] transition-all duration-300;
-  }
-
-  #layout-admin.sidebar-collapsed {
-  @apply grid-cols-[80px_1fr];
+/* Layout admin grid */
+#layout-admin {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  transition: all 300ms;
 }
 
-.sidebar-collapsed #sidebar a,
+/* When sidebar is collapsed */
+#layout-admin.sidebar-collapsed {
+  grid-template-columns: 80px 1fr;
+}
+
+/* Hide THE text elements when collapsed */
+.sidebar-collapsed #sidebar p,
 .sidebar-collapsed #sidebar span,
 .sidebar-collapsed #sidebar h1 {
   display: none;
 }
 
+/* Center sidebar items when collapsed */
 .sidebar-collapsed #sidebar ul li {
   justify-content: center;
 }
 
-
-
 .sidebar-collapsed #sidebar ul li svg {
   margin: auto;
 }
+
+/* EQUAL TO =>
+   .add-to-cart-or-buy {
+     @apply [&>*]:flex [&>*]:flex-col p-7 space-y-4;
+   }
+*/
+.add-to-cart-or-buy {
+  padding: 1.75rem; /* p-7 */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 equivalent */
+}
+
+/* If you want all direct children to be flex columns like Tailwind [&>*] */
+.add-to-cart-or-buy > * {
+  display: flex;
+  flex-direction: column;
 }
