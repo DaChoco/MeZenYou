@@ -8,6 +8,25 @@
 //}
 $role = $_SESSION["role"] ?? "buyer";
 $role = "seller";
+
+$products = [
+    [
+        "name" => "SHY Vol. 8",
+        "price" => 280,
+        "image" => "/images/SHYVol8.webp",
+        "delivered" => "13 March 2026",
+        "id" => 1,
+        "placed" => "11 March 2026"
+    ],
+    [
+        "name" => "Love Bullet Vol. 2",
+        "price" => 310,
+        "image" => "/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png",
+        "delivered" => "cancelled",
+        "id" => 2,
+        "placed" => "14 March 2026"
+    ]
+];
 ?>
 
 
@@ -105,41 +124,35 @@ $role = "seller";
 
             </div>
 
-            <div class="my-orders flex flex-col w-4/5 my-4 space-y-5">
+            <div class="my-orders flex flex-col-reverse w-4/5 my-4 space-y-5">
                 <h3 id="orders-section" class="text-2xl">Your Orders</h3>
+
+                <?php foreach($products as $product):?>
                 <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
-                    <img class="object-contain" src="/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png" alt="">
+                    <img class="object-contain" src="<?php echo $product["image"];?>" alt="">
 
                     <div class="flex flex-col">
-                        <h4 class="text-xl font-bold">Order #01</h4>
+                        <h4 class="text-xl font-bold">Order #<?php echo $product['id'];?></h4>
                         <span class="flex flex-row">
-                            <p class="text-green-600 mr-2">Delivered </p> 14 March 2026
+
+                        <?php if ($product['delivered'] !== "cancelled"):?>
+                            <p class="text-green-600 mr-2">Delivered </p> <?php echo $product['delivered'];?>
+                        <?php endif;?>
+
+                        <?php if ($product['delivered'] === "cancelled"):?>
+                            <p class="text-normalred mr-2">Cancelled </p>
+                        <?php endif;?>
                         </span>
                         <ul>
-                            <li>Love Bullet Vol. 2</li>
+                            <li><?php echo $product['name'];?></li>
                         </ul>
 
-                        <p>ORDER PLACED: 13 March 2026</p>
-                        <p>Total: R310.00</p>
+                        <p>ORDER PLACED: <?php echo $product['placed'];?></p>
+                        <p>Total: R<?php echo $product['price'];?></p>
                     </div>
                 </article>
+                <?php endforeach;?>
 
-                <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
-                    <img class="object-contain" src="/images/SHYVol8.webp" alt="">
-
-                    <div class="flex flex-col">
-                        <h4 class="text-xl font-bold">Order #02</h4>
-                        <span class="flex flex-row">
-                            <p class="text-green-600 mr-2">Delivered </p> 16 March 2026
-                        </span>
-                        <ul>
-                            <li>SHY; Vol. 8</li>
-                        </ul>
-
-                        <p>ORDER PLACED: 15 March 2026</p>
-                        <p>Total: R310.00</p>
-                    </div>
-                </article>
             </div>
 
             <div class="messaging-page"></div>

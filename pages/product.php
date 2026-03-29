@@ -84,11 +84,11 @@ if (!$selectedProduct) {
                 <span class="text-lg text-green-700">IN STOCK</span>
             </div>
 
-            <div class="lower-fourth flex flex-col space-y-5 [&>*]:p-3 rounded-sm [&>*]:shadow-md">
-                <button type="button" class="bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button>
-                <input type="number" placeholder="Quantity">
-                <button type="button" class="bg-slate-800 text-white rounded-sm">Add to Cart</button>
-                <button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm">Proceed to Checkout</button>
+             <div class="lower-fourth flex flex-col space-y-5 rounded-sm [&_*]:w-full">
+                <a href="/pages/msg.php"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
+                <input type="number" placeholder="Quantity" class="p-3 outline-none border border-black">
+                <button type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md">Add to Cart</button>
+                <a href="/pages/checkout.php"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md">Proceed to Checkout</button></a>
             </div>
 
             <div class="[&>*]:text-lg space-y-5">
