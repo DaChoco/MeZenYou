@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 // Example: Dummy Output
 
 $products = [
@@ -31,6 +32,8 @@ $products = [
         "id" => 3
     ]
 ];
+
+$user_email = $_SESSION['email'];
 
 $selectedCategory = $_GET['category'] ?? null;
 $minPrice = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
@@ -107,6 +110,7 @@ $filtered_products = array_values(array_filter($products, function ($product) us
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Help & Settings</h4>
             <ul class="[&>*]:text-gray-600">
                 <li><a href="/pages/account.php">My Account</a></li>
+                <li>Signed in as: <?php echo $user_email?></li>
                 <li><a href="/pages/auth.php?type=seller">Become a Seller</a></li>
             </ul>
 

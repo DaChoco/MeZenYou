@@ -19,8 +19,8 @@
 
     <form id="loginid" class="hidden flex-col w-2/5 my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
         <h2 class="text-2xl font-extrabold text-center">Login Form</h2>
-        <input type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
-        <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
+        <input id="login_email_id" type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
+        <input id="login_password_id" type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
         <button type="submit" class="bg-red-600 p-3 rounded-md text-white">Login</button>
 
         <div class="flex flex-col justify-center items-center">
@@ -31,7 +31,7 @@
         </div>
     </form>
 
-    <form action="/api/register.php" method="post" id="registerid" class="hidden flex-col w-2/5 my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
+    <form id="registerid" class="hidden flex-col w-2/5 my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
         <h2 class="text-2xl font-extrabold text-center">Register Form</h2>
         <input id="register_email_id" type="email" name="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
         <input id="register_password_id" type="password" name="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">

@@ -1,13 +1,13 @@
 <?php
-//This is code to protect the page once I set up auth
-//session_start();
 
-//if (!isset($_SESSION["user_id"])) {
-//  header("Location: /pages/auth.php");
-// exit();
-//}
+session_start();
+
+if (!isset($_SESSION["user_id"])) {
+  header("Location: /pages/auth.php");
+ exit();
+}
 $role = $_SESSION["role"] ?? "buyer";
-$role = "seller";
+
 
 $products = [
     [
@@ -39,6 +39,7 @@ $products = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account</title>
     <link rel="stylesheet" href="../dist/output.css" />
+    <script src="../javascript/account.js" defer></script>
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
 </head>
@@ -51,7 +52,7 @@ $products = [
         <nav class="profile-nav space-y-5 flex flex-col row-span-full px-5 py-8 bg-white w-4/5 mx-auto my-0 border sticky top-4 h-fit">
             <h1 class="text-3xl">Profile Navigation</h1>
             <div>
-                <span class="text-lg font-semibold hover:text-hoverbtnred">Logout</span>
+                <span id="logoutbtn" class="text-lg font-semibold hover:text-hoverbtnred">Logout</span>
                 <p>You can now get out of here! By clicking this you're deleting the cookies and auth that keep you
                     logged in</p>
             </div>
@@ -81,7 +82,7 @@ $products = [
                     voluptates neque maiores ea iste quis? Ut, sequi?</p>
             </div>
 
-            <?php if ($role === "seller"): ?>
+            <?php if ($role === "seller" || $role === "ADMIN"): ?>
                 <div>
                 <a href="#seller-section" class="text-lg font-semibold hover:text-hoverbtnred">Add New Listing</a>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem

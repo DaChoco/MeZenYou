@@ -36,19 +36,48 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("registerid").addEventListener("submit", async (e) => {
     e.preventDefault(); 
 
-    const email = document.getElementById("register_email_id").value;
-    const password = document.getElementById("register_password_id").value;
+    const email_register = document.getElementById("register_email_id").value;
+    const password_register = document.getElementById("register_password_id").value;
 
-    if (email === null || password === null) {
+    if (email_register === null || password_register === null) {
         console.log("INCOMPLETE DATA")
     } else {
       const res = await fetch("/api/register.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        credentials: "include",
+        body: JSON.stringify({ email: email_register, password: password_register }),
       });
 
       const data = await res.json();
+      if (data.redirect){
+
+        window.location.href = data.redirect;
+      }
       console.log(data);
     }
   });
+
+document.getElementById("loginid").addEventListener("submit", async (e) => {
+    e.preventDefault(); 
+
+    const email_login = document.getElementById("login_email_id").value;
+    const password_login = document.getElementById("login_password_id").value;
+
+      if (email_login === null || password_login === null) {
+        console.log("INCOMPLETE DATA")
+    } else {
+      const res = await fetch("/api/login.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email_login, password: password_login }),
+      });
+      const data = await res.json();
+      if (data.redirect){
+
+        window.location.href = data.redirect;
+      }
+      console.log(data);
+    }
+});
