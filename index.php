@@ -1,6 +1,7 @@
 
 <?php
 // Example: Dummy Output
+
 $products = [
     [
         "name" => "SHY Vol. 8",
@@ -31,6 +32,31 @@ $products = [
     ]
 ];
 
+$selectedCategory = $_GET['category'] ?? null;
+$minPrice = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
+$maxPrice = isset($_GET['max']) && $_GET['max'] !== '' ? (int)$_GET['max'] : null;
+
+$filtered_products = array_values(array_filter($products, function ($product) use ($selectedCategory, $minPrice, $maxPrice) {
+
+
+    if ($selectedCategory !== null) {
+        $productCategory = strtolower(str_replace(['/', ' '], '', $product['category']));
+        if ($productCategory !== strtolower($selectedCategory)) {
+            return false;
+        }
+    }
+
+    if ($minPrice !== null && $product['price'] < $minPrice) {
+        return false;
+    }
+
+    if ($maxPrice !== null && $product['price'] > $maxPrice) {
+        return false;
+    }
+
+    return true;
+}));
+
 
 ?>
 
@@ -58,7 +84,7 @@ $products = [
 
             <ul
                 class="w-full [&>*]:w-full [&>*]:text-xl justify-start [&>*]:px-1 [&>*]:py-2 duration-200 hover:[&>*]:bg-red-700  hover:[&>*]:text-white">
-                <li class="font-bold">All Departments</li>
+                <li class="font-bold"><a href="/index.php">All Departments</a></li>
                 <li><a href="/index.php?category=novels">Novels</a></li>
                 <li><a href="/index.php?category=comicsmanga">Comics/Manga</a></li>
                 <li><a href="/index.php?category=videogames">Video Games</a></li>
@@ -70,13 +96,12 @@ $products = [
 
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Shop By Price Tag</h4>
             <div class="space-y-4 [&>input]:border-2 [&>input]:border-normalred">
-                <input type="number" placeholder="Min" class="p-2 outline-none">
+                <input id="minPrice" type="number" placeholder="Min" class="p-2 outline-none">
                 <p>to</p>
-                <input type="number" placeholder="Max" class="p-2 outline-none">
+                <input id="MaxPrice" type="number" placeholder="Max" class="p-2 outline-none">
 
                 
             </div>
-
             <button class="bg-normalred p-4 text-white font-semibold w-2/5">Apply</button>
 
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Help & Settings</h4>
@@ -88,7 +113,7 @@ $products = [
         </div>
 
         <section class="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] grid-rows-2 gap-6 col-span-2 p-10 max-h-full [&>*]:shadow-sm">
-            <?php foreach ($products as $product): ?>
+            <?php foreach ($filtered_products as $product): ?>
         <!--EXAMPLE OF CHARACTER CARD-->
             <article class="p-4 h-fitrounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr]">
                 <a href="./pages/product.php?id=<?php echo $product['id']; ?>">

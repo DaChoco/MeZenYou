@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!--This is font awesome. A free supply of icons-->
+    <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
+
+    <script src="/adminjs/includesidenav.js"></script>
+    <link rel="stylesheet" href="/dist/output.css" />
+</head>
+
+<body>
+    <section id="layout-admin" class="grid h-screen transition-all duration-100">
+        <div id="sidebar-container"></div>
+
+        <section>
+            <div class="w-3/4 mx-auto my-5 text-center">
+                <h1 class="text-5xl font-semibold">User Management</h1>
+                <p class="text-xl">Manage all your users in this one place</p>
+            </div>
+
+            <div class="p-5 space-y-5">
+                <table
+                    class="border-collapse border border-black [&_th]:border [&_td]:border [&_th]:border-black [&_td]:border-black [&_*]:text-sm [&_*]:p-2 w-full mx-auto">
+                    <tr class="bg-darkgray text-white">
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Registered</th>
+                        <th>Last Active</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    <tr>
+                        <td>1</td>
+                        <td>WeltChoko@gmail.com</td>
+                        <td>ADMIN</td>
+                        <td class="bg-green-400">ACTIVE</td>
+                        <td>13 February 2026</td>
+                        <td>5 mins ago</td>
+                        <td>
+                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>jane.doe@example.com</td>
+                        <td>USER</td>
+                        <td class="bg-green-400">ACTIVE</td>
+                        <td>2 January 2026</td>
+                        <td>1 hour ago</td>
+                        <td>
+                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>mike.smith@example.com</td>
+                        <td>MODERATOR</td>
+                        <td class="bg-normalred">BANNED</td>
+                        <td>18 March 2026</td>
+                        <td>2 days ago</td>
+                        <td>
+                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td>lisa.brown@example.com</td>
+                        <td>USER</td>
+                        <td class="bg-normalred">DELETED</td>
+                        <td>25 February 2026</td>
+                        <td>Just now</td>
+                        <td>
+                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="flex flex-row justify-between">
+                    <span>Rows per page (10) out of BLANK rows</span>
+
+                    <ul class="flex flex-row space-x-5 [&>li]:p-2 [&>li]:border [&>li]:border-black">
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li>...</li>
+                        <li>10</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <script src="/adminjs/adminstyles.js" defer></script>
+</body>
+
+</html>

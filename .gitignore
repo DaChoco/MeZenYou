@@ -4,3 +4,4 @@ node_modules/
 *.jpg
 .env
 dist/
+config.php
