@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../dist/output.css" />
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
-    <script src="/javascript/auth.js" defer></script>
+    <script type="module" src="/javascript/auth.js" defer></script>
     
 </head>
 <body>

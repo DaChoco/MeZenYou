@@ -3,7 +3,7 @@
 session_start();
 
 if (!isset($_SESSION["user_id"])) {
-  header("Location: /pages/auth.php");
+  header("Location: /pages/auth.php?type=login");
  exit();
 }
 $role = $_SESSION["role"] ?? "buyer";
@@ -39,7 +39,7 @@ $products = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account</title>
     <link rel="stylesheet" href="../dist/output.css" />
-    <script src="../javascript/account.js" defer></script>
+    <script type="module" src="../javascript/account.js" defer></script>
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
 </head>

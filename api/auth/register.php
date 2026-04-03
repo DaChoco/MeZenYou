@@ -1,14 +1,5 @@
 <?php
-session_start();
-
-if (isset($_SESSION['user_id'])) {
-    echo json_encode([
-        "message" => "Already logged in",
-        "redirect" => "/index.php"
-    ]);
-    exit;
-}
-
+require_once "../session.php";
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -35,7 +26,7 @@ $password = $data['password'];
 
 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 //THEREST-----------------------------------------------------
-$conn = require 'conn.php';
+$conn = require '../conn.php';
 
 try{
     $statement = $conn->prepare("SELECT id FROM Users WHERE email = :email or password_hash = :password_hash");

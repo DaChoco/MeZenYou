@@ -1,13 +1,5 @@
 <?php
-session_start();
-
-if (isset($_SESSION['user_id'])) {
-    echo json_encode([
-        "message" => "Already logged in",
-        "redirect" => "/index.php"
-    ]);
-    exit;
-}
+require_once "../session.php";
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -34,7 +26,7 @@ $email = trim($data['email']);
 $password = $data['password'];
 
 //THE REST---------------------------------------
-$conn = require 'conn.php';
+$conn = require '../conn.php';
 
 try {
     $stmt = $conn->prepare("SELECT id, password_hash, user_role FROM Users WHERE email = :email");

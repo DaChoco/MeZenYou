@@ -1,3 +1,4 @@
+import {ENV} from '../variables.js'
 const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 
@@ -20,8 +21,22 @@ function hideAll() {
   buyer_register.classList.remove("flex");
 }
 
+async function CheckIfLoggedIn(){
+  let url = `${ENV.API_URL}/api/auth/checklogged.php`
+
+  const response = await fetch(url, {credentials: "include"});
+  const data = await response.json();
+
+  if (data.logged = true){
+    window.location.href = data.redirect;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  CheckIfLoggedIn();
   hideAll();
+
+
 
   if (type === "seller") {
     showElement(seller_registration);
@@ -42,7 +57,7 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
     if (email_register === null || password_register === null) {
         console.log("INCOMPLETE DATA")
     } else {
-      const res = await fetch("/api/register.php", {
+      const res = await fetch(`${ENV.API_URL}/api/auth/register.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -67,7 +82,7 @@ document.getElementById("loginid").addEventListener("submit", async (e) => {
       if (email_login === null || password_login === null) {
         console.log("INCOMPLETE DATA")
     } else {
-      const res = await fetch("/api/login.php", {
+      const res = await fetch(`${ENV.API_URL}/api/auth/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

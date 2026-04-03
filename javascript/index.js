@@ -1,0 +1,79 @@
+import { ENV } from "../variables.js";
+const container = document.getElementById("product_section_id");
+const userEmail = document.getElementById("userEmail");
+
+let currentCategory = "";
+
+async function loadProducts() {
+
+    const min = document.getElementById("minPrice");
+    const max = document.getElementById("maxPrice");
+
+
+    let url = `${ENV.API_URL}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}`;
+
+    const res = await fetch(url, {
+        credentials: "include"
+    });
+
+    const data = await res.json();
+    console.log(data.products);
+
+    // Show user email
+    console.log(userEmail);
+    userEmail.textContent = data.user 
+        ? `Signed in as: ${data.user}` 
+        : "Not logged in";
+
+    renderProducts(data.products);
+}
+
+function renderProducts(products) {
+    container.innerHTML = "";
+
+    products.forEach(product => {
+        const card = document.createElement("article");
+
+
+        card.className = "p-4 h-fit rounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr] shadow-sm";
+
+        card.innerHTML = `
+            <a href="/pages/product.php?id=${product.id}">
+                <div class="w-full h-52 flex items-center justify-center overflow-hidden bg-gray-100">
+                    <img class="object-contain max-h-full" src="${product.image}" alt="Item Card" />
+                </div>
+            </a>
+
+            <div class="text-section w-full flex flex-col justify-center items-center">
+                <span>${product.name}</span>
+                <p class="font-bold">R${product.price}</p>
+                <p class="font-semibold text-normalred">${product.category}</p>
+                <p class="text-gray-800">${product.location}</p>
+                <p class="text-yellow-600">${product.rating}</p>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function (){
+    loadProducts();
+    document.getElementById("applyFilter").addEventListener("click", loadProducts);
+    
+    document.querySelectorAll("[data-category]").forEach(link => {
+    link.addEventListener("click", (e) => {
+        e.preventDefault();
+        currentCategory = link.dataset.category;
+        loadProducts();
+    });
+
+    document.getElementById("applyFilter")
+    .addEventListener("click", loadProducts);
+});
+
+})
+
+
+
+

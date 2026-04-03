@@ -1,5 +1,6 @@
+import {ENV} from '../variables.js'
 document.getElementById('logoutbtn').addEventListener('click', async ()=>{
-const response = await fetch("/api/logout.php", {
+const response = await fetch(`${ENV.API_URL}/api/auth/logout.php`, {
   method: "POST",
   credentials: "include"
 });
