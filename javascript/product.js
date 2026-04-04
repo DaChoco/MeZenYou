@@ -1,4 +1,5 @@
 const queryString = window.location.search;
+const API_URL = window.ENV.API_URL;
 const urlParams = new URLSearchParams(queryString);
 
 document.addEventListener('DOMContentLoaded', async ()=>{
@@ -6,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     async function loadProduct(){
     const ID = urlParams.get('id');
-    let url = `/api/item.php?id=${ID}`;
+    let url = `${API_URL}/api/item.php?id=${ID}`;
 
     const response = await fetch(url, {credentials: "include"})
     const data = await response.json()

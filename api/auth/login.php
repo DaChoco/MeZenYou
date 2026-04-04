@@ -47,6 +47,7 @@ try {
     if (password_verify($password, $password_hash)) {
     $_SESSION['user_id'] = $user_id;
     $_SESSION['email'] = $email;
+    $_SESSION['role'] = $user_role;
 
     http_response_code(201);
     echo json_encode(["message" => "Login successful"]);

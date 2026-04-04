@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Page</title>
     <script src="/javascript/includefooter.js"></script>
+    <script src="/variables.js"></script>
     <script src="/javascript/includetopnav.js"></script>
     <link rel="stylesheet" href="/dist/output.css">
 </head>
@@ -23,8 +24,8 @@
                 <div class="flex flex-col [&_input]:p-2 space-y-5">
                     <span>Shipping Information</span>
                     <div class="flex flex-row [&>*]:bg-normalred [&>*]:text-white [&>*]:w-1/4 space-x-5">
-                        <button class="p-5 rounded-md">Delivery</button>
-                        <button class="p-5 rounded-md">Pick Up</button>
+                        <button type="button" class="p-5 rounded-md">Delivery</button>
+                        <button type="button" class="p-5 rounded-md">Pick Up</button>
                     </div>
 
                     <div class="flex flex-col">
@@ -44,23 +45,23 @@
 
                     <div class="flex flex-row [&>*]:flex [&>*]:flex-col space-x-2 w-full h-auto [&_div]:w-1/4 mx-auto">
                         <div>
-                            <label for="">Province</label>
-                            <input type="text" name="" id="" required>
+                            <label for="provinceinput">Province</label>
+                            <input type="text" name="" id="provinceinput" required>
                         </div>
 
                         <div>
-                            <label for="">City</label>
-                            <input type="text" required>
+                            <label for="cityinput">City</label>
+                            <input id="cityinput" type="text" required>
                         </div>
 
                         <div>
-                            <label for="">Postal</label>
-                            <input type="text" required>
+                            <label for="postalinput">Postal</label>
+                            <input id="postalinput" type="text" required>
                         </div>
 
                         <div>
-                            <label for="">Street</label>
-                            <input type=" text" name="" id="" required>
+                            <label for="streetinput">Street</label>
+                            <input id="streetinput" type=" text" name="" id="" required>
                         </div>
 
                     </div>
@@ -72,13 +73,13 @@
             <div class="bg-white p-10 h-fit">
                 <span class="text-lg font-semibold">Payment Method</span>
                 <div class="flex flex-row space-x-5">
-                    <input class="checked:text-black text-gray-600" type="radio" name="" id="">
+                    <input title="radio" class="checked:text-black text-gray-600" type="radio" name="" id="">
                     <p>Yoco Payment</p>
 
-                    <input type="radio" name="" id="">
+                    <input title="radio" type="radio" name="" id="">
                     <p>Online Payment</p>
 
-                    <input type="radio">
+                    <input title="radio" type="radio">
                     <p>Online Payment</p>
                 </div>
             </div>
@@ -103,7 +104,7 @@
                             <p class="font-bold text-xl">R280.00</p>
                         </div>
 
-                        <input type="number" class="h-2/5">
+                        <input placeholder="type..."  type="number" class="h-2/5">
                     </article>
 
                     <article class="grid grid-cols-[1fr_2fr_1fr]  gap-3">
@@ -118,7 +119,7 @@
                             <p class="font-bold text-xl">R280.00</p>
                         </div>
 
-                        <input type="number" class="h-2/5">
+                        <input placeholder="type..." type="number" class="h-2/5">
                     </article>
 
 
@@ -146,7 +147,7 @@
                         <span>R1400</span>
                     </div>
 
-                    <button class="bg-normalred text-white w-1/3 self-end p-3">Purchase</button>
+                    <button type="submit" class="bg-normalred text-white w-1/3 self-end p-3">Purchase</button>
                 </form>
 
             </div>

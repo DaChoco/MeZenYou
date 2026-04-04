@@ -1,9 +1,9 @@
 <?php
+require_once __DIR__ . "../utils/cors.php";
 require '../session.php';
+header("Content-Type: application/json");
 
 $conn = require '../conn.php';
-
-header("Content-Type: application/json");
 
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
@@ -20,8 +20,7 @@ $author = $data['author'];
 $stock = $data['stock'];
 
 try {
-    $stmt = $conn->prepare("
-    INSERT INTO Products 
+    $stmt = $conn->prepare("INSERT INTO Products 
     (product_name, price, category, location, seller_id, image, author, stock)
     VALUES 
     (:name, :price, :category, :location, :seller_id, :image, :author, :stock)

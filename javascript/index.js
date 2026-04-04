@@ -1,4 +1,5 @@
-import { ENV } from "../variables.js";
+const api = window.ENV.API_URL;
+console.log(api);
 const container = document.getElementById("product_section_id");
 const userEmail = document.getElementById("userEmail");
 
@@ -10,7 +11,7 @@ async function loadProducts() {
     const max = document.getElementById("maxPrice");
 
 
-    let url = `${ENV.API_URL}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}`;
+    let url = `${api}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}`;
 
     const res = await fetch(url, {
         credentials: "include"
@@ -38,7 +39,7 @@ function renderProducts(products) {
         card.className = "p-4 h-fit rounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr] shadow-sm";
 
         card.innerHTML = `
-            <a href="/pages/product.php?id=${product.id}">
+            <a href="/pages/product.html?id=${product.id}">
                 <div class="w-full h-52 flex items-center justify-center overflow-hidden bg-gray-100">
                     <img class="object-contain max-h-full" src="${product.image}" alt="Item Card" />
                 </div>

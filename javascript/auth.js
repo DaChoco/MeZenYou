@@ -1,4 +1,4 @@
-import {ENV} from '../variables.js'
+const api = window.ENV.API_URL;
 const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 
@@ -22,7 +22,7 @@ function hideAll() {
 }
 
 async function CheckIfLoggedIn(){
-  let url = `${ENV.API_URL}/api/auth/checklogged.php`
+  let url = `${api}/api/auth/checklogged.php`
 
   const response = await fetch(url, {credentials: "include"});
   const data = await response.json();

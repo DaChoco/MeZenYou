@@ -1,35 +1,3 @@
-<?php
-
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
-  header("Location: /pages/auth.php?type=login");
- exit();
-}
-$role = $_SESSION["role"] ?? "buyer";
-
-
-$products = [
-    [
-        "name" => "SHY Vol. 8",
-        "price" => 280,
-        "image" => "/images/SHYVol8.webp",
-        "delivered" => "13 March 2026",
-        "id" => 1,
-        "placed" => "11 March 2026"
-    ],
-    [
-        "name" => "Love Bullet Vol. 2",
-        "price" => 310,
-        "image" => "/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png",
-        "delivered" => "cancelled",
-        "id" => 2,
-        "placed" => "14 March 2026"
-    ]
-];
-?>
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -39,7 +7,8 @@ $products = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account</title>
     <link rel="stylesheet" href="../dist/output.css" />
-    <script type="module" src="../javascript/account.js" defer></script>
+    <script src="/variables.js"></script>
+    <script src="../javascript/account.js" defer></script>
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
 </head>
@@ -82,13 +51,13 @@ $products = [
                     voluptates neque maiores ea iste quis? Ut, sequi?</p>
             </div>
 
-            <?php if ($role === "seller" || $role === "ADMIN"): ?>
-                <div>
+
+                <div id="seller-nav" class="hidden">
                 <a href="#seller-section" class="text-lg font-semibold hover:text-hoverbtnred">Add New Listing</a>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
                     voluptates neque maiores ea iste quis? Ut, sequi?</p>
                 </div>
-            <?php endif; ?>
+ 
 
         </nav>
 
@@ -125,34 +94,9 @@ $products = [
 
             </div>
 
-            <div class="my-orders flex flex-col-reverse w-4/5 my-4 space-y-5">
+            <div id="order-zone" class="my-orders flex flex-col-reverse w-4/5 my-4 space-y-5">
                 <h3 id="orders-section" class="text-2xl">Your Orders</h3>
 
-                <?php foreach($products as $product):?>
-                <article class="order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3">
-                    <img class="object-contain" src="<?php echo $product["image"];?>" alt="">
-
-                    <div class="flex flex-col">
-                        <h4 class="text-xl font-bold">Order #<?php echo $product['id'];?></h4>
-                        <span class="flex flex-row">
-
-                        <?php if ($product['delivered'] !== "cancelled"):?>
-                            <p class="text-green-600 mr-2">Delivered </p> <?php echo $product['delivered'];?>
-                        <?php endif;?>
-
-                        <?php if ($product['delivered'] === "cancelled"):?>
-                            <p class="text-normalred mr-2">Cancelled </p>
-                        <?php endif;?>
-                        </span>
-                        <ul>
-                            <li><?php echo $product['name'];?></li>
-                        </ul>
-
-                        <p>ORDER PLACED: <?php echo $product['placed'];?></p>
-                        <p>Total: R<?php echo $product['price'];?></p>
-                    </div>
-                </article>
-                <?php endforeach;?>
 
             </div>
 
@@ -189,9 +133,7 @@ $products = [
                 </div>
             </div>
 
-            <?php if ($role === "seller"): ?>
-
-                <div class="seller-tools w-4/5 bg-white p-5 shadow-sm border">
+                <div id="seller-tools" class="seller-tools w-4/5 bg-white p-5 shadow-sm border hidden">
                     <h3 id="seller-section" class="text-2xl">Seller Tools</h3>
                     <p>Manage your listings and sell new products.</p>
 
@@ -202,7 +144,6 @@ $products = [
                     </a>
                 </div>
 
-            <?php endif; ?>
         </div>
 
     </section>
