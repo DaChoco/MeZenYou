@@ -1,10 +1,13 @@
 <?php
+require_once __DIR__ . "/../utils/cors.php";
+header("Content-Type: application/json");
 require_once "../session.php";
+
+//MAKE SURE THIS IS JSON OR REJECT THE REQUEST------------------------------------
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-//MAKE SURE THIS IS JSON OR REJECT THE REQUEST------------------------------------
-header("Content-Type: application/json");
+
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -51,7 +54,8 @@ try{
     http_response_code(201);
     echo json_encode([
         "message" => "User registered successfully",
-        "user_id" => $conn->lastInsertId()
+        "user_id" => $conn->lastInsertId(),
+        "redirect" => "/"
     ]);
 
 }

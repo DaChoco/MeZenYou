@@ -1,9 +1,12 @@
 <?php
 require_once __DIR__ . "/../utils/cors.php";
+header("Content-Type: application/json");
 require '../session.php';
+$config = require '../config.php';
 
 if (!isset($_SESSION["user_id"])) {
-  header("Location: /pages/auth.php?type=login");
+    http_response_code(403);
+    echo json_encode(["redirect" => "/"]);
  exit();
 }
 $role = $_SESSION["role"];

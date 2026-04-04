@@ -27,7 +27,7 @@ async function CheckIfLoggedIn(){
   const response = await fetch(url, {credentials: "include"});
   const data = await response.json();
 
-  if (data.logged = true){
+  if (data.logged === true){
     window.location.href = data.redirect;
   }
 }
@@ -57,7 +57,7 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
     if (email_register === null || password_register === null) {
         console.log("INCOMPLETE DATA")
     } else {
-      const res = await fetch(`${ENV.API_URL}/api/auth/register.php`, {
+      const res = await fetch(`${api}/api/auth/register.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -82,17 +82,18 @@ document.getElementById("loginid").addEventListener("submit", async (e) => {
       if (email_login === null || password_login === null) {
         console.log("INCOMPLETE DATA")
     } else {
-      const res = await fetch(`${ENV.API_URL}/api/auth/login.php`, {
+      const res = await fetch(`${api}/api/auth/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ email: email_login, password: password_login }),
       });
       const data = await res.json();
+      console.log(data);
       if (data.redirect){
 
         window.location.href = data.redirect;
       }
-      console.log(data);
+      
     }
 });

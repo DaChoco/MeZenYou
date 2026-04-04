@@ -16,16 +16,18 @@ document.getElementById("logoutbtn").addEventListener("click", async () => {
 });
 
 async function loadUser() {
+
+
   const res = await fetch(`${api}/api/account/role.php`, {
     credentials: "include",
   });
 
-  if (!res.ok) {
-    console.log("User not logged in");
-    return;
-  }
-
   const data = await res.json();
+
+  if (data.redirect){
+    console.log("User not logged in");
+    window.location.href = data.redirect;
+  }
   const role = data.role;
   console.log(data);
 

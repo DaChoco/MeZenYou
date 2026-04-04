@@ -42,10 +42,10 @@ async function renderProduct(product){
             </div>
 
              <div class="lower-fourth flex flex-col space-y-5 rounded-sm [&_*]:w-full">
-                <a href="/pages/msg.php"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
+                <a href="/pages/msg.html"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
                 <input type="number" placeholder="Quantity" class="p-3 outline-none border border-black">
                 <button type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md">Add to Cart</button>
-                <a href="/pages/checkout.php"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md">Proceed to Checkout</button></a>
+                <a href="/pages/checkout.html"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md">Proceed to Checkout</button></a>
             </div>
 
             <div class="[&>*]:text-lg space-y-5">
