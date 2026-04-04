@@ -11,12 +11,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     const response = await fetch(url, {credentials: "include"})
     const data = await response.json()
+    console.log(data)
 
-    renderProduct(data.product);
+    renderProduct(data.product, data.user);
 
 }
 
-async function renderProduct(product){
+async function renderProduct(product, user){
 
     section_container.innerHTML =
     `
@@ -27,8 +28,8 @@ async function renderProduct(product){
         <div class="add-to-cart-or-buy row-span-2 bg-white border-2 border-red-500">
 
             <div class="top-fourth border-b-2 border-gray-400">
-                <h1 class="text-4xl">${product['name']}</h1>
-                <p>By BLANK</p>
+                <h1 class="text-4xl">${product['product_name']}</h1>
+                <p>By ${product['author']}</p>
                 <p class="text-xl">February 2026</p>
 
             </div>
@@ -37,7 +38,7 @@ async function renderProduct(product){
                 <span class="text-4xl font-bold">R${product['price']}</span>
                 <p>All prices include VAT</p>
                 <p>Get it Tommorrow for an extra R30.00</p>
-                <p>Deliver to END USER - Sea Point, Cape Town</p>
+                <p>Deliver to ${user} - Sea Point, Cape Town</p>
                 <span class="text-lg text-green-700">IN STOCK</span>
             </div>
 
@@ -49,9 +50,9 @@ async function renderProduct(product){
             </div>
 
             <div class="[&>*]:text-lg space-y-5">
-                <p class="text-yellow-600">${product['rating']}</p>
-                <p>Seller: Jeffery Van Rooyen</p>
-                <p>Ships From: Amazon ${product['location']} Warehouse</p>
+                <p class="text-yellow-600">${5}</p>
+                <p>Seller: ${product['seller_name']}</p>
+                <p>Ships From: ${product['location']}</p>
                 <p>Payment: Secure transaction</p>
             </div>
 

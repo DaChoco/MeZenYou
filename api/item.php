@@ -1,50 +1,30 @@
 <?php
 require_once __DIR__ . "/./utils/cors.php";
+require 'session.php';
 // Example: Dummy Output
-$products = [
-    [
-        "name" => "SHY Vol. 8",
-        "price" => 280,
-        "category" => "Comics/Manga",
-        "location" => "Cape Town",
-        "image" => "/images/SHYVol8.webp",
-        "rating" => "★★★★☆",
-        "id" => 1
-    ],
-    [
-        "name" => "Love Bullet Vol. 2",
-        "price" => 310,
-        "category" => "Comics/Manga",
-        "location" => "Durban",
-        "image" => "/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png",
-        "rating" => "★★★★★",
-        "id" => 2
-    ],
-    [
-        "name" => "Iphone 17",
-        "price" => 19999,
-        "category" => "Electronics",
-        "location" => "Cape Town",
-        "image" => "https://m.media-amazon.com/images/I/61X5FknDWuL._AC_SL1500_.jpg",
-        "rating" => "★★★★★",
-        "id" => 3
-    ]
-];
-
 $id = $_GET['id'] ?? null;
+$conn = require 'conn.php';
 
-$selectedProduct = null;
-for ($i = 0; $i < count($products); $i++) {
-    if ($id == $products[$i]['id']) {
-        $selectedProduct = $products[$i];
-        break;
-    }
+$user = "";
+if (!isset($_SESSION['email'])){
+    $user = "GUEST";
+}
+else {
+    $user = $_SESSION['email'];
 }
 
-if (!$selectedProduct) {
-    echo "Product not found";
-    exit;
+
+try{
+    $stmt = $conn->prepare("SELECT 
+    Products.id, product_name, author, price, category, location, stock, image, seller_name 
+    FROM Products INNER JOIN Users ON Products.seller_id = Users.id WHERE Products.id = :id");
+    $stmt->execute(["id"=>$id]);
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+catch (PDOException $e){
+
 }
 http_response_code(201);
-echo json_encode(["product"=> $selectedProduct]);
+echo json_encode(["product"=> $result, "user"=> $user]);
 ?>

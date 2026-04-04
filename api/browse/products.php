@@ -3,58 +3,49 @@ require_once __DIR__ . "/../utils/cors.php";
 require_once "../session.php";
 header('Content-Type: application/json');
 
-// Dummy data 
-$products = [
-    [
-        "name" => "SHY Vol. 8",
-        "price" => 280,
-        "category" => "Comics/Manga",
-        "location" => "Cape Town",
-        "image" => "/images/SHYVol8.webp",
-        "rating" => "★★★★☆",
-        "id" => 1
-    ],
-    [
-        "name" => "Love Bullet Vol. 2",
-        "price" => 310,
-        "category" => "Comics/Manga",
-        "location" => "Durban",
-        "image" => "/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png",
-        "rating" => "★★★★★",
-        "id" => 2
-    ],
-    [
-        "name" => "Iphone 17",
-        "price" => 19999,
-        "category" => "Electronics",
-        "location" => "Cape Town",
-        "image" => "https://m.media-amazon.com/images/I/61X5FknDWuL._AC_SL1500_.jpg",
-        "rating" => "★★★★★",
-        "id" => 3
-    ]
-];
-
 // Filters
-$category = $_GET['category'] ?? null;
+$category = isset($_GET['category']) && $_GET['category'] !== '' ? (string)$_GET['category']: null;
 $min = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
 $max = isset($_GET['max']) && $_GET['max'] !== '' ? (int)$_GET['max'] : null;
 
-$filtered = array_values(array_filter($products, function ($p) use ($category, $min, $max) {
+//THE REAL RESULTS
+$conn = require __DIR__ . "/../conn.php";
 
-    if ($category) {
-        $cat = strtolower(str_replace(['/', ' '], '', $p['category']));
-        if ($cat !== strtolower($category)) return false;
+try {
+    $filters = [];
+    $whereClauses = [];
+
+    if ($min !== null) {
+        $whereClauses[] = "price >= :minprice";
+        $filters["minprice"] = $min;
     }
 
-    if ($min !== null && $p['price'] < $min) return false;
-    if ($max !== null && $p['price'] > $max) return false;
+    if ($max !== null) {
+        $whereClauses[] = "price <= :maxprice";
+        $filters["maxprice"] = $max;
+    }
 
-    return true;
-}));
+    if ($category !== null) {
+        $whereClauses[] = "category = :category";
+        $filters["category"] = $category;
+    }
 
+    $whereSQL = "";
+    if (count($whereClauses)> 0){
+        $whereSQL  = "WHERE ".implode(" AND ", $whereClauses);
+    }
+    $stmt = $conn->prepare("SELECT * FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET 0");
+    $stmt->execute($filters);
 
-http_response_code(201);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+}
+
+http_response_code(200);
 echo json_encode([
-    "products" => $filtered,
+    "products" => $results,
     "user" => $_SESSION['email'] ?? null
+
 ]);

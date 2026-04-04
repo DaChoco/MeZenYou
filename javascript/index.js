@@ -18,7 +18,7 @@ async function loadProducts() {
     });
 
     const data = await res.json();
-    console.log(data.products);
+    console.log(data);
 
     // Show user email
     console.log(userEmail);
@@ -45,12 +45,12 @@ function renderProducts(products) {
                 </div>
             </a>
 
-            <div class="text-section w-full flex flex-col justify-center items-center">
-                <span>${product.name}</span>
+            <div class="text-section w-full flex flex-col justify-center items-start line-clamp-1 truncate">
+                <span>${product.product_name}</span>
                 <p class="font-bold">R${product.price}</p>
                 <p class="font-semibold text-normalred">${product.category}</p>
                 <p class="text-gray-800">${product.location}</p>
-                <p class="text-yellow-600">${product.rating}</p>
+                <p class="text-yellow-600">${5}</p>
             </div>
         `;
 
