@@ -80,3 +80,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 });
+
+document.getElementById('address-submit').addEventListener('click', async (e)=>{
+  e.preventDefault()
+  const phonenumber = document.getElementById('phoneselect').value;
+  const streetaddress = document.getElementById('streetselect').value;
+  const suburbaddress = document.getElementById("suburbselect").value;
+  const cityaddress = document.getElementById("cityselect").value;
+  const province = document.getElementById("provinceselect").value;
+  const postalcode = document.getElementById("postcodeid").value;
+  const deliveryinstructions = document.getElementById("del-instructions").value;
+
+  const fields = {
+    street: streetaddress, 
+    phone: phonenumber, 
+    suburb: suburbaddress, 
+    city: cityaddress, 
+    province: province,
+    postalcode: postalcode,
+    delinstructions: deliveryinstructions
+
+  }
+  const response = await fetch(`${api}/api/account/updateaddress.php`, {method: "POST", body: JSON.stringify(fields)})
+
+  if (!response.ok){
+    throw new Error("HTTP ERROR!")
+  }
+  const data = await response.json()
+
+  //NOTE FOR LATER. INCORPORATE better MSG RESPONSE later
+  alert(data.message);
+
+
+  
+})

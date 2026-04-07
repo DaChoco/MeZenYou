@@ -71,25 +71,25 @@
                     <p>Phone Number: +27 000 000 000</p>
                 </div>
 
-                <form action="" class="address-form flex flex-col space-y-3 my-2 p-2 [&>*]:p-3 [&>*]:border-b-2 [&>*]:border-gray-500 bg-white">
-                    <input type="tel" id="phone-num" placeholder="Phone Number">
-                    <input type="text" id="streetadd" placeholder="Street Address">
-                    <input type="text" id="suburb" placeholder="Suburb">
-                    <input type="text" placeholder="City">
-                    <select title="Select Province" name="province-selector" id="provinceselect">
-                        <option value="">Western Cape</option>
-                        <option value="">Kwa-Zulu Natal</option>
-                        <option value="">Gauteng</option>
-                        <option value="">Eastern Cape</option>
-                        <option value="">Mmpumalanga</option>
-                        <option value="">Northern Cape</option>
-                        <option value="">Free State</option>
-                        <option value="">North-West</option>
+                <form class="address-form flex flex-col space-y-3 my-2 p-2 [&>*]:p-3 [&>*]:border-b-2 [&>*]:border-gray-500 bg-white">
+                    <input name="phone" type="tel" id="phoneselect" placeholder="Phone Number">
+                    <input name="street" type="text" id="streetselect" placeholder="Street Address">
+                    <input name="suburb" type="text" id="suburbselect" placeholder="Suburb">
+                    <input id="cityselect" name="city" type="text" placeholder="City">
+                    <select title="Select Province" name="province_selector" id="provinceselect">
+                        <option value="Western Cape">Western Cape</option>
+                        <option value="Kwa-Zulu Natal">Kwa-Zulu Natal</option>
+                        <option value="Gauteng">Gauteng</option>
+                        <option value="Eastern Cape">Eastern Cape</option>
+                        <option value="Mmpumalanga">Mmpumalanga</option>
+                        <option value="Northern Cape">Northern Cape</option>
+                        <option value="Free State">Free State</option>
+                        <option value="North-West">North-West</option>
                         
                     </select>
-                    <input type="text" placeholder="Postal Code">
-                    <textarea name="del-instructions" id="del-instruct" placeholder="Add Delivery Instructions (OPTIONAL)"></textarea>
-                    <button type="submit" class="bg-red-600">Confirm</button>
+                    <input id="postcodeid" name="postal" type="text" placeholder="Postal Code">
+                    <textarea name="delinstructions" id="del-instruct" placeholder="Add Delivery Instructions (OPTIONAL)"></textarea>
+                    <button id="address-submit" type="submit" class="bg-red-600">Confirm</button>
                 </form>
 
             </div>

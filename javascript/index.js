@@ -35,7 +35,6 @@ function renderProducts(products) {
     products.forEach(product => {
         const card = document.createElement("article");
 
-
         card.className = "p-4 h-fit rounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr] shadow-sm";
 
         card.innerHTML = `
@@ -56,6 +55,7 @@ function renderProducts(products) {
 
         container.appendChild(card);
     });
+
 }
 
 document.addEventListener("DOMContentLoaded", function (){

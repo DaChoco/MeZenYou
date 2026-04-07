@@ -60,9 +60,8 @@ async function renderProduct(product, user){
 
         <div class="product-description bg-white w-full p-5 h-full self-end border-2 border-red-500">
             <span class="font-bold text-gray-700 text-3xl">Description</span>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptate earum alias. Rem illum voluptatum cupiditate similique voluptates? Quae excepturi quam soluta facilis necessitatibus vel molestiae quaerat dicta? Aliquid impedit odit, iste facilis magnam nam? Culpa ea aspernatur nisi placeat, eveniet, ratione distinctio, aliquam quidem mollitia molestias numquam natus consequuntur!</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio ad deserunt nam quae quo. Fugiat non et quas animi consequatur quos eius a voluptatum corrupti, deleniti adipisci doloribus illo. Magnam!</p>
+            
+            <p>${product['descriptiontxt']}</p>
         </div>
 
     `

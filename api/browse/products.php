@@ -34,13 +34,14 @@ try {
     if (count($whereClauses)> 0){
         $whereSQL  = "WHERE ".implode(" AND ", $whereClauses);
     }
-    $stmt = $conn->prepare("SELECT * FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET 0");
+    $stmt = $conn->prepare("SELECT id, product_name, image, price, category, location FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET 0");
     $stmt->execute($filters);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    return;
 }
 
 http_response_code(200);

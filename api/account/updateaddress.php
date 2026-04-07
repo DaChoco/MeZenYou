@@ -15,7 +15,7 @@ $data = json_decode($input, true);
 $user_id = $_SESSION['user_id'];
 
 if (
-    !isset($data['streetaddress'], 
+    !isset($data['street'], 
     $data['suburb'], 
     $data['city'], 
     $data['province'], 
@@ -28,11 +28,11 @@ if (
 
 $conn = require '../conn.php';
 
-$fulladdress = "{$data['streetaddress']}-{$data['suburb']}-{$data['city']}-{$data['province']}-{$data['postalcode']}";
+$fulladdress = "{$data['street']}-{$data['suburb']}-{$data['city']}-{$data['province']}-{$data['postalcode']}";
 
 try{
-    $statement = $conn->prepare("UPDATE Users SET address = :user_address, delivery_instructions =:instructions WHERE id = :user_id");
-    $statement->execute(['user_address'=> $fulladdress, "id" => $user_id, "instructions"=>$data['instructions']]);
+    $statement = $conn->prepare("UPDATE Users SET province = :province address = :user_address, delivery_instructions =:instructions, phone = :phone WHERE id = :user_id");
+    $statement->execute(['user_address'=> $fulladdress, "province"=> $data['province'], "user_id" => $user_id, "instructions"=>$data['delinstructions'], "phone"=> $data['phone']]);
 
     if ($statement->rowCount() > 0) {
         echo json_encode([

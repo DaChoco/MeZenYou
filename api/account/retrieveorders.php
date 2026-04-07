@@ -48,12 +48,9 @@ try{
 
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $nested = [];
-    foreach ($results as $row) {
-        $nested[] = array_values($row);
-    }
+
     http_response_code(201);
-    echo json_encode(["orders"=> $nested, "dummy" => $products, "id" => $user_id]);
+    echo json_encode(["orders"=> $results, "dummy" => $products, "id" => $user_id]);
 }
 catch (PDOException $e){
     http_response_code(500);
