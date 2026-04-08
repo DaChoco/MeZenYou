@@ -14,7 +14,34 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     console.log(data)
 
     renderProduct(data.product, data.user);
+    loadReviews(ID);
 
+}
+
+async function loadReviews(ID){
+    const response = await fetch(`${API_URL}/api/browse/retrievereviews.php?pid=${ID}`);
+    const data = await response.json()
+
+    const reviewzone = document.getElementById('commenthere');
+
+    console.log(data.items)
+
+    data.items.forEach(item=>{
+
+        const review = document.createElement('article')
+        review.className = "border-2 border-current p-5"
+        const unixTimestamp = item.timestamp;
+        const date = new Date(unixTimestamp * 1000);
+
+        review.innerHTML = `<span class="flex flex-row justify-between">
+                <p>USER: #${item.uID}</p><p>Rating: ${item.rating}</p><p>${date.toUTCString()}</p>
+            </span>
+            <p>${item.comment}</p>`
+
+
+        reviewzone.appendChild(review)
+    })
+    
 }
 
 async function renderProduct(product, user){

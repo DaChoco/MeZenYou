@@ -103,7 +103,7 @@ async function renderNavbar() {
     window.location.href = `/index.html?q=${input_bar.value}`
   })
 
-  const iconresponse = await fetch(`${api}/api/account/role.php`, {credentials: "include"});
+  const iconresponse = await fetch(`${url}/api/account/role.php`, {credentials: "include"});
   const user = await iconresponse.json()
   if (user.icon){
     usericonzone.innerHTML = `<img class="rounded-full" src=${user.icon} alt="">`;
