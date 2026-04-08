@@ -87,9 +87,24 @@ async function renderNavbar() {
     if (!is_inside) {
     autocompletezone.replaceChildren(); 
   }
+
+  
 }
 )
+  input_bar.addEventListener('keydown', (e)=>{
+    if (e.key === "Enter"){
+      //actual searching logic is in index.js.
+      window.location.href = `/index.html?q=${input_bar.value}`
+    }
+  })
+
+  document.getElementById('searchclickbtnred').addEventListener('click', ()=>{
+    window.location.href = `/index.html?q=${input_bar.value}`
+  })
 }
+
+
+
 
 renderNavbar();
 

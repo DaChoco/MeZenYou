@@ -1,9 +1,25 @@
 const api = window.ENV.API_URL;
-console.log(api);
+const queryString = window.location.search;
+
+const urlParams = new URLSearchParams(queryString);
+const searchParams = urlParams.get('q');
 const container = document.getElementById("product_section_id");
 const userEmail = document.getElementById("userEmail");
 
 let currentCategory = "";
+
+async function searchProducts(){
+    let url = `${api}/api/browse/fullsearch.php?q=${searchParams}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+    renderProducts(data);
+    console.log(data)
+
+
+
+}
+
 
 async function loadProducts() {
 
@@ -59,7 +75,14 @@ function renderProducts(products) {
 }
 
 document.addEventListener("DOMContentLoaded", function (){
-    loadProducts();
+    
+
+    if (!searchParams){
+        loadProducts();
+    }
+    else{
+        searchProducts();
+    }
     document.getElementById("applyFilter").addEventListener("click", loadProducts);
     
     document.querySelectorAll("[data-category]").forEach(link => {
@@ -69,8 +92,10 @@ document.addEventListener("DOMContentLoaded", function (){
         loadProducts();
     });
 
-    document.getElementById("applyFilter")
-    .addEventListener("click", loadProducts);
+    document.getElementById("applyFilter").addEventListener("click", loadProducts);
+
+
+   
 });
 
 })

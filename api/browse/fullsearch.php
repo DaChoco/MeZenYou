@@ -20,9 +20,7 @@ try{
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     http_response_code(200);
-    echo json_encode([
-        "products" => $results,
-    ]);
+    echo json_encode($results);
 
 }
 catch (PDOException $e) {

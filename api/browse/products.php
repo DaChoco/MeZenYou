@@ -31,17 +31,19 @@ try {
         $filters["category"] = $category;
     }
 
-    if (!isset($page)){
+    if ($page === null){
         $page = 0;
     }
+
+    $page = max(0, (int)$page);
+    $offset = $page * 10;
 
     $whereSQL = "";
     if (count($whereClauses)> 0){
         $whereSQL  = "WHERE ".implode(" AND ", $whereClauses);
     }
 
-    $filters["page"] = $page;
-    $stmt = $conn->prepare("SELECT id, product_name, image, price, category, location FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET :page");
+    $stmt = $conn->prepare("SELECT id, product_name, image, price, category, location FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET $offset");
     $stmt->execute($filters);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
