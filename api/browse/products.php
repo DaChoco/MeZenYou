@@ -7,6 +7,7 @@ header('Content-Type: application/json');
 $category = isset($_GET['category']) && $_GET['category'] !== '' ? (string)$_GET['category']: null;
 $min = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
 $max = isset($_GET['max']) && $_GET['max'] !== '' ? (int)$_GET['max'] : null;
+$page = isset($_GET['p']) && $_GET['p'] !== '' ? (string)$_GET['p']: null;
 
 //THE REAL RESULTS
 $conn = require __DIR__ . "/../conn.php";
@@ -30,11 +31,17 @@ try {
         $filters["category"] = $category;
     }
 
+    if (!isset($page)){
+        $page = 0;
+    }
+
     $whereSQL = "";
     if (count($whereClauses)> 0){
         $whereSQL  = "WHERE ".implode(" AND ", $whereClauses);
     }
-    $stmt = $conn->prepare("SELECT id, product_name, image, price, category, location FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET 0");
+
+    $filters["page"] = $page;
+    $stmt = $conn->prepare("SELECT id, product_name, image, price, category, location FROM Products $whereSQL ORDER BY id LIMIT 10 OFFSET :page");
     $stmt->execute($filters);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

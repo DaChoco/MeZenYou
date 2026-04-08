@@ -40,7 +40,6 @@ class AWSservice
     }
 
     public function uploadProductImage($productID, $File)
-    
     {
         $fileName = $this->generateS3Key("products", $File['name'], $productID);
 
@@ -62,6 +61,8 @@ class AWSservice
 
     #AWS S3-------------------------
 
+
+    #HELPER PRIVATE FUNCTIONS
     private function generateS3Key(string $type, string $filename, string $id): string
     {
         #key structure type/USERID/UNIQUEIDENTIFIER.png/jpeg
@@ -73,17 +74,25 @@ class AWSservice
         return "{$type}/{$id}/{$timestamp}_{$safeFilename}";
     }
 
-    public function generateImageURL(string $key){
-        if (!$key){
+    public function generateImageURL(string $key)
+    {
+        if (!$key) {
             echo "MISSING KEY";
             return null;
         }
         $url = "{$this->imgbaseurl}/$key";
 
-        return $url ;
+        return $url;
     }
 
-    #AWS DynamoDB-------------------------
+    private function generateConversationID($userID1, $userID2): string
+    {
+        $ids = [$userID1, $userID2];
+        sort($ids);
+        return "{$ids[0]}#{$ids[1]}";
+    }
+
+    #AWS DynamoDB -REVIEWS-------------------------
     public function retrieveProductReviews($productID)
     {
         $marshaler = new Marshaler();
@@ -104,7 +113,6 @@ class AWSservice
 
             usort($cleanItems, fn($a, $b) => $b['timestamp'] <=> $a['timestamp']);
 
-        
             return $cleanItems;
         } catch (Exception $e) {
             echo "Failed to extract review with error: " . $e->getMessage();
@@ -150,5 +158,38 @@ class AWSservice
         }
     }
 
-    #AWS DYNAMODB-------------------------
+        #AWS DYNAMODB-MESSAGING------------------------
+
+    public function sendMessage(string $senderID, string $recipientID, string $messageText): array
+    {
+        try {
+            $conversationID = $this->generateConversationID($senderID, $recipientID);
+            $messageID = uniqid('msg_', true);
+            $timestamp = (int) (microtime(true) * 1000); // Millisecond tier precision
+
+            $this->dynamo->putItem([
+                'Item' => [
+                    'conversationID' => ['S' => $conversationID],
+                    'timestamp' => ['N' => (string) $timestamp],
+                    'messageID' => ['S' => $messageID],
+                    'senderID' => ['S' => $senderID],
+                    'recipientID' => ['S' => $recipientID],
+                    'messageText' => ['S' => $messageText],
+                    'isRead' => ['BOOL' => false],
+                ],
+                'TableName' => 'MeZenYoumessages',
+            ]);
+
+            return [
+                'success' => true,
+                'messageID' => $messageID,
+                'timestamp' => $timestamp
+            ];
+        } catch (Exception $e) {
+            echo "Failed to send message: " . $e->getMessage();
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+
 }
