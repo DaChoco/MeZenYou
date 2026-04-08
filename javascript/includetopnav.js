@@ -9,6 +9,7 @@ async function renderNavbar() {
   document.getElementById("topnav").innerHTML = html;
   const input_bar = document.getElementById("search-bar-items");
   const autocompletezone = document.getElementById("autocomplete-srch")
+  const usericonzone = document.getElementById('usericonzone');
 
   //----------------------------------------------------
   function debounce(fn, delay) {
@@ -101,6 +102,13 @@ async function renderNavbar() {
   document.getElementById('searchclickbtnred').addEventListener('click', ()=>{
     window.location.href = `/index.html?q=${input_bar.value}`
   })
+
+  const iconresponse = await fetch(`${api}/api/account/role.php`, {credentials: "include"});
+  const user = await iconresponse.json()
+  if (user.icon){
+    usericonzone.innerHTML = `<img class="rounded-full" src=${user.icon} alt="">`;
+  }
+  
 }
 
 

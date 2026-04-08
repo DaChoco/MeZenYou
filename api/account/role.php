@@ -1,15 +1,17 @@
 <?php
 require_once __DIR__ . "/../utils/cors.php";
-header("Content-Type: application/json");
 require '../session.php';
+header("Content-Type: application/json");
 $config = require '../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     http_response_code(403);
     echo json_encode(["redirect" => "/"]);
- exit();
+    exit();
 }
 $role = $_SESSION["role"];
+$id = $_SESSION["user_id"];
+
 $products = [
     [
         "name" => "SHY Vol. 8",
@@ -29,7 +31,27 @@ $products = [
     ]
 ];
 
+try{
+$conn = require __DIR__. "/../conn.php";
+$statement = $conn->prepare("SELECT address, phone, delivery_instructions, icon FROM Users WHERE id = :id");
+$statement->execute(["id"=> $id]);
+
+$result = $statement->fetch(PDO::FETCH_ASSOC);
+
 echo json_encode([
     "role" => $role,
+    "user" => $id,
+    "address" => $result["address"],
+    "phone" => $result["phone"],
+    "icon" => $result["icon"],
     "orders" => $products
 ]);
+
+}
+catch (PDOException $e){
+    http_response_code(500);
+    error_log("PDO ERROR: " . $e->getMessage());
+    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+
+}
+
