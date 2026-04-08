@@ -1,11 +1,16 @@
 <?php
-require 'vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Aws\DynamoDb\Marshaler;
+
+
 class AWSservice
 {
     private $s3;
     private $dynamo;
     private $bucketName = "mezenyou";
     private $tableName = "mezenyoutbl";
+    private $imgbaseurl = "https://ik.imagekit.io/gp2sqgkfsChocoChoco/resources";
+
 
     public function __construct($s3Client, $dynamoClient)
     {
@@ -35,6 +40,7 @@ class AWSservice
     }
 
     public function uploadProductImage($productID, $File)
+    
     {
         $fileName = $this->generateS3Key("products", $File['name'], $productID);
 
@@ -67,25 +73,41 @@ class AWSservice
         return "{$type}/{$id}/{$timestamp}_{$safeFilename}";
     }
 
+    public function generateImageURL(string $key){
+        if (!$key){
+            echo "MISSING KEY";
+            return null;
+        }
+        $url = "{$this->imgbaseurl}/$key";
+
+        return $url ;
+    }
+
     #AWS DynamoDB-------------------------
     public function retrieveProductReviews($productID)
     {
+        $marshaler = new Marshaler();
         try {
 
             $result = $this->dynamo->query([
                 'TableName' => $this->tableName,
-                'ScanIndexForward' => false,
-                'KeyConditionExpression' => 'product_id = :pid',
+                'KeyConditionExpression' => 'pID = :pid',
                 'ExpressionAttributeValues' => [
                     ':pid' => ['S' => $productID]
                 ]
             ]);
 
-            $items = $result['Items'];
+            $cleanItems = [];
+            foreach ($result['Items'] as $item) {
+                $cleanItems[] = $marshaler->unmarshalItem($item);
+            }
 
-            return $items;
+            usort($cleanItems, fn($a, $b) => $b['timestamp'] <=> $a['timestamp']);
+
+        
+            return $cleanItems;
         } catch (Exception $e) {
-            echo "Failed to upload review with error: " . $e->getMessage();
+            echo "Failed to extract review with error: " . $e->getMessage();
             return false;
         }
     }
@@ -103,11 +125,11 @@ class AWSservice
                         'uID' => [
                             'S' => $userID,
                         ],
-                        'timestamp' => [
-                            'N' => time(),
-                        ],
                         "pID" => [
                             'S' => $productID
+                        ],
+                        'timestamp' => [
+                            'N' => time(),
                         ],
                         "comment" => [
                             "S" => $txt

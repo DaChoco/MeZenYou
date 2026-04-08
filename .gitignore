@@ -7,3 +7,4 @@ dist/
 config.php
 variables.js
 vendor/
+secretsaws.php
