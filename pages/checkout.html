@@ -9,7 +9,7 @@
     <script src="/javascript/includefooter.js"></script>
     <script src="/variables.js"></script>
     <script src="/javascript/includetopnav.js"></script>
-    <script src="/javascript/checkout.js"></script>
+    <script src="/javascript/checkout.js" defer></script>
     <link rel="stylesheet" href="/dist/output.css">
 </head>
 
@@ -26,23 +26,23 @@
                 <div class="flex flex-col [&_input]:p-2 space-y-5">
                     <span>Shipping Information</span>
                     <div class="flex flex-row [&>*]:bg-normalred [&>*]:text-white [&>*]:w-1/4 space-x-5">
-                        <button type="button" class="p-5 rounded-md">Delivery</button>
-                        <button type="button" class="p-5 rounded-md">Pick Up</button>
+                        <button id="deliverybtn" type="button" class="p-5 rounded-md">Delivery</button>
+                        <button id="pickupbtn" type="button" class="p-5 rounded-md">Pick Up</button>
                     </div>
 
                     <div class="flex flex-col">
                         <label for="" class="font-semibold">Full Name:</label>
-                        <input type="text" placeholder="Full Name...">
+                        <input id="nameinput" type="text" placeholder="Full Name...">
                     </div>
 
                     <div class="flex flex-col">
                         <label for="" class="font-semibold">Email Address:</label>
-                        <input type="email" placeholder="Email Address...">
+                        <input id="emailinput" type="email" placeholder="Email Address...">
                     </div>
 
                     <div class="flex flex-col">
                         <label for="" class="font-semibold">Cellphone Number:</label>
-                        <input type="tel" placeholder="Phone Number...">
+                        <input id="phoneinput" type="tel" placeholder="Phone Number...">
                     </div>
 
                     <div class="flex flex-row [&>*]:flex [&>*]:flex-col space-x-2 w-full h-auto [&_div]:w-1/4 mx-auto">
