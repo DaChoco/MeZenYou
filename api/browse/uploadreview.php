@@ -18,6 +18,7 @@ $aws = new AWSservice(null, $dynamoDB);
 
 $pID = $_GET['pid'];
 $uID = $_SESSION['user_id'];
+$username = $_SESSION['username'];
 
 if (!isset($uID, $pID)){
     http_response_code(400);
@@ -36,7 +37,7 @@ if (!isset($data['comment'], $data['rating'])) {
 }
 
 try{
-    $result = $aws->uploadProductReview($uID, $pID, $data['comment'], $data['rating']);
+    $result = $aws->uploadProductReview($uID, $pID, $data['comment'], $data['rating'], $username);
 
     if ($result === true){
         http_response_code(201);

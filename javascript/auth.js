@@ -53,6 +53,7 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
 
     const email_register = document.getElementById("register_email_id").value;
     const password_register = document.getElementById("register_password_id").value;
+    const username_register = document.getElementById("register_username_id").value;
 
     if (email_register === null || password_register === null) {
         console.log("INCOMPLETE DATA")
@@ -61,7 +62,7 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email: email_register, password: password_register }),
+        body: JSON.stringify({ email: email_register, password: password_register, username: username_register }),
       });
 
       const data = await res.json();

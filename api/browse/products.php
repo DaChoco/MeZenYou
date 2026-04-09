@@ -56,6 +56,6 @@ try {
 http_response_code(200);
 echo json_encode([
     "products" => $results,
-    "user" => $_SESSION['email'] ?? null
+    "user" => $_SESSION['username'] ?? null
 
 ]);

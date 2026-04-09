@@ -16,15 +16,21 @@ else {
 
 try{
     $stmt = $conn->prepare("SELECT 
-    Products.id, product_name, author, price, category, descriptiontxt, location, stock, image, seller_name 
+    Products.id, product_name, author, price, category, descriptiontxt, location, stock, image, username 
     FROM Products INNER JOIN Users ON Products.seller_id = Users.id WHERE Products.id = :id");
     $stmt->execute(["id"=>$id]);
 
+    
+
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    http_response_code(200);
+    echo json_encode(["product"=> $result, "user"=> $user]);
 }
 catch (PDOException $e){
+    http_response_code(500);
+    echo json_encode(["error" => $e->getMessage()]);
 
 }
-http_response_code(201);
-echo json_encode(["product"=> $result, "user"=> $user]);
+
 ?>

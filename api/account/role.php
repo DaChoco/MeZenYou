@@ -33,7 +33,7 @@ $products = [
 
 try{
 $conn = require __DIR__. "/../conn.php";
-$statement = $conn->prepare("SELECT address, phone, delivery_instructions, icon FROM Users WHERE id = :id");
+$statement = $conn->prepare("SELECT address, username, phone, delivery_instructions, icon FROM Users WHERE id = :id");
 $statement->execute(["id"=> $id]);
 
 $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -41,6 +41,7 @@ $result = $statement->fetch(PDO::FETCH_ASSOC);
 echo json_encode([
     "role" => $role,
     "user" => $id,
+    "username" => $result['username'],
     "address" => $result["address"],
     "phone" => $result["phone"],
     "icon" => $result["icon"],

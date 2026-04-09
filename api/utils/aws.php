@@ -122,28 +122,29 @@ class AWSservice
 
 
 
-    public function uploadProductReview(string $userID, $productID, $txt, $rating): bool
+    public function uploadProductReview(string $userID, $productID, $txt, $rating, $username): bool
     {
-
-
         try {
             $this->dynamo->putItem(
                 [
                     'Item' => [
                         'uID' => [
-                            'S' => $userID,
+                            'S' => (string)  $userID,
                         ],
                         "pID" => [
-                            'S' => $productID
+                            'S' => (string)  $productID
                         ],
                         'timestamp' => [
-                            'N' => time(),
+                            'N' => (string) time(),
                         ],
                         "comment" => [
-                            "S" => $txt
+                            "S" => (string)  $txt
                         ],
                         "rating" => [
-                            "N" => $rating
+                            "N" => (string) $rating
+                        ],
+                        "username"=> [
+                            "S" => (string) $username
                         ]
                     ],
                     'TableName' => $this->tableName,

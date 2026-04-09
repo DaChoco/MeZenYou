@@ -32,7 +32,7 @@ $password = $data['password'];
 $conn = require '../conn.php';
 
 try {
-    $stmt = $conn->prepare("SELECT id, password_hash, user_role FROM Users WHERE email = :email");
+    $stmt = $conn->prepare("SELECT id, username, password_hash, user_role FROM Users WHERE email = :email");
     $stmt->execute(["email" => $email]);
 
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -46,11 +46,13 @@ try {
     $password_hash = $result['password_hash'];
     $user_id = $result['id'];
     $user_role = $result['user_role'];
+    $username = $result['username'];
 
     if (password_verify($password, $password_hash)) {
     $_SESSION['user_id'] = $user_id;
     $_SESSION['email'] = $email;
     $_SESSION['role'] = $user_role;
+    $_SESSION['username'] = $username;
 
     http_response_code(201);
     echo json_encode(["message" => "Login successful", "redirect" => "/"]);
