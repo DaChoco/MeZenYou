@@ -8,9 +8,11 @@
     <title>Home</title>
     
     <script src="/variables.js"></script>
-    <script src="/javascript/includefooter.js"></script>
-    <script src="/javascript/includetopnav.js"></script>
+    <script src="/javascript/includefooter.js" defer></script>
+    <script src="/javascript/includetopnav.js" defer></script>
     <script src="/javascript/index.js" defer></script>
+    <!--This is font awesome. A free supply of icons-->
+    <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
     
 </head>
 
@@ -18,14 +20,14 @@
     <!--Reusable component-->
     <div id="topnav"></div>
 
-    <div class="grid grid-cols-4 grid-rows-1">
-        <div class="sidenav col-span-1 justify-start flex flex-col items-start p-10 w-4/5 bg-white space-y-3">
+    <div class="grid grid-cols-1 lg:grid-cols-4">
+        <div class="sidenav col-span-1 w-full lg:w-4/5 p-4 lg:p-10 bg-white space-y-3">
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400">
                 Shop By Department
             </h4>
 
             <ul
-                class="w-full [&>*]:w-full [&>*]:text-xl justify-start [&>*]:px-1 [&>*]:py-2 duration-200 hover:[&>*]:bg-red-700  hover:[&>*]:text-white">
+                class="w-full [&>*]:w-full [&>*]:text-base sm:[&>*]:text-lg lg:[&>*]:text-xl justify-start [&>*]:px-1 [&>*]:py-2 duration-200 hover:[&>*]:bg-red-700  hover:[&>*]:text-white">
                 <li class="font-bold"><a href="/">All Departments</a></li>
                 <li data-category="Novels">Novels</li>
                 <li data-category="Comics/Manga">Comics/Manga</li>
@@ -39,10 +41,8 @@
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400 my-3">Shop By Price Tag</h4>
             <div class="space-y-4 [&>input]:border-2 [&>input]:border-normalred">
                 <input id="minPrice" type="number" placeholder="Min" class="p-2 outline-none w-full">
-                <p>to</p>
+                <span>to</span>
                 <input id="maxPrice" type="number" placeholder="Max" class="p-2 outline-none w-full">
-
-                
             </div>
             <button id="applyFilter" class="bg-normalred p-4 text-white font-semibold w-3/5">Apply</button>
 
@@ -55,7 +55,12 @@
 
         </div>
 
-        <section id="product_section_id" class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] grid-rows-2 gap-6 col-span-3 p-10 max-h-full [&>*]:shadow-sm">
+        <section id="product_section_id" class="grid grid-cols-2 
+        sm:grid-cols-3 md:grid-cols-4 
+        lg:grid-cols-[repeat(auto-fill,minmax(180px,1fr))] 
+        gap-3 sm:gap-6 
+        col-span-1 lg:col-span-3 
+        p-4 sm:p-6 lg:p-10">
             
         </section>
     </div>

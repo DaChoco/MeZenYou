@@ -1,13 +1,14 @@
-<nav class="bg-darkgray text-white w-full h-fit p-6 flex flex-row items-center overflow-auto lg:overflow-visible whitespace-nowrap lg:whitespace-normal">
+<nav class="bg-darkgray snap-x snap-mandatory text-white w-full h-fit p-6 flex flex-row items-center overflow-auto lg:overflow-visible whitespace-nowrap lg:whitespace-normal scroll-smooth">
     <!-- LEFT: MEZENYOU'S LOGO -->
-    <div class="flex-none mr-8">
+    <div class="flex flex-none items-center space-x-2">
+        <i id="menuToggle" class="fa-solid fa-bars fa-3x self-end md:!hidden"></i>
         <h1 class="font-bold text-xl">
             <a href="/">MeZenYou</a>
         </h1>
     </div>
 
     <!-- MIDDLE: Search Bar -->
-    <div class="flex-[0_0_50%] relative">
+    <div class="relative flex-none w-[250px] sm:w-[350px] lg:w-[600px] mx-4">
         <input id="search-bar-items" class="w-full p-2 border-4 border-red-400 text-black outline-none"
             placeholder="Search For an Item..." type="text" />
         <div
@@ -26,15 +27,14 @@
     </div>
 
     <!-- RIGHT -->
-    <ul class="flex-1 flex justify-end space-x-3 items-center">
+    <ul class="flex items-center space-x-4 ml-auto">
         <li><a href="/pages/checkout.html">Checkout</a></li>
         <li><a href="/pages/about.html">About</a></li>
         <li><a href="/pages/auth.html?type=login">Sign In</a></li>
         <li><a href="/pages/account.html">My Account</a></li>
 
         <!--SHOW USERNAME WHEN YOU HOVER OVER THE BTN-->
-        <li class="
-        w-2/12 relative inline-block group after:content-[attr(data-username)] after:absolute after:left-1/2 after:-translate-x-1/2 after:top-full after:mt-2
+        <li class="w-10 h-10 relative inline-block group after:content-[attr(data-username)] after:absolute after:left-1/2 after:-translate-x-1/2 after:top-full after:mt-2
         after:bg-black after:text-white 
          after:text-xs after:p-2 after:rounded
          after:whitespace-nowrap after:opacity-0 after:transition-opacity
