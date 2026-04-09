@@ -20,6 +20,7 @@ document.getElementById('pickupbtn').addEventListener('click', ()=>{
 })
 
 async function loadSignedInData(){
+  //This function loads up your address on your behalf if youre signed in
   let url = `${API_URL}/api/cart/userdata.php`
 
   const response = await fetch(url, 

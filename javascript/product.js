@@ -1,20 +1,21 @@
 const queryString = window.location.search;
 const API_URL = window.ENV.API_URL;
 const urlParams = new URLSearchParams(queryString);
+const section_container = document.getElementById("item-display");
+const addreview = document.getElementById("addreviewid");
+const txtarea = document.getElementById("txtareaid");
+const reviewarea = document.getElementById("ratingid");
+
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const section_container = document.getElementById("item-display");
-  const addreview = document.getElementById("addreviewid");
-  const txtarea = document.getElementById("txtareaid");
-  const reviewarea = document.getElementById("ratingid");
-
-  if (addreview){
-    console.log("review button is not null")
-  }
   addreview.addEventListener('click', ()=> uploadReview(urlParams.get("id")));
 
+  const item = loadProduct();
+  const cartaddbtn = document.getElementById('cartaddbtn')
+  cartaddbtn.addEventListener('click', ()=> addtocart(urlParams.get("id"), item))
+});
 
-  async function loadProduct() {
+async function loadProduct() {
     const ID = urlParams.get("id");
     let url = `${API_URL}/api/item.php?id=${ID}`;
 
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderProduct(data.product, data.user);
     loadReviews(ID);
+
+    return data
     
   }
 
@@ -53,10 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       alert(data.message);
     }
   }
-
-
-
-  
 
   async function loadReviews(ID) {
     if (!ID){
@@ -111,8 +110,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
              <div class="lower-fourth flex flex-col space-y-5 rounded-sm [&_*]:w-full">
                 <a href="/pages/msg.html"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
-                <input type="number" placeholder="Quantity" class="p-3 outline-none border border-black">
-                <button type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md">Add to Cart</button>
+                <input id="qtyid" min="1" type="number" placeholder="Quantity" class="p-3 outline-none border border-black">
+                <button id="cartaddbtn" type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md">Add to Cart</button>
                 <a href="/pages/checkout.html"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md">Proceed to Checkout</button></a>
             </div>
 
@@ -133,5 +132,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     `;
   }
-  loadProduct();
-});
+
+//--ADD TO CART
+
+async function addtocart(ID, item){
+  if (!item){
+    alert("EMPTY NO ITEM WAS LOADED")
+  }
+
+  const qty = document.getElementById('qtyid')
+  
+
+  const payload = {qty: qty.value, pid: ID}
+  const response = await fetch(
+      `${API_URL}/api/cart/add?pid=${ID}&qty=${qty.value}`,
+      {
+        credentials: "include", 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify(payload)
+      }
+    );
+    const data = await response.json();
+
+    if (data.success){
+      console.log(data.message);
+    }
+
+  
+}

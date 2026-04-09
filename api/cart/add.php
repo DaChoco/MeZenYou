@@ -5,9 +5,25 @@ $ACCESS = require __DIR__ . "/../config.php";
 header('Content-Type: application/json');
 $conn = require __DIR__ . "/../conn.php";
 
-$productID = $_GET['pid'];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(["error" => "Method not allowed"]);
+    exit;
+}
+
+//VALIDATION STAGE----------------------------------------------------
+$input = file_get_contents("php://input");
+$data = json_decode($input, true);
+
+if (!isset($data['pid'], $data['qty'])) {
+    http_response_code(400);
+    echo json_encode(["error" => "Missing required fields", "success"=> false]);
+    exit;
+}
+
+$productID = $data['pid'];
 $userID = $_SESSION['user_id'];
-$qty = (int) $_GET['qty'];
+$qty = (int) $data['qty'];
 
 if (!$productID || !$userID || $qty <= 0) {
     http_response_code(403);
@@ -73,11 +89,12 @@ try {
 
     echo json_encode([
         "message" => "Item added to cart",
-        "cart_id" => $cartID
+        "cart_id" => $cartID,
+        "success"=> true
     ]);
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => "error: " . $e->getMessage()]);
+    echo json_encode(["error" => "error: " . $e->getMessage(), "success"=>false]);
 } finally {
     exit;
 }
