@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use Aws\DynamoDb\Marshaler;
 
 
@@ -100,10 +101,13 @@ class AWSservice
 
             $result = $this->dynamo->query([
                 'TableName' => $this->tableName,
-                'KeyConditionExpression' => 'pID = :pid',
+                'KeyConditionExpression' => 'GSIPID = :pid',
+                'IndexName' => 'timesorting',
+                
                 'ExpressionAttributeValues' => [
-                    ':pid' => ['S' => $productID]
-                ]
+                    ':pid' => ['S' => "PRODUCT#$productID"],
+                ],
+                'ScanIndexForward' => false,
             ]);
 
             $cleanItems = [];
@@ -111,9 +115,26 @@ class AWSservice
                 $cleanItems[] = $marshaler->unmarshalItem($item);
             }
 
-            usort($cleanItems, fn($a, $b) => $b['timestamp'] <=> $a['timestamp']);
+            $result = $this->dynamo->getItem([
+                'TableName' => $this->tableName,
+                'Key' => [
+                    'pID' => ['S' => "PRODUCT#$productID"],
+                    'uID' => ['S' => "METADATA"]
+                ]
+            ]);
 
-            return $cleanItems;
+            $item = $result['Item'];
+
+            if (!isset($result['Item'])) {
+                $avg = 0;
+            } else {
+                $item = $result['Item'];
+                $sum = (int)($item['ratingSum']['N'] ?? 0);
+                $count = (int)($item['ratingCount']['N'] ?? 0);
+                $avg = $count > 0 ? $sum / $count : 0;
+            }
+
+            return ["reviews" => $cleanItems, "avg" => $avg];
         } catch (Exception $e) {
             echo "Failed to extract review with error: " . $e->getMessage();
             return false;
@@ -124,32 +145,43 @@ class AWSservice
 
     public function uploadProductReview(string $userID, $productID, $txt, $rating, $username): bool
     {
+        $current_time = (string) time();
         try {
-            $this->dynamo->putItem(
-                [
-                    'Item' => [
-                        'uID' => [
-                            'S' => (string)  $userID,
-                        ],
-                        "pID" => [
-                            'S' => (string)  $productID
-                        ],
-                        'timestamp' => [
-                            'N' => (string) time(),
-                        ],
-                        "comment" => [
-                            "S" => (string)  $txt
-                        ],
-                        "rating" => [
-                            "N" => (string) $rating
-                        ],
-                        "username"=> [
-                            "S" => (string) $username
+            $this->dynamo->transactWriteItems([
+                'TransactItems' => [
+                    [
+                        'Put' => [
+                            'TableName' => $this->tableName,
+                            'Item' => [
+                                'pID' => ['S' => "PRODUCT#$productID"],
+                                'uID' => ['S' => "REVIEW#USER#$userID"],
+                                'rating' => ['N' => (string)$rating],
+                                'comment' => ['S' => $txt],
+                                'timestamp' => ['N' => $current_time],
+                                'username' => ['S' => $username],
+                                "GSIPID"=> ['S' => "PRODUCT#$productID"],
+                                "GSITIME"=> ['N' => $current_time],
+                            ],
+                            'ConditionExpression' => 'attribute_not_exists(pID) AND attribute_not_exists(uID)',
                         ]
                     ],
-                    'TableName' => $this->tableName,
+                    [
+                        'Update' => [
+                            'TableName' => $this->tableName,
+                            'Key' => [
+                                'pID' => ['S' => "PRODUCT#$productID"],
+                                'uID' => ['S' => "METADATA"]
+                            ],
+                            'UpdateExpression' => 'SET ratingSum = if_not_exists(ratingSum, :zero) + :r, ratingCount = if_not_exists(ratingCount, :zero) + :one',
+                            'ExpressionAttributeValues' => [
+                                ':r' => ['N' => (string)$rating],
+                                ':one' => ['N' => '1'],
+                                ':zero' => ['N' => '0']
+                            ]
+                        ]
+                    ]
                 ]
-            );
+            ]);
 
 
             return true;
@@ -159,7 +191,7 @@ class AWSservice
         }
     }
 
-        #AWS DYNAMODB-MESSAGING------------------------
+    #AWS DYNAMODB-MESSAGING------------------------
 
     public function sendMessage(string $senderID, string $recipientID, string $messageText): array
     {
@@ -191,6 +223,4 @@ class AWSservice
             return ['success' => false, 'error' => $e->getMessage()];
         }
     }
-
-
 }

@@ -10,7 +10,7 @@ const reviewarea = document.getElementById("ratingid");
 document.addEventListener("DOMContentLoaded", async () => {
   addreview.addEventListener('click', ()=> uploadReview(urlParams.get("id")));
 
-  const item = loadProduct();
+  const item = await loadProduct();
   const cartaddbtn = document.getElementById('cartaddbtn')
   cartaddbtn.addEventListener('click', ()=> addtocart(urlParams.get("id"), item))
 });
@@ -24,7 +24,10 @@ async function loadProduct() {
     console.log(data);
 
     renderProduct(data.product, data.user);
-    loadReviews(ID);
+    const reviewscoreval = document.getElementById('reviewscore')
+    const score = await loadReviews(ID);
+
+    reviewscoreval.innerText = score;
 
     return data
     
@@ -68,7 +71,7 @@ async function loadProduct() {
 
     const reviewzone = document.getElementById("commenthere");
 
-    console.log(data.items);
+    console.log(data);
 
     data.items.forEach((item) => {
       const review = document.createElement("article");
@@ -83,6 +86,8 @@ async function loadProduct() {
 
       reviewzone.appendChild(review);
     });
+
+    return data.avg
   }
 
   async function renderProduct(product, user) {
@@ -116,7 +121,7 @@ async function loadProduct() {
             </div>
 
             <div class="[&>*]:text-lg space-y-5">
-                <p class="text-yellow-600">${5}</p>
+                <p id="reviewscore" class="text-yellow-600"></p>
                 <p>Seller: ${product["username"]}</p>
                 <p>Ships From: ${product["location"]}</p>
                 <p>Payment: Secure transaction</p>
@@ -141,11 +146,14 @@ async function addtocart(ID, item){
   }
 
   const qty = document.getElementById('qtyid')
-  
+  if (!qty.value || qty.value === 0){
+    alert("INPUT A VALID QUANTITY")
+    return;
+  }
 
   const payload = {qty: qty.value, pid: ID}
   const response = await fetch(
-      `${API_URL}/api/cart/add?pid=${ID}&qty=${qty.value}`,
+      `${API_URL}/api/cart/add.php`,
       {
         credentials: "include", 
         method: "POST", 
@@ -156,7 +164,10 @@ async function addtocart(ID, item){
     const data = await response.json();
 
     if (data.success){
-      console.log(data.message);
+      alert(data.message);
+    }
+    else{
+      console.log(data)
     }
 
   

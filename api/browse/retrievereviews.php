@@ -13,12 +13,12 @@ $aws = new AWSservice(null, $dynamoDB);
 $pID = $_GET['pid'];
 
 try{
-    $reviews = $aws->retrieveProductReviews($pID);
-    if ($reviews != false){
-         echo json_encode(["items" => $reviews]);
+    $data = $aws->retrieveProductReviews($pID);
+    if ($data != false){
+         echo json_encode(["items" => $data['reviews'], "avg"=>$data['avg']]);
     }
     else{
-        echo json_encode(["items" => [], "message"=>"No Reviews have released yet."]);
+        echo json_encode(["items" => [], "avg"=>0, "message"=>"No Reviews have released yet."]);
     }
    
 

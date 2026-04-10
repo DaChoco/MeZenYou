@@ -5,10 +5,13 @@ const urlParams = new URLSearchParams(queryString);
 const searchParams = urlParams.get('q');
 const container = document.getElementById("product_section_id");
 const userEmail = document.getElementById("userEmail");
+const toggleBtn = document.getElementById('menuToggle');
+const layout = document.getElementById('layout')
+const sidenav = document.querySelector(".sidenav");
 
 let currentCategory = "";
 
-async function searchProducts(){
+async function searchProducts() {
     let url = `${api}/api/browse/fullsearch.php?q=${searchParams}`;
 
     const response = await fetch(url);
@@ -38,8 +41,8 @@ async function loadProducts() {
 
     // Show user email
     console.log(userEmail);
-    userEmail.textContent = data.user 
-        ? `Signed in as: ${data.user}` 
+    userEmail.textContent = data.user
+        ? `Signed in as: ${data.user}`
         : "Not logged in";
 
     renderProducts(data.products);
@@ -74,29 +77,43 @@ function renderProducts(products) {
 
 }
 
-document.addEventListener("DOMContentLoaded", function (){
-    
+document.addEventListener("DOMContentLoaded", function () {
+    toggleBtn.addEventListener("click", () => {
 
-    if (!searchParams){
+        console.log("HELLO");
+
+
+        layout.classList.toggle("lg:grid-cols-[250px_1fr]");
+        layout.classList.toggle("lg:grid-cols-[64px_1fr] [&_");
+
+        sidenav.classList.toggle("h-0");
+        sidenav.classList.toggle("h-64");
+        
+
+    });
+    if (!searchParams) {
         loadProducts();
     }
-    else{
+    else {
         searchProducts();
     }
     document.getElementById("applyFilter").addEventListener("click", loadProducts);
-    
+
     document.querySelectorAll("[data-category]").forEach(link => {
-    link.addEventListener("click", (e) => {
-        e.preventDefault();
-        currentCategory = link.dataset.category;
-        loadProducts();
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log("HELLO")
+            currentCategory = link.dataset.category;
+            loadProducts();
+        });
+
+        document.getElementById("applyFilter").addEventListener("click", loadProducts);
+
+
+
+
+
     });
-
-    document.getElementById("applyFilter").addEventListener("click", loadProducts);
-
-
-   
-});
 
 })
 
