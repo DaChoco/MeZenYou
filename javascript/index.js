@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         layout.classList.toggle("lg:grid-cols-[250px_1fr]");
-        layout.classList.toggle("lg:grid-cols-[64px_1fr] [&_");
+        layout.classList.toggle("lg:grid-cols-[64px_1fr]");
 
-        sidenav.classList.toggle("h-0");
-        sidenav.classList.toggle("h-64");
+     
+        sidenav.classList.toggle("h-12");
         
 
     });
