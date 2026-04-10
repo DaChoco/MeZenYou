@@ -39,8 +39,8 @@ $conn = require '../conn.php';
 $fulladdress = "{$data['street']}-{$data['suburb']}-{$data['city']}-{$data['province']}-{$data['postalcode']}";
 
 try{
-    $statement = $conn->prepare("UPDATE Users SET province = :province, address = :user_address, delivery_instructions =:instructions, phone = :phone WHERE id = :user_id");
-    $statement->execute(['user_address'=> $fulladdress, "province"=> $data['province'], "user_id" => $user_id, "instructions"=>$data['delinstructions'], "phone"=> $data['phone']]);
+    $statement = $conn->prepare("UPDATE Users SET province = :province, city = :city address = :user_address, delivery_instructions =:instructions, phone = :phone WHERE id = :user_id");
+    $statement->execute(['user_address'=> $fulladdress, "province"=> $data['province'], "city" => $data['city'], "user_id" => $user_id, "instructions"=>$data['delinstructions'], "phone"=> $data['phone']]);
 
     if ($statement->rowCount() > 0) {
         echo json_encode([

@@ -7,21 +7,31 @@ $conn = require __DIR__ . "/../conn.php";
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
+    error_log("PDO ERROR: WRONG REQUEST");
     echo json_encode(["error" => "Method not allowed"]);
     exit;
 }
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 //VALIDATION STAGE----------------------------------------------------
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
-if (!isset($data['pid'], $data['qty'])) {
+if (!$data) {
     http_response_code(400);
+    error_log("missing fields ");
     echo json_encode(["error" => "Missing required fields", "success"=> false]);
     exit;
 }
 
 $productID = $data['pid'];
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(["error" => "User not authenticated"]);
+    exit;
+}
 $userID = $_SESSION['user_id'];
 $qty = (int) $data['qty'];
 
@@ -62,13 +72,24 @@ try {
         $cartID = $cart['id'];
     }
 
-    $sql = "
-    INSERT INTO CartItems (cart_id, product_id, quantity)
-    VALUES (:cart, :product, :q)
-    ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)
+    $checkStatement = $conn->prepare("
+    SELECT id, quantity 
+    FROM CartItems 
+    WHERE cart_id = :cart AND product_id = :product
+    ");
+    $checkStatement->execute([
+    "cart" => $cartID,
+    "product" => $productID
+    ]);
+
+    $existingItem = $checkStatement->fetch(PDO::FETCH_ASSOC);
+
+    $sql = "INSERT INTO CartItems (cart_id, product_id, quantity)
+    VALUES (:cart, :product, :q) ON DUPLICATE KEY UPDATE quantity = quantity + :q
     ";
 
-    $conn->prepare($sql)->execute(["cart" => $cartID, "product" => $productID, "q" => $qty]);
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(["cart" => $cartID, "product" => $productID, "q" => $qty]);
 
     $affected = $stmt->rowCount();
 
@@ -94,6 +115,7 @@ try {
     ]);
 } catch (Exception $e) {
     http_response_code(500);
+    error_log("PDO ERROR: " . $e->getMessage());
     echo json_encode(["error" => "error: " . $e->getMessage(), "success"=>false]);
 } finally {
     exit;

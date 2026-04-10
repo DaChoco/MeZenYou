@@ -14,12 +14,21 @@ if (!$userID) {
 try{
     $sql = 
 "SELECT 
-Carts.id AS cart_id, CartItems.id AS cart_item_id, CartItems.quantity,
-Products.id AS product_id, Products.product_name, Products.price, (Products.price * CartItems.quantity) AS totalprice
+    Carts.id AS cart_id, 
+    CartItems.id AS cart_item_id, 
+    CartItems.quantity, 
+    Carts.user_id,
+    Products.id AS product_id, 
+    Products.product_name, 
+    Products.image, 
+    Products.price, 
+    (Products.price * CartItems.quantity) AS totalprice
 FROM Carts 
-INNER JOIN CartItems ON Carts.id = CartItems.id
-INNER JOIN Products ON CartItems.id = Products.id
-WHERE Carts.id = :userid";
+INNER JOIN CartItems 
+    ON Carts.id = CartItems.cart_id
+INNER JOIN Products 
+    ON CartItems.product_id = Products.id
+WHERE Carts.user_id = :id";
 
     $statement = $conn->prepare($sql);
     $statement->execute(["id" => $userID]);

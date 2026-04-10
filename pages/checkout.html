@@ -94,37 +94,7 @@
 
             <div class="flex flex-col flex-1 justify-between space-y-5 md:h-[700px]">
                 <!--CART ITEMS ZONE-->
-                <div class="overflow-y-auto space-y-10 border-b-2 flex flex-1 flex-col">
-                    <article class="grid grid-cols-[1fr_2fr_1fr]  gap-3">
-                        <img src="/images/SHYVol8.webp" alt="" class="object-contain">
-                        <div class="flex flex-col justify-between">
-
-                            <div>
-                                <span class="font-semibold text-lg">Shy; Vol. 8</span>
-                                <p>1x</p>
-                            </div>
-
-                            <p class="font-bold text-xl">R280.00</p>
-                        </div>
-
-                        <input placeholder="type..."  type="number" class="h-2/5">
-                    </article>
-
-                    <article class="grid grid-cols-[1fr_2fr_1fr]  gap-3">
-                        <img src="/images/SHYVol8.webp" alt="" class="object-contain">
-                        <div class="flex flex-col justify-between">
-
-                            <div>
-                                <span class="font-semibold text-lg">Shy; Vol. 8</span>
-                                <p>1x</p>
-                            </div>
-
-                            <p class="font-bold text-xl">R280.00</p>
-                        </div>
-
-                        <input placeholder="type..." type="number" class="h-2/5">
-                    </article>
-
+                <div id="cartitemzoneid" class="overflow-y-auto space-y-10 border-b-2 flex flex-1 flex-col">
 
                 </div>
 <!--Summary-->
@@ -132,12 +102,12 @@
 
                     <div>
                         <p>Subtotal: </p>
-                        <span>R1300</span>
+                        <span id="addedpriceid">R1300</span>
                     </div>
 
                     <div>
                         <p>Shipping: </p>
-                        <span>R100</span>
+                        <span id="shippingid">R30</span>
                     </div>
 
                     <div>
@@ -147,7 +117,7 @@
 
                     <div>
                         <p>Total: </p>
-                        <span>R1400</span>
+                        <span id="totalpriceid">R1400</span>
                     </div>
 
                     <button type="submit" class="bg-normalred text-white w-1/3 self-end p-3">Purchase</button>
