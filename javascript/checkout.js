@@ -15,6 +15,8 @@ const totalprice = document.getElementById('totalpriceid')
 
 let deliverytype = "delivery";
 
+const submit = document.getElementById('submitpurchase')
+
 document.getElementById('deliverybtn').addEventListener('click', () => {
   deliverytype = "delivery"
   shippingprice.innerText = `R30.00`
@@ -87,7 +89,7 @@ async function renderCart(cart) {
                             <p class="font-bold text-xl">R${item.totalprice.toFixed(2)}</p>
                         </div>
 
-                        <input data-pid=${item.product_id} min="0" placeholder="type..." value=${item.quantity}  type="number" class="h-fit p-3 text-lg">`
+                        <input data-pid=${item.product_id} min="0" placeholder="type..." value=${item.quantity}  type="number" class="h-fit p-3 text-lg focus:border-hoverbtnred">`
     cartitemzone.appendChild(cartitemcard);
     const input = cartitemcard.querySelector("input");
 
@@ -99,6 +101,7 @@ async function renderCart(cart) {
 
         const response = await fetch(`${API_URL}/api/cart/update.php?pid=${pid}&quantity=${quantity}`, {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           credentials: "include"
         });
 
@@ -115,7 +118,7 @@ async function renderCart(cart) {
 
   })
   let sum = 0
-  for (i = 0; i < cart.length; i++) {
+  for (let i = 0; i < cart.length; i++) {
     sum = sum + cart[i]["totalprice"];
   }
   addedprice.innerText = `R${sum.toFixed(2)}`
@@ -124,7 +127,65 @@ async function renderCart(cart) {
     shippingprice.innerText = `R30.00`
   }
 
-  totalprice.innerText = `R${sum + 30}`
+  totalprice.innerText = `R${(sum + 30).toFixed(2)}`
+  submit.addEventListener('click', async (e)=>{
+    e.preventDefault();
+    const result = await initiateOrder(cart)
+
+    if (result){
+      window.location.href = result;
+    }
+
+  })
+
+}
+
+async function initiateOrder(current_cart){
+  if (!current_cart){
+    alert("Something has gone wrong")
+    return;
+  }
+  const selectedPayment = document.querySelector('input[name="payment"]:checked');
+  const payment_type = selectedPayment.value;
+
+  const price = totalprice.innerText.replace("R", "");
+  //The cart is already stored on the backend so don't send it.
+  const payload = {
+    fullname: uname.value, 
+    email: email.value, 
+    phone: tel.value,
+    province: province.value,
+    street: street.value,
+    city: city.value,
+    postal: postal.value,
+    price: Number(price),
+    payment: payment_type,
+    delivery: deliverytype}
+
+  
+  let url = `${API_URL}/api/cart/checkout.php`
+
+  const response = await fetch(url, 
+    {
+    credentials: "include", 
+    method: "POST",
+    headers: { "Content-Type": "application/json" }, 
+    body: JSON.stringify(payload)
+  })
+
+  const data = await response.json();
+
+  if (data.success){
+    alert(data.message);
+
+    return data.redirect;
+  }
+  else{
+    alert(data.message)
+    console.log("INTERNAL SERVER ERROR");
+    console.log(data)
+    return null;
+  }
 
 }
 

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . "/../utils/cors.php";
 require_once "../session.php";
-$ACCESS = require __DIR__ . "/../config.php";
 header('Content-Type: application/json');
 $conn = require __DIR__ . "/../conn.php";
 

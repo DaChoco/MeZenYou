@@ -2,8 +2,8 @@
 require_once __DIR__ . "/../utils/cors.php";
 require_once "../session.php";
 require_once __DIR__ ."/../utils/aws.php";
-require_once __DIR__ ."/../utils/secretsaws.php";
-$ACCESS = require __DIR__ ."/../config.php";
+require_once __DIR__ ."/../utils/AWSCLIENTS.php";
+$ACCESS = require_once __DIR__ ."/../config.php";
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

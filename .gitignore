@@ -4,7 +4,4 @@ node_modules/
 *.jpg
 .env
 dist/
-config.php
-variables.js
 vendor/
-secretsaws.php

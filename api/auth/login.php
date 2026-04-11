@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
-if (!isset($data['email'], $data['password'])) {
+if (!$data['email'] || !$data['password']) {
     http_response_code(400);
     echo json_encode(["error" => "Missing required fields"]);
     exit;
@@ -39,7 +39,8 @@ try {
 
     if (!$result) {
         // No user found
-        echo json_encode(["error" => "User not found"]);
+        error_log("User not found");
+        echo json_encode(["error" => "INVALID CREDENTIALS"]);
         exit;
     }
 
@@ -49,6 +50,7 @@ try {
     $username = $result['username'];
 
     if (password_verify($password, $password_hash)) {
+    session_regenerate_id(true);
     $_SESSION['user_id'] = $user_id;
     $_SESSION['email'] = $email;
     $_SESSION['role'] = $user_role;
@@ -58,9 +60,10 @@ try {
     echo json_encode(["message" => "Login successful", "redirect" => "/"]);
     } else {
     http_response_code(401);
-    echo json_encode(["error" => "Invalid credentials", "HASH" => $password_hash, "PASS" => $password, "EMAIL" => $email]);
+    echo json_encode(["error" => "Invalid credentials"]);
     }
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    error_log($e->getMessage());
+    echo json_encode(["error" => "INTERNAL SERVER ERROR"]);
 }

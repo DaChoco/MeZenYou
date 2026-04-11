@@ -4,9 +4,9 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 try {
     $conn = new PDO(
-        "mysql:host={$config['DB_HOST']};dbname={$config['DB_NAME']};charset=utf8mb4",
-        $config['DB_USER'],
-        $config['DB_PASS']
+        "mysql:host={$config['db']['DB_HOST']};dbname={$config['db']['DB_NAME']};charset=utf8mb4",
+        $config["db"]['DB_USER'],
+        $config["db"]['DB_PASS']
     );
 
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

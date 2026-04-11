@@ -2,7 +2,6 @@
 require_once __DIR__ . "/../utils/cors.php";
 require '../session.php';
 header("Content-Type: application/json");
-$config = require '../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     http_response_code(403);
@@ -11,25 +10,6 @@ if (!isset($_SESSION["user_id"])) {
 }
 $role = $_SESSION["role"];
 $id = $_SESSION["user_id"];
-
-$products = [
-    [
-        "name" => "SHY Vol. 8",
-        "price" => 280,
-        "image" => "/images/SHYVol8.webp",
-        "delivered" => "13 March 2026",
-        "id" => 1,
-        "placed" => "11 March 2026"
-    ],
-    [
-        "name" => "Love Bullet Vol. 2",
-        "price" => 310,
-        "image" => "/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png",
-        "delivered" => "cancelled",
-        "id" => 2,
-        "placed" => "14 March 2026"
-    ]
-];
 
 try{
 $conn = require __DIR__. "/../conn.php";
@@ -45,7 +25,7 @@ echo json_encode([
     "address" => $result["address"],
     "phone" => $result["phone"],
     "icon" => $result["icon"],
-    "orders" => $products
+    "orders" => []
 ]);
 
 }

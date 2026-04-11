@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
-if (!isset($data['email'], $data['password'])) {
+if (!$data['email'] || !$data['password']) {
     http_response_code(400);
     echo json_encode(["error" => "Missing required fields"]);
     exit;
@@ -33,8 +33,8 @@ $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 $conn = require '../conn.php';
 
 try{
-    $statement = $conn->prepare("SELECT id FROM Users WHERE email = :email AND password_hash = :password_hash");
-    $statement->execute(['email' => $email, 'password_hash'=>$hashed_password]);
+    $statement = $conn->prepare("SELECT id FROM Users WHERE email = :email");
+    $statement->execute(['email' => $email]);
 
 
     //IF there is more than one item this means already exists
@@ -49,8 +49,8 @@ try{
 
     //SUCCESSFUL REGISTRATION ACHIEVED!
     
-
-    $_SESSION['user_id'] = $user_id;
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = $conn->lastInsertId();
     $_SESSION['email'] = $email;
     $_SESSION['username'] = $data['username'];
     http_response_code(201);
@@ -63,7 +63,7 @@ try{
 }
 catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["error" => "INTERNAL SERVER ERROR" ]);
 }
 
 
