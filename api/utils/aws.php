@@ -103,7 +103,7 @@ class AWSservice
                 'TableName' => $this->tableName,
                 'KeyConditionExpression' => 'GSIPID = :pid',
                 'IndexName' => 'timesorting',
-                
+
                 'ExpressionAttributeValues' => [
                     ':pid' => ['S' => "PRODUCT#$productID"],
                 ],
@@ -141,6 +141,47 @@ class AWSservice
         }
     }
 
+    public function retrieveAllProductReviews()
+    {
+        $marshaler = new Marshaler();
+
+        try {
+            $result = $this->dynamo->query([
+                'TableName' => $this->tableName,
+                'IndexName' => 'uid-index',
+                'KeyConditionExpression' => 'uID = :uid',
+                'ExpressionAttributeValues' => [
+                    ':uid' => ['S' => 'METADATA'],
+                ],
+            ]);
+            $average_ratings = [];
+
+            $average_ratings = [];
+
+            if (!isset($result['Items']) || count($result['Items']) === 0) {
+                return [];
+            }
+
+            foreach ($result['Items'] as $rawItem) {
+                $item = $marshaler->unmarshalItem($rawItem);
+                $sum = $item['ratingSum'] ?? 0;
+                $count = $item['ratingCount'] ?? 0;
+
+                $avg = $count > 0 ? $sum / $count : 0;
+
+                $average_ratings[] = [
+                    "pID" => $item['pID'] ?? null,
+                    "avg" => $avg
+                ];
+            }
+
+            return $average_ratings;
+        } catch (Throwable $e) {
+            error_log("Dynamo error: " . $e->getMessage());
+            return false;
+        }
+    }
+
 
 
     public function uploadProductReview(string $userID, $productID, $txt, $rating, $username): bool
@@ -159,8 +200,8 @@ class AWSservice
                                 'comment' => ['S' => $txt],
                                 'timestamp' => ['N' => $current_time],
                                 'username' => ['S' => $username],
-                                "GSIPID"=> ['S' => "PRODUCT#$productID"],
-                                "GSITIME"=> ['N' => $current_time],
+                                "GSIPID" => ['S' => "PRODUCT#$productID"],
+                                "GSITIME" => ['N' => $current_time],
                             ],
                             'ConditionExpression' => 'attribute_not_exists(pID) AND attribute_not_exists(uID)',
                         ]

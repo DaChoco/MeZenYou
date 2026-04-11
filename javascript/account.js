@@ -4,6 +4,24 @@ const order_zone = document.getElementById("order-zone");
 const streetaddrtxt = document.getElementById('accStreetID');
 const phonetxt = document.getElementById('phoneNumID');
 
+function capitalizeFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function dateConversion(sqlDate){
+
+const date = new Date(sqlDate.replace(" ", "T"));
+
+const formatted = date.toLocaleDateString("en-GB", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric"
+});
+
+
+
+return formatted
+}
 document.getElementById("logoutbtn").addEventListener("click", async () => {
   const response = await fetch(`${api}/api/auth/logout.php`, {
     method: "POST",
@@ -49,34 +67,34 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   const data = await response.json();
-  console.log(data.dummy);
+  console.log(data.orders);
 
-  if (data.dummy) {
-    const orders = data.dummy;
+  if (data.orders) {
+    const orders = data.orders;
 
     orders.forEach((order) => {
       const card = document.createElement("article");
 
-      if (order["delivered"] !== "cancelled") {
-        is_delivered = `<p class="text-green-600 mr-2">Delivered </p>${order["delivered"]}`;
+      if (order["order_status"] !== "cancelled") {
+        is_delivered = `<p class="text-green-600 mr-2">${capitalizeFirst(order["order_status"])}</p>`;
       } else {
-        is_delivered = `<p class="text-normalred mr-2">Cancelled </p>`;
+        is_delivered = `<p class="text-normalred mr-2">Cancelled</p>`;
       }
       card.className =
         "order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3";
       card.innerHTML = `
     <img class="object-contain" src="${order["image"]}" alt="">
         <div class="flex flex-col">
-          <h4 class="text-xl font-bold">Order #${order["id"]}</h4>
+          <h4 class="sm:text-base lg:text-xl font-bold">Order #${order["id"]}</h4>
           <span class="flex flex-row">
              ${is_delivered}
           </span>
           <ul>
-              <li>${order["name"]}</li>
+              <li class="sm:text-base lg:text-lg">${order["name"]}</li>
           </ul>
 
-            <p>ORDER PLACED: ${order["placed"]}</p>
-            <p>Total: R${order["price"]}</p>
+            <p class="sm:text-base lg:text-lg">ORDER PLACED: ${dateConversion(order["created_at"])}</p>
+            <p class="sm:text-base lg:text-lg">Total: R${order["price"].toFixed(2)}</p>
         </div>`;
       order_zone.appendChild(card);
     });

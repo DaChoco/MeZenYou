@@ -16,10 +16,8 @@ async function searchProducts() {
 
     const response = await fetch(url);
     const data = await response.json();
-    renderProducts(data);
-    console.log(data)
-
-
+    const reviews = await reviewscores();
+    renderProducts(data, reviews);
 
 }
 
@@ -44,15 +42,29 @@ async function loadProducts() {
     userEmail.textContent = data.user
         ? `Signed in as: ${data.user}`
         : "Not logged in";
-
-    renderProducts(data.products);
+    const reviews = await reviewscores();
+    renderProducts(data.products, reviews);
 }
+async function reviewscores(){
+    const response = await fetch(`${api}/api/browse/reviewscores.php`)
+    const data = await response.json();
+    const scores = data.items;
 
-function renderProducts(products) {
+    return scores
+}
+function renderProducts(products, reviews) {
     container.innerHTML = "";
+
+    const reviewMap = {};
+    reviews.forEach(r => {
+        let cleaned = r.pID.replace("PRODUCT#", "")
+        reviewMap[cleaned] = r.avg;
+    });
+    console.log(reviewMap)
 
     products.forEach(product => {
         const card = document.createElement("article");
+        const avg = reviewMap[product.id] ?? 0;
 
         card.className = "p-4 h-fit rounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr] shadow-sm";
 
@@ -68,7 +80,7 @@ function renderProducts(products) {
                 <p class="font-bold">R${product.price}</p>
                 <p class="font-semibold text-normalred">${product.category}</p>
                 <p class="text-gray-800">${product.location}</p>
-                <p class="text-yellow-600">${5}</p>
+                <p class="text-yellow-600">${avg.toFixed(1)}</p>
             </div>
         `;
 

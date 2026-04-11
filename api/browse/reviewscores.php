@@ -3,22 +3,20 @@ require_once __DIR__ . "/../utils/cors.php";
 require_once "../session.php";
 require_once __DIR__ ."/../utils/aws.php";
 require_once __DIR__ ."/../utils/AWSCLIENTS.php";
-header('Content-Type: application/json');
 $ACCESS = require_once __DIR__ ."/../config.php";
-
+header('Content-Type: application/json');
 
 try{
     $dynamoDB = createDynamoClient($ACCESS);
 
     $aws = new AWSservice(null, $dynamoDB);
 
-    $pID = $_GET['pid'];
-    $data = $aws->retrieveProductReviews($pID);
+    $data = $aws->retrieveAllProductReviews();
     if ($data != false){
-         echo json_encode(["items" => $data['reviews'], "avg"=>$data['avg']]);
+         echo json_encode(["items" => $data]);
     }
     else{
-        echo json_encode(["items" => [], "avg"=>0, "message"=>"No Reviews have released yet."]);
+        echo json_encode(["items" => [], "message"=>"No Reviews have released yet."]);
     }
    
 

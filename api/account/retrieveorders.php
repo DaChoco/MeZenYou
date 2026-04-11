@@ -10,39 +10,22 @@ $user_id = $_SESSION['user_id'];
 
 $conn = require '../conn.php';
 
-$products = [
-    [
-        "name" => "SHY Vol. 8",
-        "price" => 280,
-        "image" => "/images/SHYVol8.webp",
-        "delivered" => "13 March 2026",
-        "id" => 1,
-        "placed" => "11 March 2026"
-    ],
-    [
-        "name" => "Love Bullet Vol. 2",
-        "price" => 310,
-        "image" => "/images/37c5f1ca-d930-432c-9e4e-0c632f954b85.png",
-        "delivered" => "cancelled",
-        "id" => 2,
-        "placed" => "14 March 2026"
-    ]
-];
-
 try{
 
     $statement = $conn->prepare("SELECT 
-    Products.product_name, 
+    Products.product_name AS name, 
     Orders.created_at, 
-    Products.image, 
-    Orders.total_price, 
+    Products.image,
+    Orders.order_status, 
+    Orders.total_price AS price, 
     OrderItems.price_at_purchase, 
-    OrderItems.quantity 
+    OrderItems.quantity,
+    Orders.id 
     FROM Users 
     INNER JOIN Orders ON Users.id = Orders.buyer_id
     INNER JOIN OrderItems ON Orders.id = OrderItems.order_id
     INNER JOIN Products ON OrderItems.product_id = Products.id
-    WHERE Users.id = :user_id
+    WHERE Users.id = :user_id LIMIT 10
     ");
     $statement->execute(["user_id"=>$user_id]);
 
@@ -50,7 +33,7 @@ try{
 
 
     http_response_code(201);
-    echo json_encode(["orders"=> $results, "dummy" => $products, "id" => $user_id]);
+    echo json_encode(["orders"=> $results, "id" => $user_id]);
 }
 catch (PDOException $e){
     http_response_code(500);
