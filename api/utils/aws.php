@@ -4,6 +4,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use Aws\DynamoDb\Marshaler;
 
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 class AWSservice
 {
     private $s3;
@@ -40,22 +44,22 @@ class AWSservice
         }
     }
 
-    public function uploadProductImage($productID, $File)
+    public function uploadProductImage($productID, $File, $name)
     {
-        $fileName = $this->generateS3Key("products", $File['name'], $productID);
+        $fileName = $this->generateS3Key("products", $name, $productID);
 
         try {
             $this->s3->putObject([
                 'Bucket' => $this->bucketName,
                 'Key' => $fileName,
-                'SourceFile' => $File['image'],
-                'ContentType' => mime_content_type($File['image'])
+                'SourceFile' => $File,
+                'ContentType' => mime_content_type($File)
 
             ]);
 
             return $fileName; //THIS GETS INSERTED IN THE DB. DO NOT FORGET IT
-        } catch (Aws\S3\Exception\S3Exception $exception) {
-            echo "Failed to upload $fileName with error: " . $exception->getMessage();
+        } catch (\Throwable $exception) {
+            error_log("Failed to upload $fileName with error: " . $exception->getMessage());
             return "";
         }
     }

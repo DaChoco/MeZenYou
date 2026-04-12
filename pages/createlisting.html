@@ -5,15 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/output.css" />
     <script src="/variables.js"></script>
+    <script src="/variables.js"></script>
     <script src="../javascript/includefooter.js"></script>
     <script src="../javascript/includetopnav.js"></script>
+    <script src="../javascript/createlisting.js" defer></script>
     <title>Create New Listing</title>
 </head>
 <body>
+    <!--Reusable component-->
+    <div id="topnav"></div>
 
-    <main>
+    <form id="listingsubmitid" class="flex flex-col w-2/5 my-5 mx-auto p-10 space-y-4 bg-white rounded-md">
+        <h2 class="text-2xl font-extrabold text-center">Product Upload</h2>
+        <input id="name" type="text" placeholder="Product Name" class="border-b-4 border-gray-700 px-2 py-3">
+        <input id="price" type="number" name="Product Price" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Product Price">
+        <select title="Select Category" name="category_selector" id="categoryselect" class="border-b-4 border-gray-700 px-2 py-3">
+            <option value="Novels">Novels</option>
+            <option value="Comics/Manga">Comics/Manga</option>
+            <option value="Video Games">Video Games</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Office">Office</option>
+            <option value="Beauty">Beauty</option>                     
+        </select>
+        <input id="location" type="text" name="Location" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Location">
+        <input id="author" type="text" name="Author" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Creator Eg.If reselling an Iphone, list Apple">
+        <input min="1" max="1000" id="stock" type="number" name="Stock" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Stock">
+        <input id="image" type="file" name="image" class="border-b-4 border-gray-700 px-2 py-3" placeholder="File">
         
-    </main>
+        <button type="submit" class="bg-red-600 p-3 rounded-md text-white">Submit</button>
+
+    </form>
+
+        <!--Reusable component-->
+    <div id="footer"></div>
     
 </body>
 </html>

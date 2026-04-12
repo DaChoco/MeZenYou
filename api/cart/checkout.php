@@ -25,7 +25,7 @@ if (!$user_id) {
     // Are they not signed in? Then make a guest account
     $statement = $conn->prepare("
         INSERT INTO Users (email, username, phone, user_role)
-        VALUES (:email, :name, :phone, 'Guest')
+        VALUES (:email, :name, :phone, 'guest')
     ");
 
     $statement->execute([
