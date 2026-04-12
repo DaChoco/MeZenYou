@@ -17,15 +17,15 @@ try{
     Orders.created_at, 
     Products.image,
     Orders.order_status, 
-    Orders.total_price AS price, 
-    OrderItems.price_at_purchase, 
+    Orders.total_price, 
+    OrderItems.price_at_purchase AS price, 
     OrderItems.quantity,
     Orders.id 
     FROM Users 
     INNER JOIN Orders ON Users.id = Orders.buyer_id
     INNER JOIN OrderItems ON Orders.id = OrderItems.order_id
     INNER JOIN Products ON OrderItems.product_id = Products.id
-    WHERE Users.id = :user_id LIMIT 10
+    WHERE Users.id = :user_id LIMIT 5
     ");
     $statement->execute(["user_id"=>$user_id]);
 

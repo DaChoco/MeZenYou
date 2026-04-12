@@ -23,6 +23,29 @@ async function renderNavbar() {
       }, delay);
     };
   }
+  function initMenuToggle(){
+    const sidenav = document.querySelector(".sidenav");
+    const toggleBtn = document.getElementById('menuToggle');
+    if (!toggleBtn || !sidenav || !layout) return;
+
+    const isLargeScreen = () =>
+        window.matchMedia("(min-width: 1024px)").matches;
+        toggleBtn.addEventListener("click", () => {
+        sidenav.classList.toggle('-translate-x-full')
+        console.log("HELLO");
+         if (isLargeScreen()) {
+        layout.classList.toggle("lg:grid-cols-[250px_1fr]");
+        layout.classList.toggle("lg:grid-cols-[64px_1fr]");
+
+        
+        sidenav.classList.toggle('index-collapsed')
+         }
+        
+
+    });
+
+  }
+  
 
   function renderDropdown(items){
 
@@ -81,6 +104,7 @@ async function renderNavbar() {
     input_bar.addEventListener("input", debouncedAutocomplete);
   }
   initAutocomplete();
+  initMenuToggle();
 
   document.addEventListener('click', (e)=>{
     const is_inside = input_bar.contains(e.target) || autocompletezone.contains(e.target);

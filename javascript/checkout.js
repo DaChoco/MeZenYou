@@ -133,6 +133,8 @@ async function renderCart(cart) {
     const result = await initiateOrder(cart)
 
     if (result){
+      //Not serious just to help simulate
+      window.open("https://paystack.shop/pay/nh0g97ih1l", "_blank")
       window.location.href = result;
     }
 

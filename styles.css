@@ -8,6 +8,17 @@
     @apply bg-slate-200 scroll-smooth;
   }
 }
+@media (min-width: 1024px) {
+    .index-collapsed h4,
+    .index-collapsed ul,
+    .index-collapsed button {
+        visibility: hidden;
+    }
+}
+
+.sidenav.collapsed{
+  width: 64px;
+}
 
 /* Layout admin grid */
 #layout-admin {

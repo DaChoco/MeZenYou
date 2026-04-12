@@ -2,73 +2,68 @@ const api = window.ENV.API_URL;
 const queryString = window.location.search;
 
 const urlParams = new URLSearchParams(queryString);
-const searchParams = urlParams.get('q');
+const searchParams = urlParams.get("q");
 const container = document.getElementById("product_section_id");
 const userEmail = document.getElementById("userEmail");
-const toggleBtn = document.getElementById('menuToggle');
-const layout = document.getElementById('layout')
-const sidenav = document.querySelector(".sidenav");
+
+const layout = document.getElementById("layout");
+const closenav = document.getElementById("closeid");
 
 let currentCategory = "";
 
 async function searchProducts() {
-    let url = `${api}/api/browse/fullsearch.php?q=${searchParams}`;
+  let url = `${api}/api/browse/fullsearch.php?q=${searchParams}`;
 
-    const response = await fetch(url);
-    const data = await response.json();
-    const reviews = await reviewscores();
-    renderProducts(data, reviews);
-
+  const response = await fetch(url);
+  const data = await response.json();
+  const reviews = await reviewscores();
+  renderProducts(data, reviews);
 }
-
 
 async function loadProducts() {
+  const min = document.getElementById("minPrice");
+  const max = document.getElementById("maxPrice");
 
-    const min = document.getElementById("minPrice");
-    const max = document.getElementById("maxPrice");
+  let url = `${api}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}`;
 
+  const res = await fetch(url, {
+    credentials: "include",
+  });
 
-    let url = `${api}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}`;
+  const data = await res.json();
+  console.log(data);
 
-    const res = await fetch(url, {
-        credentials: "include"
-    });
-
-    const data = await res.json();
-    console.log(data);
-
-    // Show user email
-    console.log(userEmail);
-    userEmail.textContent = data.user
-        ? `Signed in as: ${data.user}`
-        : "Not logged in";
-    const reviews = await reviewscores();
-    renderProducts(data.products, reviews);
+  // Show user email
+  console.log(userEmail);
+  userEmail.textContent = data.user
+    ? `Signed in as: ${data.user}`
+    : "Not logged in";
+  const reviews = await reviewscores();
+  renderProducts(data.products, reviews);
 }
-async function reviewscores(){
-    const response = await fetch(`${api}/api/browse/reviewscores.php`)
-    const data = await response.json();
-    const scores = data.items;
+async function reviewscores() {
+  const response = await fetch(`${api}/api/browse/reviewscores.php`);
+  const data = await response.json();
+  const scores = data.items;
 
-    return scores
+  return scores;
 }
 function renderProducts(products, reviews) {
-    container.innerHTML = "";
+  container.innerHTML = "";
 
-    const reviewMap = {};
-    reviews.forEach(r => {
-        let cleaned = r.pID.replace("PRODUCT#", "")
-        reviewMap[cleaned] = r.avg;
-    });
-    console.log(reviewMap)
+  const reviewMap = {};
+  reviews.forEach((r) => {
+    let cleaned = r.pID.replace("PRODUCT#", "");
+    reviewMap[cleaned] = r.avg;
+  });
 
-    products.forEach(product => {
-        const card = document.createElement("article");
-        const avg = reviewMap[product.id] ?? 0;
+  products.forEach((product) => {
+    const card = document.createElement("article");
+    const avg = reviewMap[product.id] ?? 0;
 
-        card.className = "p-4 h-fit rounded-md h-auto bg-white grid grid-cols-1 grid-rows-[2fr_1fr] shadow-sm";
+    card.className = "p-4 rounded-md bg-white grid grid-cols-1  shadow-sm";
 
-        card.innerHTML = `
+    card.innerHTML = `
             <a href="/pages/product.html?id=${product.id}">
                 <div class="w-full h-52 flex items-center justify-center overflow-hidden bg-gray-100">
                     <img class="object-contain max-h-full" src="${product.image}" alt="Item Card" />
@@ -84,51 +79,41 @@ function renderProducts(products, reviews) {
             </div>
         `;
 
-        container.appendChild(card);
-    });
-
+    container.appendChild(card);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    toggleBtn.addEventListener("click", () => {
+  const sidenav = document.querySelector(".sidenav");
 
-        console.log("HELLO");
-
-
-        layout.classList.toggle("lg:grid-cols-[250px_1fr]");
-        layout.classList.toggle("lg:grid-cols-[64px_1fr]");
-
-     
-        sidenav.classList.toggle("h-12");
-        
-
-    });
-    if (!searchParams) {
-        loadProducts();
+  window.addEventListener("resize", () => {
+    if (!window.matchMedia("(min-width: 1024px)").matches) {
+      sidenav.classList.remove("index-collapsed");
     }
-    else {
-        searchProducts();
-    }
-    document.getElementById("applyFilter").addEventListener("click", loadProducts);
+  });
+  closenav.addEventListener("click", () => {
+    sidenav.classList.toggle("-translate-x-full");
+  });
 
-    document.querySelectorAll("[data-category]").forEach(link => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
-            console.log("HELLO")
-            currentCategory = link.dataset.category;
-            loadProducts();
-        });
+  if (!searchParams) {
+    loadProducts();
+  } else {
+    searchProducts();
+  }
+  document
+    .getElementById("applyFilter")
+    .addEventListener("click", loadProducts);
 
-        document.getElementById("applyFilter").addEventListener("click", loadProducts);
-
-
-
-
-
+  document.querySelectorAll("[data-category]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log("HELLO");
+      currentCategory = link.dataset.category;
+      loadProducts();
     });
 
-})
-
-
-
-
+    document
+      .getElementById("applyFilter")
+      .addEventListener("click", loadProducts);
+  });
+});

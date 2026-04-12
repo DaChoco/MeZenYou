@@ -94,7 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           </ul>
 
             <p class="sm:text-base lg:text-lg">ORDER PLACED: ${dateConversion(order["created_at"])}</p>
-            <p class="sm:text-base lg:text-lg">Total: R${order["price"].toFixed(2)}</p>
+            <p class="sm:text-base lg:text-lg">Quantity: ${order["quantity"]}x</p>
+            <p class="sm:text-base lg:text-lg">Price Per Item: R${order["price"].toFixed(2)}</p>
+            <p class="sm:text-base lg:text-lg font-bold">Order #${order["id"]} Total: R${order["total_price"].toFixed(2)}</p>
         </div>`;
       order_zone.appendChild(card);
     });

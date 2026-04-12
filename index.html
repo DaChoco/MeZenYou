@@ -8,8 +8,8 @@
     <title>Home</title>
     
     <script src="/variables.js"></script>
+    <script src="/javascript/includetopnav.js" defer ></script>
     <script src="/javascript/includefooter.js" defer></script>
-    <script src="/javascript/includetopnav.js" defer></script>
     <script src="/javascript/index.js" defer></script>
     <!--This is font awesome. A free supply of icons-->
     <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
@@ -21,8 +21,8 @@
     <div id="topnav"></div>
 
     <div id="layout" class="grid grid-cols-1 lg:grid-cols-[250px_1fr] ">
-        <div class="sidenav transition-all duration-300 overflow-y-auto lg:overflow-hidden flex flex-col col-span-1 w-full lg:w-4/5 p-4 lg:p-10 bg-white space-y-3 lg:h-auto">
-            <i id="menuToggle" class="fa-solid fa-bars fa-2x self-end"></i>
+        <div class="sidenav fixed top-0 left-0 h-full w-64 bg-white z-50 transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-auto lg:h-auto overflow-y-auto flex flex-col p-4 lg:p-10 space-y-3">
+            <i id="closeid" class="fa-solid fa-x fa-2x md:!hidden"></i>
             <h4 class="font-bold text-2xl py-5 w-full border-b border-gray-400">
                 Shop By Department
             </h4>
@@ -58,8 +58,8 @@
 
         <section id="product_section_id" class="grid grid-cols-2 
         sm:grid-cols-3 md:grid-cols-4 
-        lg:grid-cols-[repeat(auto-fill,minmax(180px,1fr))] 
-        gap-3 sm:gap-6 
+        lg:grid-cols-[repeat(auto-fill,minmax(150px,1fr))] 
+        gap-3 sm:gap-6 items-start content-start
         
         p-4 sm:p-6 lg:p-10">
             

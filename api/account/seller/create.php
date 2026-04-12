@@ -19,6 +19,10 @@ $image = $data['image'];
 $author = $data['author'];
 $stock = $data['stock'];
 
+if (!$product_name || !$price || $category || $location || $seller_id || $image || $author || $stock ){
+    
+}
+
 try {
     $stmt = $conn->prepare("INSERT INTO Products 
     (product_name, price, category, location, seller_id, image, author, stock)
