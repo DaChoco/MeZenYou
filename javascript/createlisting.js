@@ -6,6 +6,9 @@ const category = document.getElementById('categoryselect')
 const plocation = document.getElementById('location')
 const author = document.getElementById('author')
 const stock = document.getElementById('stock')
+const description = document.getElementById('desc')
+
+console.log(description)
 
 
 submitform.addEventListener('submit', async (e) => {
@@ -17,9 +20,10 @@ submitform.addEventListener('submit', async (e) => {
     formData.append("location", plocation.value);
     formData.append("author", author.value);
     formData.append("stock", stock.value);
+    formData.append("description", description.value)
     const file = document.getElementById('image');
     const selectedFile = file.files[0];
-
+    console.log(description.value)
     formData.append("image", selectedFile);
 
 
@@ -30,16 +34,14 @@ submitform.addEventListener('submit', async (e) => {
         method: "POST",
         body: formData
     });
-
-    const text = await response.text();
-    console.log(text);
-    /*const data = await response.json();
+    const data = await response.json();
     console.log(data)
 
     if (data.status){
         console.log(data.product_id)
+        alert("Congratulations, you uploaded an item, you can either keep uploading or proceed to other pages.")
     }
     else{
         alert(data.error)
-    }*/
+    }
 });

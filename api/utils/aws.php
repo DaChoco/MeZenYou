@@ -56,8 +56,8 @@ class AWSservice
                 'ContentType' => mime_content_type($File)
 
             ]);
-
-            return $fileName; //THIS GETS INSERTED IN THE DB. DO NOT FORGET IT
+            $url = $this->generateImageURL($fileName);
+            return $url; //THIS GETS INSERTED IN THE DB. DO NOT FORGET IT
         } catch (\Throwable $exception) {
             error_log("Failed to upload $fileName with error: " . $exception->getMessage());
             return "";

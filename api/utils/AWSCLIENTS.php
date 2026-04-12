@@ -1,6 +1,6 @@
 <?php
 use Aws\DynamoDb\DynamoDbClient;
-use AWS\S3\S3Client;
+use Aws\S3\S3Client;
 
 
 function createDynamoClient($key) {
