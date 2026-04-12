@@ -24,50 +24,42 @@ class AWSservice
     }
 
     #AWS S3-------------------------
-    public function uploadUserIcon($userID, $File)
+    public function uploadUserIcon($userID, $File, $name)
     {
-        $fileName = $this->generateS3Key("users", $File['name'], $userID);
-
-        try {
-            $this->s3->putObject([
-                'Bucket' => $this->bucketName,
-                'Key' => $fileName,
-                'SourceFile' => $File['image'],
-                'ContentType' => mime_content_type($File['image'])
-
-            ]);
-
-            return $fileName; //THIS GETS INSERTED IN THE DB. DO NOT FORGET IT
-        } catch (Exception $exception) {
-            echo "Failed to upload $fileName with error: " . $exception->getMessage();
-            return "";
-        }
+        return $this->uploadToS3("users", $File,$name, $userID);
     }
 
     public function uploadProductImage($productID, $File, $name)
+    //the up to date one icon hasnt been used yet
     {
-        $fileName = $this->generateS3Key("products", $name, $productID);
-
-        try {
-            $this->s3->putObject([
-                'Bucket' => $this->bucketName,
-                'Key' => $fileName,
-                'SourceFile' => $File,
-                'ContentType' => mime_content_type($File)
-
-            ]);
-            $url = $this->generateImageURL($fileName);
-            return $url; //THIS GETS INSERTED IN THE DB. DO NOT FORGET IT
-        } catch (\Throwable $exception) {
-            error_log("Failed to upload $fileName with error: " . $exception->getMessage());
-            return "";
-        }
+        return $this->uploadToS3("products", $File, $name, $productID);
     }
 
     #AWS S3-------------------------
 
 
     #HELPER PRIVATE FUNCTIONS
+    private function uploadToS3($folder, $filePath, $fileName, $id)
+    //This is the main upload function, user icon and product image are wrappers to help them feel seperate
+    {
+        $key = $this->generateS3Key($folder, $fileName, $id);
+
+        try {
+            $this->s3->putObject([
+                'Bucket' => $this->bucketName,
+                'Key' => $key,
+                'SourceFile' => $filePath,
+                'ContentType' => mime_content_type($filePath)
+            ]);
+
+            return $this->generateImageURL($key);
+
+        } catch (\Throwable $exception) {
+            error_log("Failed to upload $key with error: " . $exception->getMessage());
+            return "";
+        }
+    }
+
     private function generateS3Key(string $type, string $filename, string $id): string
     {
         #key structure type/USERID/UNIQUEIDENTIFIER.png/jpeg
@@ -88,6 +80,11 @@ class AWSservice
         $url = "{$this->imgbaseurl}/$key";
 
         return $url;
+    }
+
+    private function extractKey($url)
+    {
+        return str_replace($this->imgbaseurl, "", $url);
     }
 
     private function generateConversationID($userID1, $userID2): string
@@ -133,8 +130,8 @@ class AWSservice
                 $avg = 0;
             } else {
                 $item = $result['Item'];
-                $sum = (int)($item['ratingSum']['N'] ?? 0);
-                $count = (int)($item['ratingCount']['N'] ?? 0);
+                $sum = (int) ($item['ratingSum']['N'] ?? 0);
+                $count = (int) ($item['ratingCount']['N'] ?? 0);
                 $avg = $count > 0 ? $sum / $count : 0;
             }
 
@@ -200,7 +197,7 @@ class AWSservice
                             'Item' => [
                                 'pID' => ['S' => "PRODUCT#$productID"],
                                 'uID' => ['S' => "REVIEW#USER#$userID"],
-                                'rating' => ['N' => (string)$rating],
+                                'rating' => ['N' => (string) $rating],
                                 'comment' => ['S' => $txt],
                                 'timestamp' => ['N' => $current_time],
                                 'username' => ['S' => $username],
@@ -219,7 +216,7 @@ class AWSservice
                             ],
                             'UpdateExpression' => 'SET ratingSum = if_not_exists(ratingSum, :zero) + :r, ratingCount = if_not_exists(ratingCount, :zero) + :one',
                             'ExpressionAttributeValues' => [
-                                ':r' => ['N' => (string)$rating],
+                                ':r' => ['N' => (string) $rating],
                                 ':one' => ['N' => '1'],
                                 ':zero' => ['N' => '0']
                             ]
