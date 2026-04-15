@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="../dist/output.css" />
     <script src="/variables.js"></script>
     <script src="../javascript/account.js" defer></script>
-    <script src="../javascript/includefooter.js"></script>
+    <script src="../javascript/includefooter.js" defer></script>
     <!--This is font awesome. A free supply of icons-->
     <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
-    <script src="../javascript/includetopnav.js"></script>
+    <script src="../javascript/includetopnav.js" defer></script>
     
 </head>
 
@@ -106,26 +106,14 @@
 
             <div id="security-section" class="login-security lg:w-4/5 flex flex-col space-y-5">
                 <h4 class="text-2xl">Login & Security</h4>
-                <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
+                <form id="pwsubmit" class="flex flex-col space-y-5 bg-white p-3 [&>input]:p-2 [&>input]:border-b-2 [&>input]:border-darkgray">
 
                     <span class="text-lg font-semibold">Change User Password</span>
-                    <input type="email" placeholder="Type Existing Email">
-
-                    <input type="password" placeholder="Type New Password">
-                    <input type="password" placeholder="Confirm New Password">
+                    <input id="newpw1" type="password" placeholder="Type New Password">
+                    <input id="newpw2" type="password" placeholder="Confirm New Password">
                     <button type="submit" class="self-end bg-normalred lg:w-5/12 p-4">Change Password</button>
                 </form>
 
-                <form class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
-
-                    <span class="text-lg font-semibold">Change Email</span>
-                    <input type="password" placeholder="Type Existing Password">
-
-                    <input type="email" placeholder="Type New Email">
-                    <input type="email" placeholder="Type Old Email">
-
-                    <button type="submit" class="self-end bg-normalred lg:w-5/12 p-4">Change Email</button>
-                </form>
 
                 <div class="flex flex-col space-y-5 bg-white p-3 [&>input]:border-b-2 [&>input]:border-darkgray">
 
@@ -135,16 +123,25 @@
                 </div>
             </div>
 
-                <div id="seller-tools" class="seller-tools lg:w-4/5 bg-white p-5 shadow-sm border hidden">
+                <div id="seller-tools" class="seller-tools lg:w-4/5 bg-white p-5 shadow-sm border hidden space-y-3">
                     <h3 id="seller-section" class="text-2xl">Seller Tools</h3>
                     <p>Manage your listings and sell new products.</p>
 
-                    <a href="/pages/createlisting.html">
+                    <a href="/pages/seller/createlisting.html">
                         <button class="bg-red-600 px-5 py-3 rounded-sm">
                             + Add New Listing
                         </button>
                     </a>
+
+                    <p>Manage your listings and sell new products.</p>
+
+                    <a href="/pages/seller/adjustlisting.html">
+                        <button class="bg-red-600 px-5 py-3 rounded-sm">
+                            - View or Remove Your Listings
+                        </button>
+                    </a>
                 </div>
+
 
         </div>
 

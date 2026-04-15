@@ -14,7 +14,7 @@ if (!isset($_GET['q']) || $_GET['q'] === '') {
 try{
     $conn = require __DIR__ . "/../conn.php";
 
-    $whereSQLsearch = "product_name LIKE :pname OR author LIKE :author OR category LIKE :category";
+    $whereSQLsearch = "(product_name LIKE :pname OR author LIKE :author OR category LIKE :category) AND is_active = TRUE";
     $stmt = $conn->prepare("SELECT id, product_name, image, price, category, location FROM Products WHERE $whereSQLsearch ORDER BY id LIMIT 10 OFFSET 0");
     $stmt->execute(["pname"=> "%$query%", "author"=> "%$query%", "category"=> "%$query%"]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

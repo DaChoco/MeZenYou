@@ -4,6 +4,9 @@ const order_zone = document.getElementById("order-zone");
 const streetaddrtxt = document.getElementById('accStreetID');
 const phonetxt = document.getElementById('phoneNumID');
 
+const newpw1 = document.getElementById('newpw1')
+const newpw2 = document.getElementById('newpw2')
+
 function capitalizeFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -22,6 +25,20 @@ const formatted = date.toLocaleDateString("en-GB", {
 
 return formatted
 }
+
+document.getElementById("pwsubmit").addEventListener('submit', async (e) =>{
+  e.preventDefault();
+  if (newpw1.value !== newpw2.value){
+    alert("Passwords Don't Match");
+    return;
+  }
+  const response = await fetch(`${api}/api/account/updatepasswd.php`, {credentials: "include", method: "POST", body: JSON.stringify({password: newpw1.value})})
+  const data = await response.json();
+
+  if (data){
+    alert(data.message);
+  }
+})
 document.getElementById("logoutbtn").addEventListener("click", async () => {
   const response = await fetch(`${api}/api/auth/logout.php`, {
     method: "POST",

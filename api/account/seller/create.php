@@ -73,7 +73,7 @@ try {
 
     $product_id = (int) $conn->lastInsertId();
 
-    $image_url = $aws->uploadProductImage($product_id, $file['tmp_name'], $file['name']);
+    $image_url = $aws->uploadProductImage($product_id, $file['tmp_name']);
 
     if ($image_url === "" || !$image_url) {
         throw new Exception("SOMETHING HAS GONE WRONG WITH AWS CLASS");

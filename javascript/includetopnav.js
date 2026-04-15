@@ -4,7 +4,7 @@ const url = window.ENV.API_URL;
 let autocomplete_results = [];
 
 async function renderNavbar() {
-  const response = await fetch("../components/topnav.html");
+  const response = await fetch("/components/topnav.html");
   const html = await response.text();
   document.getElementById("topnav").innerHTML = html;
   const input_bar = document.getElementById("search-bar-items");

@@ -24,25 +24,43 @@ class AWSservice
     }
 
     #AWS S3-------------------------
-    public function uploadUserIcon($userID, $File, $name)
+    public function uploadUserIcon($userID, $File)
     {
-        return $this->uploadToS3("users", $File,$name, $userID);
+        return $this->uploadToS3("users", $File, $userID, "avatar");
     }
 
-    public function uploadProductImage($productID, $File, $name)
-    //the up to date one icon hasnt been used yet
+    public function uploadProductImage($productID, $File)
     {
-        return $this->uploadToS3("products", $File, $name, $productID);
+        return $this->uploadToS3("products", $File, $productID, "main");
+    }
+
+    public function deleteS3Image($url)
+    {
+        if (str_contains($url, $this->imgbaseurl) === false){
+            //NOT STORED ON AWS S3 BUCKET
+            return false;
+        }
+        try {
+            $this->s3->deleteObject([
+                'Bucket' => $this->bucketName,
+                'Key'    => $this->extractKey($url)
+            ]);
+
+            return true;
+        } catch (\Throwable $exception) {
+            error_log("Failed to Delete $url with error: " . $exception->getMessage());
+            return false;
+        }
     }
 
     #AWS S3-------------------------
 
 
     #HELPER PRIVATE FUNCTIONS
-    private function uploadToS3($folder, $filePath, $fileName, $id)
+    private function uploadToS3($folder, $filePath, $id, $new_name)
     //This is the main upload function, user icon and product image are wrappers to help them feel seperate
-    {
-        $key = $this->generateS3Key($folder, $fileName, $id);
+    {   
+        $key = $this->generateS3Key($folder, $filePath, $id, $new_name);
 
         try {
             $this->s3->putObject([
@@ -53,22 +71,30 @@ class AWSservice
             ]);
 
             return $this->generateImageURL($key);
-
         } catch (\Throwable $exception) {
             error_log("Failed to upload $key with error: " . $exception->getMessage());
             return "";
         }
     }
 
-    private function generateS3Key(string $type, string $filename, string $id): string
-    {
-        #key structure type/USERID/UNIQUEIDENTIFIER.png/jpeg
-        #user/43/9292939949_welt.png
+    private function generateS3Key(string $type, $tmpPath, string $id, string $new_name): string
+    {   #filename is that original filename the image had before
+        #key structure type/USERID/avatar.png/jpeg
+        #user/43/avatar.png
 
-        $safeFilename = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $filename);
+        $mime = mime_content_type($tmpPath);
 
-        $timestamp = time();
-        return "{$type}/{$id}/{$timestamp}_{$safeFilename}";
+        $allowedMime = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/webp' => 'webp'
+        ];
+
+    if (!isset($allowedMime[$mime])) {
+        throw new Exception("Invalid file type");
+    }
+
+        return "{$type}/{$id}/{$new_name}.{$allowedMime[$mime]}";
     }
 
     public function generateImageURL(string $key)
@@ -84,7 +110,7 @@ class AWSservice
 
     private function extractKey($url)
     {
-        return str_replace($this->imgbaseurl, "", $url);
+        return str_replace("{$this->imgbaseurl}/", "", $url);
     }
 
     private function generateConversationID($userID1, $userID2): string

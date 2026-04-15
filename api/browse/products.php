@@ -16,6 +16,8 @@ try {
     $filters = [];
     $whereClauses = [];
 
+    $whereClauses[] = "is_active = TRUE";
+
     if ($min !== null) {
         $whereClauses[] = "price >= :minprice";
         $filters["minprice"] = $min;

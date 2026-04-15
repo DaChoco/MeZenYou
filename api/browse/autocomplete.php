@@ -9,7 +9,7 @@ if (!isset($name) || strlen($name)<2){
     http_response_code(403);
     echo json_encode(["results" =>[]]);
 }
-    $statement = $conn->prepare("SELECT id, product_name FROM Products WHERE product_name LIKE :product_name OR author LIKE :author LIMIT 10");
+    $statement = $conn->prepare("SELECT id, product_name FROM Products WHERE (product_name LIKE :product_name OR author LIKE :author) AND is_active = TRUE LIMIT 10");
     $statement->execute(["product_name" => "%$name%", "author" => "%$name%"]);
 try{
 

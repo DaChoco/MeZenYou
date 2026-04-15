@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 if (!isset($_SESSION["user_id"])) {
     http_response_code(403);
     echo json_encode(["redirect" => "/"]);
-    exit();
+    exit;
 }
 $role = $_SESSION["role"];
 $id = $_SESSION["user_id"];
