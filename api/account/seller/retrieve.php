@@ -5,14 +5,15 @@ header("Content-Type: application/json");
 
 $conn = require __DIR__ .'/../../conn.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Filters
-$category = isset($_GET['category']) && $_GET['category'] !== '' ? (string)$_GET['category']: null;
-$min = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
-$max = isset($_GET['max']) && $_GET['max'] !== '' ? (int)$_GET['max'] : null;
-$page = isset($_GET['p']) && $_GET['p'] !== '' ? (string)$_GET['p']: null;
 
 if (!isset($_SESSION["user_id"])) {
     http_response_code(403);
+    error_log(print_r($_SESSION, true));
     echo json_encode(["redirect" => "/"]);
     exit();
 }

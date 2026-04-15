@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function loadSellerProducts() {
-    const response = await fetch(`${API_URL}/api/account/seller/retrieve.php`);
+    const response = await fetch(`${API_URL}/api/account/seller/retrieve.php`, {credentials: "include"});
 
     const data = await response.json();
 

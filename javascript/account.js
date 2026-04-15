@@ -7,6 +7,8 @@ const phonetxt = document.getElementById('phoneNumID');
 const newpw1 = document.getElementById('newpw1')
 const newpw2 = document.getElementById('newpw2')
 
+const iconselect = document.getElementById('iconupload')
+
 function capitalizeFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -25,6 +27,19 @@ const formatted = date.toLocaleDateString("en-GB", {
 
 return formatted
 }
+
+document.getElementById("iconsubmit").addEventListener('submit', async (e) =>{
+  e.preventDefault();
+  const formData = new FormData();
+  const selectedFile = iconselect.files[0];
+  formData.append("image", selectedFile);
+  const response = await fetch(`${api}/api/account/uploadicon.php`, {credentials: "include", method: "POST", body: formData})
+  const data = await response.json()
+
+  alert(data.message);
+  console.log(data)
+
+})
 
 document.getElementById("pwsubmit").addEventListener('submit', async (e) =>{
   e.preventDefault();
