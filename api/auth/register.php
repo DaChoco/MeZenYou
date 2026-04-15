@@ -43,8 +43,14 @@ try{
         echo json_encode(["error" => "User with this Email already exists"]);
         exit;
     }
-
-    $statement = $conn->prepare("INSERT INTO users (email, password_hash, username) VALUES (:email, :password_hash, :username)");
+    $SQL = "";
+    if (isset($data["is_seller"])){
+        $SQL = "INSERT INTO users (email, password_hash, username, user_role) VALUES (:email, :password_hash, :username, 'seller')";
+    }
+    else{
+        $SQL = "INSERT INTO users (email, password_hash, username) VALUES (:email, :password_hash, :username)";
+    }
+    $statement = $conn->prepare($SQL);
     $statement->execute(['email' => $email, 'password_hash' => $hashed_password, 'username'=> $username]);
 
     //SUCCESSFUL REGISTRATION ACHIEVED!

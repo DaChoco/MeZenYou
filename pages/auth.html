@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
     <link rel="stylesheet" href="/dist/output.css" />
-    <script src="/javascript/includefooter.js"></script>
+    <script src="/javascript/includefooter.js" defer></script>
    
     <script src="/variables.js"></script>
-    <script src="/javascript/includetopnav.js"></script>
+    <script src="/javascript/includetopnav.js" defer></script>
     <script src="/javascript/auth.js" defer></script>
     <!--This is font awesome. A free supply of icons-->
     <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
@@ -52,12 +52,11 @@
     </form>
 
     <form id="buyerRegister" class="flex flex-col w-2/5 my-5 mx-auto py-10 px-12 space-y-4 bg-white rounded-md">
-        <h2 class="text-2xl font-extrabold text-center">Buyer Registration</h2>
-        <input type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
-        
-        <input type="text" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Full Name">
-        <input type="text" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Address">
-        <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
+        <h2 class="text-2xl font-extrabold text-center">Seller Registration</h2>
+        <input id="selleremail" type="email" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Email">
+        <input id="sellername" type="text" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Full Name">
+        <input id="selleraddress" type="text" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Address">
+        <input id="sellerpw" type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Password">
         <input type="password" class="border-b-4 border-gray-700 px-2 py-3" placeholder="Confirm Password">
         
         <button type="submit" class="bg-red-600 p-3 rounded-md text-white">Login</button>

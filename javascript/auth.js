@@ -47,6 +47,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+document.getElementById('buyerRegister').addEventListener("submit", async (e)=>{
+  const email_seller = document.getElementById('selleremail');
+  const name_seller = document.getElementById('sellername');
+  const address_seller = document.getElementById('selleraddress');
+  const password_seller = document.getElementById('sellerpw');
+
+  if (email_seller === null || password_seller === null) {
+        console.log("INCOMPLETE DATA")
+    } else {
+      const res = await fetch(`${api}/api/auth/register.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email_seller, password: password_seller, username: name_seller, is_seller: true }),
+      });
+
+      const data = await res.json();
+      if (data.redirect){
+
+        window.location.href = data.redirect;
+      }
+      console.log(data);
+    }
+
+
+})
+
 //CALL /api/register.php
 document.getElementById("registerid").addEventListener("submit", async (e) => {
     e.preventDefault(); 

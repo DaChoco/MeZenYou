@@ -69,6 +69,8 @@ document.getElementById("logoutbtn").addEventListener("click", async () => {
 });
 
 async function loadUser() {
+  console.log("User Agent:", navigator.userAgent);
+  console.log("Platform:", navigator.platform);
   const res = await fetch(`${api}/api/account/role.php`, {
     credentials: "include",
   });
