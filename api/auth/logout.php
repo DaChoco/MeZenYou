@@ -4,7 +4,7 @@ require_once "../session.php";
 
 $_SESSION = [];
 
-
+session_destroy();
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(

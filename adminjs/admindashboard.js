@@ -21,14 +21,14 @@ async function retrieveProvincialData() {
 
 }
 
-async function retrieveAdminIcon(){
+async function retrieveAdminUserData() {
     const res = await fetch(`${API}/api/account/role.php`, {
-    credentials: "include",
-  });
+        credentials: "include",
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  return data.icon
+    return data
 }
 document.addEventListener("DOMContentLoaded", async () => {
     // Geting the canvas
@@ -36,10 +36,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     var salesctx = document.getElementById('mySalesChart').getContext('2d');
     var piectx = document.getElementById('pieconversion');
     const adminicon = document.getElementById('adminicon');
-    const perProvince = await retrieveProvincialData();
-    const icon = await retrieveAdminIcon();
+    const currentuser = document.getElementById('currentuser');
+    const currentrole = document.getElementById('rolepage');
+    const signoutbtn = document.getElementById('signoutbtn');
 
-    adminicon.setAttribute("src", `${icon}?tr=w-200,c-maintain_ratio`);
+    signoutbtn.addEventListener('click', async () => {
+        const res = await fetch(`${API}/api/auth/logout.php`, { credentials: "include" });
+
+        const data = await res.json();
+        if (data.success) window.location.href = '/';
+    })
+
+
+    const perProvince = await retrieveProvincialData();
+    const data = await retrieveAdminUserData();
+    currentuser.innerText = data["username"];
+    if (data['role'] === "ADMIN") currentrole.innerText = "Head Website Administrator";
+    if (data['role'] === "MODERATOR") currentrole.innerText = "Content Moderator"
+
+    adminicon.setAttribute("src", `${data["icon"]}?tr=w-200,c-maintain_ratio`);
 
     // Creating a new chart instance
     var myChart = new Chart(ctx, {

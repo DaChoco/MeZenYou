@@ -40,7 +40,7 @@
       <div id="topbar" class="w-full flex flex-row h-[100px] bg-white [&>*]:p-2 items-center justify-between">
         <div class="h-1/2 align-middle ">
           <ul class="flex flex-row space-x-2 [&>*]:text-sm">
-            <li><a href="/index.php">Sign Out</a></li>
+            <li id="signoutbtn">Sign Out</li>
             <li>Notifications</li>
           </ul>
         </div>
@@ -61,8 +61,8 @@
         <div class="h-full w-5/12 grid grid-rows-1 grid-cols-[80px_1fr] gap-x-5">
           <img id="adminicon" class="object-contain rounded-full" src="" alt="ADMIN ICON" />
           <div class="flex flex-col">
-            <span class="text-lg font-semibold">Maile Chokoe</span>
-            <p>Head Website Administrator</p>
+            <span id="currentuser" class="text-lg font-semibold">Maile Chokoe</span>
+            <p id="rolepage">Head Website Administrator</p>
           </div>
         </div>
       </div>

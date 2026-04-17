@@ -114,11 +114,11 @@ function renderTableRows() {
         const tablerow = document.createElement('tr')
         tablerow.className = "[&>*]:p-2"
         const status_class = user.status === "ACTIVE" ? "bg-green-400 text-black" : "bg-normalred text-white";
-
+        const user_icon = user.icon ? `${user.icon}?tr=200,c-maintain_ratio` : "";
         const role_class = rolecolors[user.role] || "";
         tablerow.innerHTML = `
                         <td>${user.id}</td>
-                        <td><img src="${user.icon}?tr=200,c-maintain_ratio" alt="${user.username}" class="rounded-full w-12 p-0"></td>
+                        <td><img src="${user_icon}" alt="${user.username}" class="rounded-full w-12 p-0"></td>
                         <td>${user.email}</td>
                         <td contenteditable="true" tabindex="0" id="ROLE-${user.id}" class="${role_class}">${user.role}</td>
                         <td contenteditable="true" tabindex="0" id="STATUS-${user.id}" class="${status_class}">${user.status}</td>
