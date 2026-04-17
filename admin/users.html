@@ -9,10 +9,26 @@
     <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
     <script src="/variables.js"></script>
     <script src="/adminjs/includesidenav.js"></script>
+    <script src="/adminjs/adminusers.js" defer></script>
+    <script src="/adminjs/adminstyles.js" defer></script>
     <link rel="stylesheet" href="/dist/output.css" />
 </head>
 
 <body>
+     <!--Report Logs-->
+<div id="report-logs" class="left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] h-screen fixed w-[500px] bg-white flex-col z-[500] hidden">
+
+        <div id="box-topnav" class="bg-darkgray h-[10%] w-full text-white font-semibold text-lg flex flex-col relative p-4">
+            <button id="report-x" class="self-end absolute top-0 right-0 bg-normalred p-3">X</button>
+            <span>Reports Log</span>
+        </div>
+
+        <ul class="space-y-4 [&>*]:p-3">
+            <li>#335 - Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, accusantium.</li>
+            <li>#334 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, ipsum!</li>
+            <li>#333 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, reprehenderit?</li>
+        </ul>
+</div>
     <section id="layout-admin" class="grid h-screen transition-all duration-100">
         <div id="sidebar-container"></div>
 
@@ -23,65 +39,9 @@
             </div>
 
             <div class="p-5 space-y-5">
-                <table
-                    class="border-collapse border border-black [&_th]:border [&_td]:border [&_th]:border-black [&_td]:border-black [&_*]:text-sm [&_*]:p-2 w-full mx-auto">
-                    <tr class="bg-darkgray text-white">
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Registered</th>
-                        <th>Last Active</th>
-                        <th>Actions</th>
-                    </tr>
-
-                    <tr>
-                        <td>1</td>
-                        <td>WeltChoko@gmail.com</td>
-                        <td>ADMIN</td>
-                        <td class="bg-green-400">ACTIVE</td>
-                        <td>13 February 2026</td>
-                        <td>5 mins ago</td>
-                        <td>
-                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>jane.doe@example.com</td>
-                        <td>USER</td>
-                        <td class="bg-green-400">ACTIVE</td>
-                        <td>2 January 2026</td>
-                        <td>1 hour ago</td>
-                        <td>
-                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>3</td>
-                        <td>mike.smith@example.com</td>
-                        <td>MODERATOR</td>
-                        <td class="bg-normalred">BANNED</td>
-                        <td>18 March 2026</td>
-                        <td>2 days ago</td>
-                        <td>
-                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>4</td>
-                        <td>lisa.brown@example.com</td>
-                        <td>USER</td>
-                        <td class="bg-normalred">DELETED</td>
-                        <td>25 February 2026</td>
-                        <td>Just now</td>
-                        <td>
-                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
-                        </td>
-                    </tr>
+                <table id="user-table"
+                    class="border-collapse border border-black [&_th]:border [&_td]:border [&_th]:border-black [&_td]:border-black [&_*]:text-sm w-full mx-auto">
+                    
                 </table>
 
                 <div class="flex flex-row justify-between">
@@ -99,7 +59,7 @@
         </section>
     </section>
 
-    <script src="/adminjs/adminstyles.js" defer></script>
+    
 </body>
 
 </html>

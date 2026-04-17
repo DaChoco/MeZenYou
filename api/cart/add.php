@@ -58,7 +58,7 @@ try {
         exit;
     }
     //DOES THE USER EVEN HAVE A CART
-    $statement = $conn->prepare("SELECT id FROM Carts WHERE user_id = :userid");
+    $statement = $conn->prepare("SELECT id FROM Carts WHERE user_id = :userid AND user_status = 'ACTIVE'");
     $statement->execute(["userid" => $userID]);
     $cart = $statement->fetch(PDO::FETCH_ASSOC);
 

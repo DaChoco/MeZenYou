@@ -42,15 +42,15 @@ try{
     $conn->beginTransaction();
     //STATEMENT #1
     $statement = $conn->prepare("SELECT c.id as cart_id
-        FROM Carts c
-        WHERE c.user_id = :id
+        FROM Carts c INNER JOIN users ON c.user_id = users.id
+        WHERE c.user_id = :id AND user_status = 'ACTIVE'
         LIMIT 1
     ");
     
     $statement->execute(["id" => $user_id]);
     $cart = $statement->fetch(PDO::FETCH_ASSOC);
      if (!$cart) {
-        throw new Exception("Cart not found");
+        throw new Exception("Cart not found OR User May be banned");
     }
 
     $cart_id = $cart['cart_id'];
