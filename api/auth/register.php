@@ -6,6 +6,7 @@ require_once "../session.php";
 //MAKE SURE THIS IS JSON OR REJECT THE REQUEST------------------------------------
 
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
@@ -27,6 +28,7 @@ if (!$data['email'] || !$data['password']) {
 $email = trim($data['email']);
 $password = $data['password'];
 $username = $data['username'];
+$address = trim($data['address']);
 
 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 //THEREST-----------------------------------------------------
@@ -44,14 +46,22 @@ try{
         exit;
     }
     $SQL = "";
+    $params = [];
     if (isset($data["is_seller"])){
-        $SQL = "INSERT INTO users (email, password_hash, username, user_role) VALUES (:email, :password_hash, :username, 'seller')";
+        if (!isset($data['address'])){
+        http_response_code(409);
+        echo json_encode(["message" => "Missing Address!"]); 
+        exit;
+        }
+        $SQL = "INSERT INTO users (email, password_hash, username, address, user_role) VALUES (:email, :password_hash, :username, :address, 'seller')";
+        $params = ['email' => $email, 'password_hash' => $hashed_password, 'username'=> $username, 'address'=> $address];
     }
     else{
         $SQL = "INSERT INTO users (email, password_hash, username) VALUES (:email, :password_hash, :username)";
+        $params = ['email' => $email, 'password_hash' => $hashed_password, 'username'=> $username];
     }
     $statement = $conn->prepare($SQL);
-    $statement->execute(['email' => $email, 'password_hash' => $hashed_password, 'username'=> $username]);
+    $statement->execute($params);
 
     //SUCCESSFUL REGISTRATION ACHIEVED!
     
@@ -59,6 +69,7 @@ try{
     $_SESSION['user_id'] = $conn->lastInsertId();
     $_SESSION['email'] = $email;
     $_SESSION['username'] = $data['username'];
+    $_SESSION['role'] = 'seller';
     http_response_code(201);
     echo json_encode([
         "message" => "User registered successfully",
@@ -69,7 +80,13 @@ try{
 }
 catch (PDOException $e) {
     http_response_code(500);
+    error_log("SQL ERROR: " .$e->getMessage());
     echo json_encode(["error" => "INTERNAL SERVER ERROR" ]);
+}
+catch (Exception $e){
+    error_log("GENERAL ERROR: " .$e->getMessage());
+    echo json_encode(["error" => "INTERNAL SERVER ERROR" ]);
+
 }
 
 

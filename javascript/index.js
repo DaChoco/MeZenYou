@@ -1,11 +1,17 @@
 const api = window.ENV.API_URL;
-const queryString = window.location.search;
+const queryString = window.location.href;
 
-const urlParams = new URLSearchParams(queryString);
-const searchParams = urlParams.get("q");
+const urlbar = new URL(queryString);
+if (!urlbar.searchParams.has("pg")) {
+    urlbar.searchParams.set("pg", "1");
+    window.history.replaceState({}, "", urlbar);
+}
+
+const searchParams = urlbar.searchParams.get('q');
+const pageNum = Number(urlbar.searchParams.get('pg'));
+console.log(pageNum)
 const container = document.getElementById("product_section_id");
 const userEmail = document.getElementById("userEmail");
-
 const layout = document.getElementById("layout");
 const closenav = document.getElementById("closeid");
 
@@ -24,7 +30,7 @@ async function loadProducts() {
   const min = document.getElementById("minPrice");
   const max = document.getElementById("maxPrice");
 
-  let url = `${api}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}`;
+  let url = `${api}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}&pg=${pageNum}`;
 
   const res = await fetch(url, {
     credentials: "include",
@@ -40,6 +46,7 @@ async function loadProducts() {
     : "Not logged in";
   const reviews = await reviewscores();
   renderProducts(data.products, reviews);
+  renderPageBoxes(data.totalpages);
 }
 async function reviewscores() {
   const response = await fetch(`${api}/api/browse/reviewscores.php`);
@@ -81,6 +88,67 @@ function renderProducts(products, reviews) {
 
     container.appendChild(card);
   });
+}
+
+function renderPageBoxes(totalPages){
+  const outputarea = document.getElementById('page-btns')
+  const btnclasses = `p-3 border-2 border-black pgbtn hover:border-white hover:bg-hoverbtnred hover:text-white`;
+  outputarea.innerHTML = "";
+  const leftarrow = document.createElement("li")
+  leftarrow.setAttribute('id', "leftarrowid")
+  leftarrow.innerText = "<-"
+  leftarrow.className = btnclasses
+  leftarrow.addEventListener('click', ()=> prevPage());
+  
+  const pageboxcontainer = document.createElement('ul');
+  pageboxcontainer.append(leftarrow)
+  pageboxcontainer.className = `flex flex-row w-full p-0 relative space-x-5 justify-end`;
+  for (let i = 1; i<totalPages+1; i++){
+    const btncard = document.createElement('li')
+    btncard.setAttribute('id', `pgnum${i}`)
+    btncard.className = btnclasses;
+    btncard.innerText = i;
+
+    btncard.addEventListener('click', async ()=>{
+      urlbar.searchParams.set('pg', btncard.innerText);
+      window.location.href = urlbar.toString();
+    })
+    pageboxcontainer.append(btncard)
+
+
+  }
+  const rightarrow = document.createElement("li")
+  rightarrow.setAttribute('id', "rightarrowid")
+  rightarrow.className = btnclasses;
+  rightarrow.innerText = "->"
+  rightarrow.addEventListener('click', ()=> nextPage(totalPages));
+  pageboxcontainer.append(rightarrow);
+  outputarea.append(pageboxcontainer);
+  
+}
+
+function nextPage(maxValue){
+  if (pageNum < maxValue){
+  urlbar.searchParams.set('pg', String(pageNum + 1))
+  window.location.href = urlbar.toString();
+
+  }
+  else{
+    alert("This is the highest number of pages.")
+  }
+  
+}
+
+function prevPage(){
+  if (pageNum > 1){
+    urlbar.searchParams.set('pg', String(pageNum - 1))
+    window.location.href = urlbar.toString();
+  }
+  else{
+    alert("This is the lowest number of pages.")
+  }
+  
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {

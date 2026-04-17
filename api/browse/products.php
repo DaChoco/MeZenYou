@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 $category = isset($_GET['category']) && $_GET['category'] !== '' ? (string)$_GET['category']: null;
 $min = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
 $max = isset($_GET['max']) && $_GET['max'] !== '' ? (int)$_GET['max'] : null;
-$page = isset($_GET['p']) && $_GET['p'] !== '' ? (string)$_GET['p']: null;
+$page = isset($_GET['pg']) && $_GET['pg'] !== '' ? (string)$_GET['pg']: null;
 
 //THE REAL RESULTS
 $conn = require __DIR__ . "/../conn.php";
@@ -33,8 +33,11 @@ try {
         $filters["category"] = $category;
     }
 
-    if ($page === null){
+    if ($page === null || $page < 1){
         $page = 0;
+    }
+    else{
+        --$page;
     }
 
     $page = max(0, (int)$page);
@@ -49,15 +52,26 @@ try {
     $stmt->execute($filters);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $countStmt = $conn->prepare("
+    SELECT COUNT(*) as total 
+    FROM Products 
+    $whereSQL");
+    $countStmt->execute();
+
+    $totalRows = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $limit = 10;
+    $totalPages = ceil($totalRows / $limit);
+
+    http_response_code(200);
+    echo json_encode([
+    "products" => $results,
+    "user" => $_SESSION['username'] ?? null,
+    "totalpages"=> $totalPages]);
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(["error" => "Database error: " . $e->getMessage()]);
-    return;
 }
 
-http_response_code(200);
-echo json_encode([
-    "products" => $results,
-    "user" => $_SESSION['username'] ?? null
 
-]);

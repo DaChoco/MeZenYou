@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./dist/output.css" />
+    <link rel="stylesheet" href="/dist/output.css" />
     <title>Home</title>
     
     <script src="/variables.js"></script>
@@ -57,16 +57,18 @@
             </ul>
 
         </div>
+        <div>
+            <section id="product_section_id" class="grid grid-cols-2 
+            sm:grid-cols-3 md:grid-cols-4 
+            lg:grid-cols-[repeat(auto-fill,minmax(150px,1fr))] 
+            gap-3 sm:gap-6 items-start content-start
+            p-4 sm:p-6 lg:p-10">
+            </section>
+        <div id="page-btns" class="m-5"></div>
 
-        <section id="product_section_id" class="grid grid-cols-2 
-        sm:grid-cols-3 md:grid-cols-4 
-        lg:grid-cols-[repeat(auto-fill,minmax(150px,1fr))] 
-        gap-3 sm:gap-6 items-start content-start
-        
-        p-4 sm:p-6 lg:p-10">
-            
-        </section>
+        </div>
     </div>
+    
 
     <!--Reusable component-->
     <div id="footer"></div>

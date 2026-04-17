@@ -48,25 +48,31 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById('buyerRegister').addEventListener("submit", async (e)=>{
+  e.preventDefault();
   const email_seller = document.getElementById('selleremail');
   const name_seller = document.getElementById('sellername');
   const address_seller = document.getElementById('selleraddress');
   const password_seller = document.getElementById('sellerpw');
 
-  if (email_seller === null || password_seller === null) {
+  const uaddress = address_seller.value.replace(", ", "-")
+
+  if (email_seller.value === null || password_seller.value === null) {
         console.log("INCOMPLETE DATA")
     } else {
       const res = await fetch(`${api}/api/auth/register.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email: email_seller, password: password_seller, username: name_seller, is_seller: true }),
+        body: JSON.stringify({ email: email_seller.value, password: password_seller.value, username: name_seller.value, is_seller: true, address: uaddress }),
       });
 
       const data = await res.json();
       if (data.redirect){
-
         window.location.href = data.redirect;
+      }
+      else{
+        alert(data.message)
+        console.log(data.error)
       }
       console.log(data);
     }
@@ -94,7 +100,6 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
 
       const data = await res.json();
       if (data.redirect){
-
         window.location.href = data.redirect;
       }
       console.log(data);
