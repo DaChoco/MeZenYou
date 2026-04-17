@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const perProvince = await retrieveProvincialData();
     const icon = await retrieveAdminIcon();
 
-    adminicon.setAttribute("src", icon);
+    adminicon.setAttribute("src", `${icon}?tr=w-200,c-maintain_ratio`);
 
     // Creating a new chart instance
     var myChart = new Chart(ctx, {
