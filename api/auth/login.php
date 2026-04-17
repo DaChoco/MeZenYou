@@ -32,7 +32,7 @@ $password = $data['password'];
 $conn = require '../conn.php';
 
 try {
-    $stmt = $conn->prepare("SELECT id, username, password_hash, user_role FROM Users WHERE email = :email");
+    $stmt = $conn->prepare("SELECT id, username, password_hash, user_role, user_status FROM Users WHERE email = :email");
     $stmt->execute(["email" => $email]);
 
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,6 +43,14 @@ try {
         echo json_encode(["error" => "INVALID CREDENTIALS"]);
         exit;
     }
+
+    if ($result['user_status'] === 'DELETED' || $result['user_status'] === 'BANNED') {
+    session_unset();
+    session_destroy();
+    http_response_code(403);
+    echo json_encode(["error" => "Account has been deleted"]);
+    exit;
+}
 
     $password_hash = $result['password_hash'];
     $user_id = $result['id'];

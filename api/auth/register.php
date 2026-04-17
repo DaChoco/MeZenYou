@@ -35,14 +35,16 @@ $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 $conn = require '../conn.php';
 
 try{
-    $statement = $conn->prepare("SELECT id FROM Users WHERE email = :email");
+    $statement = $conn->prepare("SELECT id FROM Users WHERE email = :email AND user_status = 'ACTIVE'");
     $statement->execute(['email' => $email]);
 
 
     //IF there is more than one item this means already exists
     if ($statement->rowCount() > 0) {
         http_response_code(409);
-        echo json_encode(["error" => "User with this Email already exists"]);
+        session_unset();
+        session_destroy();
+        echo json_encode(["error" => "INVALID"]);
         exit;
     }
     $SQL = "";

@@ -1,8 +1,8 @@
 const API = window.ENV.API_URL;
 let usersState = [];
 const rolecolors = {
-    ADMIN: "bg-[#21d5db]",
-    MODERATOR: "bg-[#1f7acf]",
+    ADMIN: "bg-[#87f1f5]",
+    MODERATOR: "bg-[#51aafc]",
     seller: "bg-[#d9980d]",
     buyer: "bg-[#e8300c]"
 
@@ -23,6 +23,34 @@ function timeConverter(createdat) {
 document.addEventListener('DOMContentLoaded', async () => {
     await loadUsers();
 })
+async function deleteUser(userid){
+    let url = `${API}/api/admin/delete.php`;
+    const body ={deleted_id: userid};
+
+    const response = await fetch(url, { credentials: "include", method: "POST", body: JSON.stringify(body) });
+    const data = await response.json();
+    alert(data.message);
+    if (!data.success){
+        return;
+    }
+
+    console.log(data.message)
+
+    usersState = usersState.map(user => {
+        if (user.id !== userid) return user;
+
+        return {
+            ...user,
+            status: "DELETED"
+        };
+    })
+
+    renderTableRows();
+
+
+
+
+}
 async function changeStatus(newStatus, newRole, userid) {
     let url = `${API}/api/admin/modifyuser.php`;
 
@@ -97,12 +125,25 @@ function renderTableRows() {
                         <td>${timeConverter(user.created_at)}</td>
                         <td>5 mins ago</td>
                         <td>
-                            <i class="fa-solid fa-pen-to-square"></i><i class="fa-solid fa-trash text-normalred"></i>
+                            <i id="DELETE-${user.id}" class="fa-solid fa-trash text-normalred"></i>
                         </td>
                     `
         myTable.append(tablerow);
         const status_element = tablerow.querySelector(`#STATUS-${user.id}`);
         const role_element = tablerow.querySelector(`#ROLE-${user.id}`);
+        const delete_btn = tablerow.querySelector(`#DELETE-${user.id}`)
+
+        delete_btn.addEventListener('click', async (e)=>{
+            if(confirm(`Are you sure you wish to delete ${user.username}. Note if you do, there is no reversing this.`)){
+                await deleteUser(user.id)
+
+            }
+            else{
+                return;
+
+            }
+
+        })
 
         status_element.addEventListener('keydown', async (e) => {
 
