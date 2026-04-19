@@ -92,21 +92,21 @@ async function loadProduct() {
 
   async function renderProduct(product, user) {
     section_container.innerHTML = `
-    <div class="image-section">
-            <img src="${product["image"]}" alt="" class="w-1/2 mx-auto my-0">
+    <div class="image-section h-fit md:h-auto">
+            <img src="${product["image"]}" alt="" class=" w-full md:w-1/2 mx-auto my-0">
         </div>
 
         <div class="add-to-cart-or-buy row-span-2 bg-white border-2 border-red-500">
 
             <div class="top-fourth border-b-2 border-gray-400">
-                <h1 class="text-4xl">${product["product_name"]}</h1>
+                <h1 class="text-2xl md:text-4xl">${product["product_name"]}</h1>
                 <p>By ${product["author"]}</p>
                 <p class="text-xl">February 2026</p>
 
             </div>
 
             <div class="middle-fourth border-b-2 border-gray-400 py-2">
-                <span class="text-4xl font-bold">R${product["price"]}</span>
+                <span class="text-2xl md:text-4xl font-bold">R${product["price"]}</span>
                 <p>All prices include VAT</p>
                 <p>Get it Tommorrow for an extra R30.00</p>
                 <p>Deliver to ${user} - Sea Point, Cape Town</p>

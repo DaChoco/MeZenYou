@@ -58,7 +58,7 @@ try {
         exit;
     }
     //DOES THE USER EVEN HAVE A CART
-    $statement = $conn->prepare("SELECT id FROM Carts WHERE user_id = :userid AND user_status = 'ACTIVE'");
+    $statement = $conn->prepare("SELECT Carts.id FROM Carts INNER JOIN Users ON Carts.user_id = Users.id WHERE user_id = :userid AND user_status = 'ACTIVE'");
     $statement->execute(["userid" => $userID]);
     $cart = $statement->fetch(PDO::FETCH_ASSOC);
 

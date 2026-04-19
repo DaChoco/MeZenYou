@@ -77,16 +77,16 @@ async function renderCart(cart) {
 
   cart.forEach(item => {
     const cartitemcard = document.createElement('article');
-    cartitemcard.className = 'grid grid-cols-[1fr_2fr_1fr] gap-3'
+    cartitemcard.className = 'grid grid-cols-3 md:grid-cols-[1fr_2fr_1fr] gap-3'
     cartitemcard.innerHTML = `<img src=${item.image} alt="" class="object-contain">
                         <div class="flex flex-col justify-between">
 
                             <div>
-                                <span class="font-semibold text-lg">${item.product_name}</span>
+                                <span class="font-semibold text-sm md:text-lg">${item.product_name}</span>
                                 <p>${item.quantity}x</p>
                             </div>
 
-                            <p class="font-bold text-xl">R${item.totalprice.toFixed(2)}</p>
+                            <p class="font-bold md:text-xl">R${item.totalprice.toFixed(2)}</p>
                         </div>
 
                         <input data-pid=${item.product_id} min="0" placeholder="type..." value=${item.quantity}  type="number" class="h-fit p-3 text-lg focus:border-hoverbtnred">`
