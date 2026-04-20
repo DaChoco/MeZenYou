@@ -1,23 +1,34 @@
 const API = window.ENV.API_URL;
 const provinces = ['Western Cape', 'Kwa-Zulu Natal', 'Gauteng', 'Limpopo', 'North-West', 'Mmpumalanga', 'Northern Cape', 'Eastern Cape', 'Free State'];
-
-async function retrieveProvincialData() {
-    let url = `${API}/api/admin/provincial.php`;
+const categories = ['Novels','Comics/Manga', 'Video Games', 'Electronics', 'Office', 'Colelctibles', 'Other']
+async function retrieveChartlData() {
+    let url = `${API}/api/admin/charts.php`;
 
     const response = await fetch(url, { credentials: "include" });
     const data = await response.json()
     console.log(data)
     const provincialusers = data.data_province
+    const categoryusers = data.data_category;
 
-    const map = {};
+    const provincemap = {};
+    const categorymap = {};
 
     provincialusers.forEach(item => {
         if (item.province) {
-            map[item.province] = item.clients;
+            provincemap[item.province] = item.clients;
         }
     });
-    const orderedClients = provinces.map(prov => map[prov] ?? 0);
-    return orderedClients;
+
+    categoryusers.forEach(item=>{
+        if (item.category){
+            categorymap[item.category] = item.total_sales
+        }
+    });
+    const orderedCategory = categories.map(cat => categorymap[cat] ?? 0)
+    const orderedClients = provinces.map(prov => provincemap[prov] ?? 0);
+
+
+    return {prov: orderedClients, categ: orderedCategory};
 
 }
 
@@ -48,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
 
 
-    const perProvince = await retrieveProvincialData();
+    const chartData = await retrieveChartlData();
     const data = await retrieveAdminUserData();
     currentuser.innerText = data["username"];
     if (data['role'] === "ADMIN") currentrole.innerText = "Head Website Administrator";
@@ -63,9 +74,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             labels: provinces, // X-axis labels
             datasets: [{
                 label: 'Users', // Dataset label for legend
-                data: perProvince,
+                data: chartData.prov,
                 backgroundColor: ['#1264B5', '#0A6624', '#D91F0B', '#95C221', '#D6910F', '#353238', '#EBE41E', '#A3268E', '#733A19'],
-                borderColor: [ /* Array of colors for borders */],
                 borderWidth: 1
             }]
         },
@@ -82,12 +92,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     var mySalesChart = new Chart(salesctx, {
         type: 'bar',
         data: {
-            labels: ['Novels', 'Comics/Manga', 'Video Games', 'Electronics', 'Office', 'Beauty'], // X-axis labels
+            labels: categories, // X-axis labels
             datasets: [{
-                label: 'Users', // Dataset label for legend
-                data: [3000, 7000, 892, 117, 416, 260],
+                label: 'Price (ZAR)', 
+                data: chartData.categ,
                 backgroundColor: ['#1264B5', '#0A6624', '#D91F0B', '#95C221', '#1264B5', '#1264B5'],
-                borderColor: [ /* Array of colors for borders */],
                 borderWidth: 1
             }]
         },

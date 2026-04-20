@@ -1,6 +1,7 @@
 document.addEventListener("sidebarLoaded", () => {
   const toggleBtn = document.getElementById("menuToggle");
   const layout = document.getElementById("layout-admin");
+  const nav = document.getElementById('sidebar');
 
   if (!toggleBtn || !layout) return;
 
@@ -8,6 +9,7 @@ document.addEventListener("sidebarLoaded", () => {
     console.log("HELLO");
 
     layout.classList.toggle("sidebar-collapsed");
+
 
   
     const icons = document.querySelectorAll(".fa-solid.hover\\:text-blue-500");

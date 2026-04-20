@@ -33,7 +33,7 @@
             <li>#333 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, reprehenderit?</li>
         </ul>
 </div>
-  <section id="layout-admin" class="grid h-auto transition-all duration-100">
+  <section id="layout-admin" class="grid grid-cols-1 lg:grid-cols-[auto_1fr] h-auto transition-all duration-100">
     <div id="sidebar-container" class="h-full"></div>
 
     <div>
@@ -67,14 +67,14 @@
         </div>
       </div>
 
-      <div class="lg:h-screen lg:overflow-y-auto grid lg:grid-cols-4 [&>*]:flex [&>*]:flex-col [&>*]:items-center  [&>*]:bg-white gap-6 m-5 [&>*]:shadow-md [&>*]:p-5">
+      <div class="lg:h-screen lg:overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 [&>*]:flex [&>*]:flex-col [&>*]:items-center  [&>*]:bg-white gap-6 m-5 [&>*]:shadow-md [&>*]:p-5">
         <div id="total-traffic">
           <i class="fa-solid fa-eye fa-2x"></i>
           <span class="text-xl font-extrabold">41.3K</span>
           <span>User Traffic</span>
         </div>
 
-        <div id="commission" class="lg:col-span-2 md:col-span-1">
+        <div id="commission" class="col-span-1 sm:col-span-2 lg:col-span-2">
           <i class="fa-solid fa-money-bill fa-2x"></i>
           <span class="text-xl font-extrabold">R30.6K</span>
           <span>Total Commission Fees</span>
@@ -88,12 +88,12 @@
         </div>
 
         <!--Lets me see how many users come from each province-->
-        <div id="provincial-demo" class="col-span-4">
+        <div id="provincial-demo" class="col-span-1 sm:col-span-2 lg:col-span-4">
           <span class="text-2xl">Provincial Data</span>
           <canvas id="myProvinceChart" role="img" aria-label="A bar chart showing data."></canvas>
         </div>
 
-        <div id="new-signups" class="col-span-3">
+        <div id="new-signups" class="col-span-1 sm:col-span-2 lg:col-span-3">
           <span class="text-2xl">New Signups</span>
           <table class="border-collapse border-solid [&_*]:border-black [&_*]:border [&_*]:text-sm [&_*]:p-2 w-full">
             <tr>
@@ -132,7 +132,7 @@
 
 
         <!--Displays buyer seller pairs + how much was exchanged-->
-        <div id="misc" class="row-span-2 col-span-1 justify-start space-y-6">
+        <div id="misc" class="col-span-1 sm:col-span-2 lg:col-span-1 lg:row-span-2 justify-start space-y-6">
           <span class="text-2xl">Completed Orders</span>
 
           <ul class="text-sm space-y-5">
@@ -147,7 +147,7 @@
           <canvas id="pieconversion" aria-label="Doughnut"></canvas>
         </div>
 
-        <div id="current-listings" class="col-span-3 ">
+        <div id="current-listings" class="col-span-1 sm:col-span-2 lg:col-span-3 ">
           <span class="text-2xl">Sales By Category</span>
           <canvas id="mySalesChart" role="img" aria-label="A bar chart showing data."></canvas>
         </div>

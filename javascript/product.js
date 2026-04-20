@@ -6,6 +6,8 @@ const addreview = document.getElementById("addreviewid");
 const txtarea = document.getElementById("txtareaid");
 const reviewarea = document.getElementById("ratingid");
 
+const clean = (val) => DOMPurify.sanitize(val);
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   addreview.addEventListener('click', ()=> uploadReview(urlParams.get("id")));
@@ -39,8 +41,8 @@ async function loadProduct() {
     }
     let url = `${API_URL}/api/browse/uploadreview.php?pid=${ID}`;
 
-    const comment = txtarea.value;
-    const rating = reviewarea.value;
+    const comment = clean(txtarea.value);
+    const rating = Number(clean(reviewarea.value));
 
     if (!rating || rating === 0){
       alert("Please input a valid value between 1 and 5. Thank you.")
@@ -82,7 +84,7 @@ async function loadProduct() {
       review.innerHTML = `<span class="flex flex-row justify-between">
                 <p>${item.username}</p><p>Rating: ${item.rating}</p><p>${date.toUTCString()}</p>
             </span>
-            <p>${item.comment}</p>`;
+            <p>${clean(item.comment)}</p>`;
 
       reviewzone.appendChild(review);
     });
