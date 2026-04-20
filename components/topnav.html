@@ -31,15 +31,15 @@
         <li><a href="/pages/checkout.html"><i class="fa-solid fa-cart-arrow-down fa-2x block md:!hidden"></i><p class="hidden md:block">Checkout</p></a></li>
         <li><a href="/pages/about.html"><i class="fa-solid fa-group-arrows-rotate fa-2x block md:!hidden"></i><p class="hidden md:block">About</p></a></li>
         <li><a href="/pages/auth.html?type=login"><i class="fa-solid fa-arrow-right-to-bracket fa-2x block md:!hidden"></i><p class="hidden md:block">Sign in</p></a></li>
-        <li><a href="/pages/account.html"><i class="fa-solid fa-circle-user fa-2x block md:!hidden"></i><p class="hidden md:block">Account</p></a></li>
+        <li><a href="/pages/account.html"><p class="hidden md:block">Account</p></a></li>
 
         <!--SHOW USERNAME WHEN YOU HOVER OVER THE BTN-->
         <li class="w-12 h-12 relative inline-block group after:content-[attr(data-username)] after:absolute after:left-1/2 after:-translate-x-1/2 after:top-full after:mt-2
         after:bg-black after:text-white 
          after:text-xs after:p-2 after:rounded
          after:whitespace-nowrap after:opacity-0 after:transition-opacity
-        hover:after:opacity-100" id="usericonzone">
-        
+        hover:after:opacity-100" >
+            <a id="usericonzone" href="/pages/account.html"></a>
             <!-- DYNAMIC USER ICON GOES HERE -->
         </li>
     </ul>
