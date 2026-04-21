@@ -13,7 +13,7 @@ $id = $_SESSION["user_id"];
 
 try{
 $conn = require __DIR__. "/../conn.php";
-$statement = $conn->prepare("SELECT address, username, phone, delivery_instructions, icon FROM Users WHERE id = :id AND user_status = 'ACTIVE'");
+$statement = $conn->prepare("SELECT address, username, phone, delivery_instructions, icon, updated_at FROM Users WHERE id = :id AND user_status = 'ACTIVE'");
 $statement->execute(["id"=> $id]);
 
 $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -25,7 +25,7 @@ echo json_encode([
     "address" => $result["address"],
     "phone" => $result["phone"],
     "icon" => $result["icon"],
-    "orders" => []
+    "timestamp" => $result["updated_at"]
 ]);
 
 }

@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (data['role'] === "ADMIN") currentrole.innerText = "Head Website Administrator";
     if (data['role'] === "MODERATOR") currentrole.innerText = "Content Moderator"
 
-    adminicon.setAttribute("src", `${data["icon"]}?tr=w-200,c-maintain_ratio`);
+    adminicon.setAttribute("src", `${data["icon"]}?t=${data["timestamp"]}`);
 
     // Creating a new chart instance
     var myChart = new Chart(ctx, {
