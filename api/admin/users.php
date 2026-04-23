@@ -31,11 +31,21 @@ if ($page === null || $page < 1){
 try{
     $conn = require __DIR__ . "/../conn.php";
 
-    $statement = $conn->prepare("SELECT id, username, icon, email, user_role AS role, user_status AS status, created_at FROM Users LIMIT 10 OFFSET $offset");
+    $statement = $conn->prepare("SELECT id, username, icon, email, updated_at, user_role AS role, user_status AS status, created_at FROM Users LIMIT 10 OFFSET $offset");
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    echo json_encode(["status" => true, "users" => $results]);
+    $countStmt = $conn->prepare("
+    SELECT COUNT(*) as total 
+    FROM Users");
+    $countStmt->execute();
+
+    $totalRows = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $limit = 10;
+    $totalPages = ceil($totalRows / $limit);
+
+    echo json_encode(["status" => true, "users" => $results, "totalpages" => $totalPages, "rows"=> $totalRows]);
 } catch (PDOException $e) {
     http_response_code(500);
     error_log("PDO ERROR: " . $e->getMessage());

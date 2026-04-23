@@ -8,6 +8,18 @@ const rolecolors = {
 
 };
 
+const rowzone = document.getElementById('row-id-zone');
+
+const queryString = window.location.href;
+
+const urlbar = new URL(queryString);
+if (!urlbar.searchParams.has("pg")) {
+    urlbar.searchParams.set("pg", "1");
+    window.history.replaceState({}, "", urlbar);
+}
+
+const pageNum = Number(urlbar.searchParams.get('pg'));
+
 function timeConverter(createdat) {
     const date = new Date(createdat.replace(" ", "T"));
 
@@ -82,12 +94,13 @@ async function changeStatus(newStatus, newRole, userid) {
 
 }
 async function loadUsers() {
-    let url = `${API}/api/admin/users.php`;
+    let url = `${API}/api/admin/users.php?pg=${pageNum}`;
 
     const response = await fetch(url);
     const data = await response.json();
     usersState = data.users || [];
     renderTableRows()
+    renderPageBoxes(data.totalpages, data.rows);
 
 }
 
@@ -114,11 +127,11 @@ function renderTableRows() {
         const tablerow = document.createElement('tr')
         tablerow.className = "[&>*]:p-2"
         const status_class = user.status === "ACTIVE" ? "bg-green-400 text-black" : "bg-normalred text-white";
-        const user_icon = user.icon ? `${user.icon}?tr=200,c-maintain_ratio` : "";
+
         const role_class = rolecolors[user.role] || "";
         tablerow.innerHTML = `
                         <td>${user.id}</td>
-                        <td><img src="${user_icon}" alt="${user.username}" class="rounded-full w-12 p-0"></td>
+                        <td><img src="${user.icon}?t=${user.updated_at ?? 0}" alt="${user.username}" class="rounded-full w-12 p-0"></td>
                         <td>${user.email}</td>
                         <td contenteditable="true" tabindex="0" id="ROLE-${user.id}" class="${role_class}">${user.role}</td>
                         <td contenteditable="true" tabindex="0" id="STATUS-${user.id}" class="${status_class}">${user.status}</td>
@@ -185,5 +198,67 @@ function renderTableRows() {
             }
         });
     })
+
+}
+
+function renderPageBoxes(totalPages, rows){
+  const outputarea = document.getElementById('page-btns')
+  rowzone.innerText = `Rows per page (10) out of ${rows} rows`
+  const btnclasses = `p-3 border-2 border-black pgbtn hover:border-white hover:bg-cerulean hover:text-white`;
+  outputarea.innerHTML = "";
+  const leftarrow = document.createElement("li")
+  leftarrow.setAttribute('id', "leftarrowid")
+  leftarrow.innerText = "<-"
+  leftarrow.className = btnclasses
+  leftarrow.addEventListener('click', ()=> prevPage());
+  
+  const pageboxcontainer = document.createElement('ul');
+  pageboxcontainer.append(leftarrow)
+  pageboxcontainer.className = `flex flex-row w-full p-0 relative space-x-5 justify-end`;
+  for (let i = 1; i<totalPages+1; i++){
+    const btncard = document.createElement('li')
+    btncard.setAttribute('id', `pgnum${i}`)
+    btncard.className = btnclasses;
+    btncard.innerText = i;
+
+    btncard.addEventListener('click', async ()=>{
+      urlbar.searchParams.set('pg', btncard.innerText);
+      window.location.href = urlbar.toString();
+    })
+    pageboxcontainer.append(btncard)
+
+
+  }
+  const rightarrow = document.createElement("li")
+  rightarrow.setAttribute('id', "rightarrowid")
+  rightarrow.className = btnclasses;
+  rightarrow.innerText = "->"
+  rightarrow.addEventListener('click', ()=> nextPage(totalPages));
+  pageboxcontainer.append(rightarrow);
+  outputarea.append(pageboxcontainer);
+  
+}
+
+function nextPage(maxValue){
+  if (pageNum < maxValue){
+  urlbar.searchParams.set('pg', String(pageNum + 1))
+  window.location.href = urlbar.toString();
+
+  }
+  else{
+    alert("This is the highest number of pages.")
+  }
+  
+}
+
+function prevPage(){
+  if (pageNum > 1){
+    urlbar.searchParams.set('pg', String(pageNum - 1))
+    window.location.href = urlbar.toString();
+  }
+  else{
+    alert("This is the lowest number of pages.")
+  }
+  
 
 }
