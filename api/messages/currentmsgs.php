@@ -29,22 +29,19 @@ try {
     $statement = $conn->prepare('SELECT id, username FROM users WHERE id IN (:uID1, :uID2)');
     $statement->execute(["uID1" => $userID1, "uID2" => $userID2]);
 
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    $userRows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    if (!$result) {
+    if (!$userRows) {
         http_response_code(401);
         echo json_encode(["error" => "INVALID MESSAGE REQUEST"]);
         exit;
 
     }
 
-    $userRows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
     $userMap = [];
     foreach ($userRows as $user) {
         $userMap[$user['id']] = $user['username'];
     }
-
 
     $dynamoDB = createDynamoClient($ACCESS);
     $AWS = new AWSservice(null, $dynamoDB);
@@ -52,7 +49,7 @@ try {
     $messages = $AWS->getChatMessages($userID1, $userID2);
     
     foreach ($messages as &$msg) {
-        $senderID = $msg['senderID'] ?? "";
+        $senderID = $msg['sID'] ?? "";
         $msg['username'] = $userMap[$senderID] ?? "UNKNOWN";
     }
     unset($msg);

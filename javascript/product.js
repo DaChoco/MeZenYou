@@ -50,9 +50,11 @@ const renderMessages = () => {
   const sendbtn = document.getElementById('senditbtn');
   const inputbar = document.getElementById('sendmsgtxt');
   const headericon = document.getElementById('header-icon');
+  const headerusername = document.getElementById('header-username')
 
   const recieverAvatar = current_messages.find(c => (c.rID !== USER["user"]))
   headericon.setAttribute('src', `${recieverAvatar["avatar"]}?t=${current_version}`);
+  headerusername.innerText = recieverAvatar['username']
 
   async function sendMessage() {
     if (!inputbar.value || !recieverID) {
@@ -147,7 +149,9 @@ async function retrieveUserData() {
 
 async function getMessages() {
   let url = `${API_URL}/api/messages/currentmsgs.php?rid=${recieverID}`;
-
+  if (recieverID === USER["user"]){
+    return []
+  }
   const response = await fetch(url, { credentials: "include" });
 
   const data = await response.json();
