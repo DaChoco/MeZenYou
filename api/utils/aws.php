@@ -278,7 +278,13 @@ class AWSservice
             ]);
             return ["result" => $result['Attributes'], "success" => true];
 
-        } catch (Exception $e) {
+        } catch (\Aws\DynamoDb\Exception\DynamoDbException $e) {
+            if ($e->getAwsErrorCode() === 'ConditionalCheckFailedException') {
+            return ["success" => true, "message" => "No conversations to update"];
+        }
+        }
+        
+        catch (Exception $e) {
             echo "Failed to send message: " . $e->getMessage();
             return ['success' => false, 'error' => $e->getMessage()];
         }

@@ -11,83 +11,96 @@ const inputbar = document.getElementById('sendmsgtxt');
 const convoentries = document.getElementById('convo-entries');
 const headericon = document.getElementById('header-icon');
 const headerusername = document.getElementById('header-username')
+const scrollzone = document.getElementById('scroll-zone');
 
-async function retrieveUserData(){
+function sKtoTime(sk){
+    const timestamp = Number(sk.split('#')[1]); // extract ms timestamp
+    const date = new Date(timestamp);
+
+    return date.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+
+}
+
+async function retrieveUserData() {
     let url = `${API_URL}/api/account/role.php`
 
-    const response = await fetch(url, {credentials: "include"});
+    const response = await fetch(url, { credentials: "include" });
     const data = await response.json();
     return data
 
 }
 
-async function sendMessage(){
-    if (!inputbar.value || !recieverID){
+async function sendMessage() {
+    if (!inputbar.value || !recieverID) {
         return;
     }
 
 
     let url = `${API_URL}/api/messages/send.php`;
-    const body = {icon: USER["icon"], message: inputbar.value, rID: recieverID}
-    const response = await fetch(url, {credentials: "include", body: JSON.stringify(body), method: "POST"})
+    const body = { icon: USER["icon"], message: inputbar.value, rID: recieverID }
+    const response = await fetch(url, { credentials: "include", body: JSON.stringify(body), method: "POST" })
     const data = await response.json();
 
-    if (data.success){
+    if (data.success) {
         alert("Message successfully sent!");
         current_messages = await getMessages();
         renderConversations()
 
     }
-    else{
+    else {
         alert("Something went wrong")
         return;
     }
 
 }
 
-async function getMessages(){
+async function getMessages() {
     let url = `${API_URL}/api/messages/currentmsgs.php?rid=${recieverID}`;
 
-    const response = await fetch(url, {credentials: "include"});
+    const response = await fetch(url, { credentials: "include" });
 
     const data = await response.json();
 
-    if (data.status){
+    if (data.status) {
         console.log(data)
         return data.messages
     }
-    else{
+    else {
         alert("INTERNAL SERVER ERROR");
         return []
     }
-    
+
 
 }
 
-async function getConversations(){
+async function getConversations() {
 
     let url = `${API_URL}/api/messages/conversations.php`;
-    const response = await fetch(url, {credentials: "include"});
+    const response = await fetch(url, { credentials: "include" });
 
     const data = await response.json();
-    if (data.status){
+    if (data.status) {
         current_version = data.current;
         return data.conversations;
     }
-    else{
+    else {
         alert("INTERNAL SERVER ERROR");
         return []
     }
 
 }
 
-const renderConversations = () =>{
+const renderConversations = () => {
     convoentries.innerHTML = '';
 
-    conversations.map(convo =>{
+    conversations.map(convo => {
 
         const entry = document.createElement('a')
-        entry.setAttribute('href', `/admin/messages.html?rid=${convo.otherID}`);
+        entry.href = `?rid=${convo.otherID}`
 
         entry.classList = 'block'
         entry.innerHTML = `
@@ -101,19 +114,69 @@ const renderConversations = () =>{
                             <!-- Unread badge -->
                             <span class="bg-darkgray text-white text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0">3</span>
                         </div>`;
+
+        entry.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            recieverID = convo.otherID;
+
+            urlbar.searchParams.set('rid', recieverID);
+            window.history.pushState({}, "", urlbar);
+
+            headericon.setAttribute('src', `${convo.avatar}?t=${current_version}`);
+            headericon.setAttribute('alt', convo.username)
+            headerusername.innerText = convo.username;
+
+            current_messages = await getMessages();
+
+            renderMessages();
+        });
         convoentries.append(entry);
+
+    })
+
+
+}
+
+const renderMessages = () => {
+    scrollzone.innerHTML = "";
+    current_messages.map(msg=>{
+
+        if (USER["id"] === msg['sID']){
+            const sent = document.createElement('article');
+            sent.classList = 'flex items-end gap-2'
+            sent.innerHTML = `
+                        <img src="${msg.avatar}?t=${current_version}"
+                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
+                        <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
+                            ${msg.messageText}
+                        </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
+                        `
+
+            scrollzone.append(sent);
+
+        }
+        else{
+            const recieve = document.createElement('article');
+            recieve.classList = 'flex items-end flex-row-reverse gap-2'
+            recieve.innerHTML= `
+                        <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
+                            ${msg.messageText}
+                        </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
+            `;
+            scrollzone.append(recieve);
+
+        }
+        
         
     })
 
-    
-}
-
-const renderMessages = () =>{
-
 
 }
 
-document.addEventListener('DOMContentLoaded', async (e)=>{
+document.addEventListener('DOMContentLoaded', async (e) => {
     conversations = await getConversations();
 
     let ridFromURL = urlbar.searchParams.get('rid');
@@ -126,23 +189,25 @@ document.addEventListener('DOMContentLoaded', async (e)=>{
         recieverID = conversations[0].otherID;
         urlbar.searchParams.set('rid', recieverID);
         window.history.replaceState({}, "", urlbar);
+
     }
 
     const activeConvo = conversations.find(c => c.otherID === recieverID);
     if (activeConvo) {
         headericon.setAttribute('src', `${activeConvo.avatar}?t=${current_version}`);
         headericon.setAttribute('alt', activeConvo.username)
-        headerusername.innerText= activeConvo.username;
+        headerusername.innerText = activeConvo.username;
     }
 
     [USER, current_messages] = await Promise.all([retrieveUserData(), getMessages()]);
 
     console.log(current_messages)
 
-    
+
 
     renderConversations();
+    renderMessages();
 
-    sendbtn.addEventListener('click', async ()=> sendMessage());
+    sendbtn.addEventListener('click', async () => sendMessage());
 
 });
