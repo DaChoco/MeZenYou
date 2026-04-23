@@ -9,109 +9,128 @@
     <!--This is font awesome. A free supply of icons-->
     <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
     <script src="/variables.js"></script>
-    <script src="/adminjs/includesidenav.js"></script>
+    <script src="/adminjs/includesidenav.js" defer></script>
+    <script src="/adminjs/messages.js" defer></script>
 </head>
 
 <body>
-     <!--Report Logs-->
-<div id="report-logs" class="left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] h-screen fixed w-[500px] bg-white flex-col z-[500] hidden">
-
+ 
+    <!-- Report Logs Modal -->
+    <div id="report-logs" class="left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] h-screen fixed w-[500px] bg-white flex-col z-[500] hidden">
         <div id="box-topnav" class="bg-darkgray h-[10%] w-full text-white font-semibold text-lg flex flex-col relative p-4">
             <button id="report-x" class="self-end absolute top-0 right-0 bg-normalred p-3">X</button>
             <span>Reports Log</span>
         </div>
-
         <ul class="space-y-4 [&>*]:p-3">
             <li>#335 - Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex, accusantium.</li>
             <li>#334 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, ipsum!</li>
             <li>#333 - Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, reprehenderit?</li>
         </ul>
-</div>
+    </div>
+ 
+    <!-- Main Admin Layout -->
     <section id="layout-admin" class="grid h-screen transition-all duration-100">
         <div id="sidebar-container"></div>
-
-        <div class="grid grid-rows-1 grid-cols-[1fr_4fr]">
-            <div id="sidemsg-zone" class="overflow-y-auto">
-                <a href="/admin/messages.html?msg=1">
-                    <div class="message-options p-3">
-                    <span class="font-bold">Welt Yang</span>
-                    <p class="text-sm">Lorem ipsum dolor sit.</p>
-                    </div>
-                </a>
-
-                <a href="/admin/messages.html?msg=2">
-                    <div class="message-options p-3">
-                    <span class="font-bold">Welt Yang</span>
-                    <p class="text-sm">Lorem ipsum dolor sit.</p>
-                    </div>
-                </a>   
+ 
+        <!-- Message Panel-->
+        <div class="grid grid-cols-[260px_1fr] h-screen overflow-hidden">
+ 
+            <!-- Conversations -->
+            <div id="sidemsg-zone" class="flex flex-col overflow-hidden border-r border-gray-200 bg-gray-50">
+ 
+                <!-- Section Label -->
+                <div class="px-4 py-3 text-xs font-semibold uppercase tracking-widest text-gray-400 border-b border-gray-200">
+                    Messages
+                </div>
+ 
+                <!-- CONVERSATION ENTRIES -->
+                <div id="convo-entries" class="overflow-y-auto flex-1">
+ 
+                </div>
             </div>
-            <div class="mx-auto my-0 w-3/4 md:w-full h-screen bg-white flex flex-col border-x-2 border-black">
-
-                <!-- Header Gives the recievers name -->
-                <div class="w-full bg-darkgray h-12 p-2 shrink-0">
-                    <span class="text-white font-semibold">Messaging Name</span>
+ 
+            <!-- Chat View -->
+            <div class="flex flex-col h-screen bg-white">
+ 
+                <!-- THE CHAT HEADER -->
+                <div class="flex items-center gap-3 px-5 py-3 bg-darkgray border-b border-black flex-shrink-0">
+                    <img id="header-icon" src=""
+                        class="rounded-full w-8 h-8 object-cover" alt="Welt Yang">
+                    <div>
+                        <span id="header-username" class="text-white font-semibold text-sm block"></span>
+                        <span class="text-green-400 text-xs">Online</span>
+                    </div>
+                    <!-- ARE THEY ONLINE -->
+                    <div class="ml-auto w-2.5 h-2.5 rounded-full bg-green-400"></div>
                 </div>
-
-                <!-- Scroll Zone -->
-                <div class="flex-1 overflow-y-auto md:p-10 space-y-6">
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/e6/fb/b9/e6fbb9895a41cd16a2f8194a1f553f21.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, culpa?</span>
+ 
+                <!-- Scrollable Message Thread -->
+                <div class="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gray-50">
+ 
+                    <!-- Received message -->
+                    <div class="flex items-end gap-2">
+                        <img src="https://i.pinimg.com/1200x/e6/fb/b9/e6fbb9895a41cd16a2f8194a1f553f21.jpg"
+                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="Welt Yang">
+                        <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
+                            Hey, is this item still available? I've been looking for it for a while.
                         </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">9:41 AM</span>
                     </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/56/25/f1/5625f1e4e9d531a6bf7d501f828cd368.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit eum ex, odio dolores sed nihil a quibusdam et maiores voluptatibus exercitationem veritatis cum fugit, asperiores doloremque eius possimus tempora ducimus.</span>
+ 
+                    <!-- Sent message (admin) -->
+                    <div class="flex items-end flex-row-reverse gap-2">
+                        <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
+                            Yes it is! We restocked yesterday. Let me pull up the details for you.
                         </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">9:43 AM</span>
                     </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/e6/fb/b9/e6fbb9895a41cd16a2f8194a1f553f21.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, culpa?</span>
+ 
+                    <!-- Received -->
+                    <div class="flex items-end gap-2">
+                        <img src="https://i.pinimg.com/1200x/e6/fb/b9/e6fbb9895a41cd16a2f8194a1f553f21.jpg"
+                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="Welt Yang">
+                        <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
+                            That's great! Also wanted to ask about the return policy — is it still 30 days?
                         </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">9:44 AM</span>
                     </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/56/25/f1/5625f1e4e9d531a6bf7d501f828cd368.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit eum ex, odio dolores sed nihil a quibusdam et maiores voluptatibus exercitationem veritatis cum fugit, asperiores doloremque eius possimus tempora ducimus.</span>
+ 
+                    <!-- Sent -->
+                    <div class="flex items-end flex-row-reverse gap-2">
+                        <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
+                            Correct, 30 days from the delivery date. No questions asked.
                         </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">9:46 AM</span>
                     </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/e6/fb/b9/e6fbb9895a41cd16a2f8194a1f553f21.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, culpa?</span>
+ 
+                    <!-- Received -->
+                    <div class="flex items-end gap-2">
+                        <img src="https://i.pinimg.com/1200x/e6/fb/b9/e6fbb9895a41cd16a2f8194a1f553f21.jpg"
+                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="Welt Yang">
+                        <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
+                            Perfect, I'll go ahead and place the order. Thanks!
                         </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">9:47 AM</span>
                     </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/56/25/f1/5625f1e4e9d531a6bf7d501f828cd368.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit eum ex, odio dolores sed nihil a quibusdam et maiores voluptatibus exercitationem veritatis cum fugit, asperiores doloremque eius possimus tempora ducimus.</span>
-                        </div>
-                    </div>
-
+ 
                 </div>
-
-                <div class="mx-auto my-0 py-2 px-4 w-full grid grid-cols-[3fr_1fr] grid-rows-1">
-                    <input type="text" placeholder="Type..." class="w-full p-2 outline-none border border-black">
-                    <button aria-label="send" class="bg-darkgray"><i
-                            class="fa-regular fa-paper-plane bg-darkgray text-white"></i></button>
+ 
+                <!-- SEND A MESSAGE -->
+                <div class="flex items-center gap-3 px-4 py-3 border-t border-gray-200 bg-white flex-shrink-0">
+                    <input id="sendmsgtxt" type="text" placeholder="Type a message…"
+                        class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm outline-none border border-transparent focus:border-gray-400 transition-colors">
+                    <button id="senditbtn" aria-label="Send message"
+                        class="w-9 h-9 rounded-full bg-darkgray flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity">
+                        <i class="fa-regular fa-paper-plane text-white text-sm"></i>
+                    </button>
                 </div>
-
+ 
             </div>
         </div>
     </section>
-
+ 
     <script src="/adminjs/adminstyles.js" defer></script>
-
+ 
 </body>
 
 </html>

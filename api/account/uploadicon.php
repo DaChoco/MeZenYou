@@ -43,7 +43,8 @@ try{
     $statement = $conn->prepare("UPDATE Users SET icon = :iconurl WHERE id = :id");
 
     $s3 = createS3Client($ACCESS);
-    $aws = new AWSservice($s3, null);
+    $dynamo = createDynamoClient($ACCESS);
+    $aws = new AWSservice($s3, $dynamo);
 
     $result =$aws->uploadUserIcon($user_id, $file['tmp_name']);
 
@@ -53,6 +54,8 @@ try{
     $statement->execute(["iconurl"=> $result, "id"=>$user_id]);
 
     $conn->commit();
+
+    $updatingicon = $aws->updateConvIcon($user_id, $result);
 
     http_response_code(201);
     echo json_encode(["status" => true, "message" => "Thank you, your icon is uploaded, it will reflect on your profile.", "imgurl" => $result]);

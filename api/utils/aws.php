@@ -36,14 +36,14 @@ class AWSservice
 
     public function deleteS3Image($url)
     {
-        if (str_contains($url, $this->imgbaseurl) === false){
+        if (str_contains($url, $this->imgbaseurl) === false) {
             //NOT STORED ON AWS S3 BUCKET
             return false;
         }
         try {
             $this->s3->deleteObject([
                 'Bucket' => $this->bucketName,
-                'Key'    => $this->extractKey($url)
+                'Key' => $this->extractKey($url)
             ]);
 
             return true;
@@ -59,7 +59,7 @@ class AWSservice
     #HELPER PRIVATE FUNCTIONS
     private function uploadToS3($folder, $filePath, $id, $new_name)
     //This is the main upload function, user icon and product image are wrappers to help them feel seperate
-    {   
+    {
         $key = $this->generateS3Key($folder, $filePath, $id, $new_name);
 
         try {
@@ -85,14 +85,14 @@ class AWSservice
         $mime = mime_content_type($tmpPath);
 
         $allowedMime = [
-        'image/jpeg' => 'jpg',
-        'image/png'  => 'png',
-        'image/webp' => 'webp'
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp'
         ];
 
-    if (!isset($allowedMime[$mime])) {
-        throw new Exception("Invalid file type");
-    }
+        if (!isset($allowedMime[$mime])) {
+            throw new Exception("Invalid file type");
+        }
 
         return "{$type}/{$id}/{$new_name}.{$allowedMime[$mime]}";
     }
@@ -260,25 +260,95 @@ class AWSservice
     }
 
     #AWS DYNAMODB-MESSAGING------------------------
+    public function updateConvIcon(string $userID, string $icon)
+    {
+        //When someone updates messages in the sql, call this as well to line up their icons on dynamo
 
-    public function sendMessage(string $senderID, string $recipientID, string $messageText): array
+        try {
+            $result = $this->dynamo->updateItem([
+                'TableName' => 'mezenyoumsg',
+                'Key' => [
+                    'cID' => ['S' => $userID]
+                ],
+                'UpdateExpression' => 'SET avatar = :icon',
+                'ExpressionAttributeValues' => [
+                    ':icon' => ['S' => $icon]
+                ],
+                'ReturnValues' => 'UPDATED_NEW'
+            ]);
+            return ["result" => $result['Attributes'], "success" => true];
+
+        } catch (Exception $e) {
+            echo "Failed to send message: " . $e->getMessage();
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+    public function sendMessage(string $senderID, string $recipientID, string $messageText, string $myIcon, string $theirIcon, string $role): array
     {
         try {
             $conversationID = $this->generateConversationID($senderID, $recipientID);
             $messageID = uniqid('msg_', true);
             $timestamp = (int) (microtime(true) * 1000); // Millisecond tier precision
 
-            $this->dynamo->putItem([
-                'Item' => [
-                    'conversationID' => ['S' => $conversationID],
-                    'timestamp' => ['N' => (string) $timestamp],
-                    'messageID' => ['S' => $messageID],
-                    'senderID' => ['S' => $senderID],
-                    'recipientID' => ['S' => $recipientID],
-                    'messageText' => ['S' => $messageText],
-                    'isRead' => ['BOOL' => false],
-                ],
-                'TableName' => 'MeZenYoumessages',
+            $messageSK = "MSG#{$timestamp}";
+            $convSK = "CONV#{$conversationID}";
+
+
+
+            $this->dynamo->transactWriteItems([
+                'TransactItems' => [
+
+                    // 1. Message record
+                    [
+                        'Put' => [
+                            'TableName' => 'mezenyoumsg',
+                            'Item' => [
+                                'cID' => ['S' => $conversationID],
+                                'SK' => ['S' => $messageSK],
+                                'messageID' => ['S' => $messageID],
+                                'sID' => ['S' => $senderID],
+                                'rID' => ['S' => $recipientID],
+                                'role' => ['S' => $role],
+                                'avatar' => ['S' => $myIcon],
+                                'messageText' => ['S' => $messageText],
+                                'isRead' => ['BOOL' => false],
+                            ],
+                        ]
+                    ],
+
+                    // 2. For me
+                    [
+                        'Put' => [
+                            'TableName' => 'mezenyoumsg',
+                            'Item' => [
+                                'cID' => ['S' => $senderID],
+                                'SK' => ['S' => $convSK],
+                                'convID' => ['S' => $conversationID],
+                                'otherID' => ['S' => $recipientID],
+                                'lastMessage' => ['S' => $messageText],
+                                'lastMessageAt' => ['N' => (string) $timestamp],
+                                'avatar' => ['S' => $theirIcon],
+                            ],
+                        ]
+                    ],
+
+                    // For Reciever
+                    [
+                        'Put' => [
+                            'TableName' => 'mezenyoumsg',
+                            'Item' => [
+                                'cID' => ['S' => $recipientID],
+                                'SK' => ['S' => $convSK],
+                                'convID' => ['S' => $conversationID],
+                                'otherID' => ['S' => $senderID],
+                                'lastMessage' => ['S' => $messageText],
+                                'lastMessageAt' => ['N' => (string) $timestamp],
+                                'avatar' => ['S' => $myIcon],
+                            ],
+                        ]
+                    ],
+
+                ]
             ]);
 
             return [
@@ -290,5 +360,58 @@ class AWSservice
             echo "Failed to send message: " . $e->getMessage();
             return ['success' => false, 'error' => $e->getMessage()];
         }
+    }
+
+    public function getChatMessages(string $userID1, string $userID2, int $limit = 50): array
+    {
+        $marshaller = new Marshaler();
+        $conversationID = $this->generateConversationID($userID1, $userID2);
+
+        $result = $this->dynamo->query([
+            'TableName' => 'mezenyoumsg',
+            'KeyConditionExpression' => 'cID = :cid AND begins_with(SK, :prefix)',
+            'ExpressionAttributeValues' => [
+                ':cid' => ['S' => $conversationID],
+                ':prefix' => ['S' => "MSG#"]
+            ],
+            'ScanIndexForward' => true,
+            'Limit' => $limit,
+        ]);
+
+        $messageList = [];
+        foreach ($result['Items'] as $rawItem) {
+            $item = $marshaller->unmarshalItem($rawItem);
+            $messageList[] = $item;
+
+        }
+        return $messageList;
+    }
+
+    public function getConversations(string $userID)
+    {
+        $marshaller = new Marshaler();
+
+        try {
+            $result = $this->dynamo->query([
+                'TableName' => "mezenyoumsg",
+                'KeyConditionExpression' => 'cID = :uid AND begins_with(SK, :prefix)',
+                'ExpressionAttributeValues' => [
+                    ':uid' => ['S' => $userID],
+                    ':prefix' => ['S' => 'CONV#']
+                ],
+            ]);
+            $messageList = [];
+            foreach ($result['Items'] as $rawItem) {
+                $item = $marshaller->unmarshalItem($rawItem);
+                $messageList[] = $item;
+            }
+            return $messageList;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return [];
+
+        }
+
+
     }
 }
