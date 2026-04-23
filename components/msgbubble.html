@@ -1,29 +1,16 @@
-     <!-- Main Admin Layout -->
-    <section id="msg-admin" class="grid h-screen transition-all duration-100">
+    <!-- Main Admin Layout -->
+    <section id="layout-msg" class="h-screen transition-all duration-100">
+    
         <!-- Message Panel-->
-        <div class="grid grid-cols-[260px_1fr] h-screen overflow-hidden">
- 
-            <!-- Conversations -->
-            <div id="sidemsg-zone" class="flex flex-col overflow-hidden border-r border-gray-200 bg-gray-50">
- 
-                <!-- Section Label -->
-                <div class="px-4 py-3 text-xs font-semibold uppercase tracking-widest text-gray-400 border-b border-gray-200">
-                    Messages
-                </div>
- 
-                <!-- CONVERSATION ENTRIES -->
-                <div id="convo-entries" class="overflow-y-auto flex-1 relative">
- 
-                </div>
-            </div>
- 
+        <div class="grid w-[300px] md:w-[500px] h-screen overflow-hidden">
+
+
             <!-- Chat View -->
             <div class="flex flex-col h-screen bg-white">
- 
+
                 <!-- THE CHAT HEADER -->
                 <div class="flex items-center gap-3 px-5 py-3 bg-darkgray border-b border-black flex-shrink-0">
-                    <img id="header-icon" src=""
-                        class="rounded-full w-8 h-8 object-cover" alt="Welt Yang">
+                    <img id="header-icon" src="" class="rounded-full w-8 h-8 object-cover" alt="Welt Yang">
                     <div>
                         <span id="header-username" class="text-white font-semibold text-sm block"></span>
                         <span class="text-green-400 text-xs">Online</span>
@@ -31,10 +18,19 @@
                     <!-- ARE THEY ONLINE -->
                     <div class="ml-auto w-2.5 h-2.5 rounded-full bg-green-400"></div>
                 </div>
- 
+
                 <!-- Scrollable Message Thread -->
                 <div id="scroll-zone" class="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gray-50">
- 
+
+                </div>
+                <!-- SEND A MESSAGE -->
+                <div class="flex items-center gap-3 px-4 py-3 border-t border-gray-200 bg-white flex-shrink-0">
+                    <input id="sendmsgtxt" type="text" placeholder="Type a message…"
+                        class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm outline-none border border-transparent focus:border-gray-400 transition-colors">
+                    <button id="senditbtn" aria-label="Send message"
+                        class="w-9 h-9 rounded-full bg-darkgray flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity">
+                        <i class="fa-regular fa-paper-plane text-white text-sm"></i>
+                    </button>
+                </div>
             </div>
-        </div>
     </section>

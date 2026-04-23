@@ -29,8 +29,8 @@ $USER_INPUT = $data['txt'];
 try{
     $conn = require __DIR__ . "/../conn.php";
 
-    $statement = $conn->prepare("SELECT id as rID, username, icon, updated_at, user_role AS role, created_at FROM Users WHERE username LIKE :username OR email LIKE :email LIMIT 10");
-    $statement->execute(["username" => "%$USER_INPUT%", "email"=> "%$USER_INPUT%"]);
+    $statement = $conn->prepare("SELECT id as rID, username, icon, updated_at, user_role AS role, created_at FROM Users WHERE (username LIKE :username OR email LIKE :email) OR id = :id LIMIT 10");
+    $statement->execute(["username" => "%$USER_INPUT%", "email"=> "%$USER_INPUT%", "id"=> $USER_INPUT]);
     $result = $statement->fetch(PDO::FETCH_ASSOC);
 
     echo json_encode(["status" => true, "user"=>$result]);

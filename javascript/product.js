@@ -5,95 +5,260 @@ const section_container = document.getElementById("item-display");
 const addreview = document.getElementById("addreviewid");
 const txtarea = document.getElementById("txtareaid");
 const reviewarea = document.getElementById("ratingid");
+let is_rendered = false;
+let USER = {};
+let current_messages = [];
+let conversations = []
+let recieverID = 0;
+let current_version = "";
 
 const clean = (val) => DOMPurify.sanitize(val);
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  addreview.addEventListener('click', ()=> uploadReview(urlParams.get("id")));
+  addreview.addEventListener('click', () => uploadReview(urlParams.get("id")));
 
   const item = await loadProduct();
   const cartaddbtn = document.getElementById('cartaddbtn')
-  cartaddbtn.addEventListener('click', ()=> addtocart(urlParams.get("id"), item))
+  cartaddbtn.addEventListener('click', () => addtocart(urlParams.get("id"), item))
+  const messagebtn = document.getElementById('msgbtn');
+
+  messagebtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await loadMessageBox();
+    [USER, current_messages] = await Promise.all([retrieveUserData(), getMessages()]);
+
+    renderMessages();
+  })
 });
 
-async function loadProduct() {
-    const ID = urlParams.get("id");
-    let url = `${API_URL}/api/item.php?id=${ID}`;
 
-    const response = await fetch(url, { credentials: "include" });
-    const data = await response.json();
-    console.log(data);
+function sKtoTime(sk) {
+  const timestamp = Number(sk.split('#')[1]); // extract ms timestamp
+  const date = new Date(timestamp);
 
-    renderProduct(data.product, data.user);
-    const reviewscoreval = document.getElementById('reviewscore')
-    const score = await loadReviews(ID);
+  return date.toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
 
-    reviewscoreval.innerText = score;
+}
 
-    return data
-    
-  }
+const renderMessages = () => {
+  const scrollzone = document.getElementById('scroll-zone');
+  const sendbtn = document.getElementById('senditbtn');
+  const inputbar = document.getElementById('sendmsgtxt');
+  const headericon = document.getElementById('header-icon');
 
-  async function uploadReview(ID) {
-    if (!ID){
-        return;
-    }
-    let url = `${API_URL}/api/browse/uploadreview.php?pid=${ID}`;
+  const recieverAvatar = current_messages.find(c => (c.rID !== USER["user"]))
+  headericon.setAttribute('src', `${recieverAvatar["avatar"]}?t=${current_version}`);
 
-    const comment = clean(txtarea.value);
-    const rating = Number(clean(reviewarea.value));
-
-    if (!rating || rating === 0){
-      alert("Please input a valid value between 1 and 5. Thank you.")
+  async function sendMessage() {
+    if (!inputbar.value || !recieverID) {
       return;
     }
 
-    const response = await fetch(url, {
-      credentials: "include",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rating: rating, comment: comment }),
-    });
+
+    let url = `${API_URL}/api/messages/send.php`;
+    if (!USER){
+      alert("You need to be logged in to send messages. Sorry")
+      return;
+    }
+    const body = { icon: USER["icon"], message: inputbar.value, rID: recieverID }
+    const response = await fetch(url, { credentials: "include", body: JSON.stringify(body), method: "POST" })
     const data = await response.json();
 
-    if (data) {
-      alert(data.message);
+    if (data.success) {
+      alert("Message successfully sent!");
+      current_messages = await getMessages();
+      renderMessages()
+
     }
+    else {
+      alert("Something went wrong")
+      return;
+    }
+
   }
 
-  async function loadReviews(ID) {
-    if (!ID){
-        return;
+  sendbtn.addEventListener('click', async () => sendMessage());
+  inputbar.addEventListener('keydown', async (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
     }
-    const response = await fetch(
-      `${API_URL}/api/browse/retrievereviews.php?pid=${ID}`,
-    );
-    const data = await response.json();
+    else if (e.key === "Escape") {
+      inputbar.blur();
+      inputbar.value = "";
+    }
+  })
+  scrollzone.innerHTML = "";
+  console.log("user:", USER)
 
-    const reviewzone = document.getElementById("commenthere");
+  current_messages.map(msg => {
+    if (String(USER["user"]) !== msg['sID']) {
 
-    console.log(data);
+      const reciever = document.createElement('article');
+      reciever.classList = 'flex items-end gap-2'
+      reciever.innerHTML = `
+                        <img src="${msg.avatar}?t=${current_version}"
+                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
+                        <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
+                            ${msg.messageText}
+                        </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
+                        `
 
-    data.items.forEach((item) => {
-      const review = document.createElement("article");
-      review.className = "border-2 border-current p-5";
-      const unixTimestamp = item.timestamp;
-      const date = new Date(unixTimestamp * 1000);
+      scrollzone.append(reciever);
 
-      review.innerHTML = `<span class="flex flex-row justify-between">
+    }
+    else {
+      const sender = document.createElement('article');
+      sender.classList = 'flex items-end flex-row-reverse gap-2'
+      sender.innerHTML = `
+                        <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
+                            ${msg.messageText}
+                        </div>
+                        <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
+            `;
+      scrollzone.append(sender);
+
+    }
+
+
+  });
+
+  scrollzone.scrollTop = scrollzone.scrollHeight
+
+
+}
+
+
+async function retrieveUserData() {
+  let url = `${API_URL}/api/account/role.php`
+
+  const response = await fetch(url, { credentials: "include" });
+  const data = await response.json();
+  console.log(data)
+  current_version = data.timestamp
+  return data
+
+}
+
+async function getMessages() {
+  let url = `${API_URL}/api/messages/currentmsgs.php?rid=${recieverID}`;
+
+  const response = await fetch(url, { credentials: "include" });
+
+  const data = await response.json();
+
+  if (data.status) {
+    console.log(data)
+    return data.messages
+  }
+  else {
+    alert("INTERNAL SERVER ERROR");
+    return []
+  }
+
+
+}
+
+
+async function loadMessageBox() {
+
+  const container = document.getElementById("messagebox");
+
+  if (is_rendered == false) {
+    const response = await fetch("/components/msgbubble.html");
+    const html = await response.text();
+
+    container.innerHTML = html;
+  }
+  else {
+    container.innerHTML = ""
+  }
+  is_rendered = !is_rendered;
+
+}
+async function loadProduct() {
+  const ID = urlParams.get("id");
+  let url = `${API_URL}/api/item.php?id=${ID}`;
+
+  const response = await fetch(url, { credentials: "include" });
+  const data = await response.json();
+  console.log(data);
+
+  renderProduct(data.product, data.user);
+  const reviewscoreval = document.getElementById('reviewscore')
+  const score = await loadReviews(ID);
+
+  reviewscoreval.innerText = score;
+
+  return data
+
+}
+
+async function uploadReview(ID) {
+  if (!ID) {
+    return;
+  }
+  let url = `${API_URL}/api/browse/uploadreview.php?pid=${ID}`;
+
+  const comment = clean(txtarea.value);
+  const rating = Number(clean(reviewarea.value));
+
+  if (!rating || rating === 0) {
+    alert("Please input a valid value between 1 and 5. Thank you.")
+    return;
+  }
+
+  const response = await fetch(url, {
+    credentials: "include",
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ rating: rating, comment: comment }),
+  });
+  const data = await response.json();
+
+  if (data) {
+    alert(data.message);
+  }
+}
+
+async function loadReviews(ID) {
+  if (!ID) {
+    return;
+  }
+  const response = await fetch(
+    `${API_URL}/api/browse/retrievereviews.php?pid=${ID}`,
+  );
+  const data = await response.json();
+
+  const reviewzone = document.getElementById("commenthere");
+
+  console.log(data);
+
+  data.items.forEach((item) => {
+    const review = document.createElement("article");
+    review.className = "border-2 border-current p-5";
+    const unixTimestamp = item.timestamp;
+    const date = new Date(unixTimestamp * 1000);
+
+    review.innerHTML = `<span class="flex flex-row justify-between">
                 <p>${item.username}</p><p>Rating: ${item.rating}</p><p>${date.toUTCString()}</p>
             </span>
             <p>${clean(item.comment)}</p>`;
 
-      reviewzone.appendChild(review);
-    });
+    reviewzone.appendChild(review);
+  });
 
-    return data.avg
-  }
+  return data.avg
+}
 
-  async function renderProduct(product, user) {
-    section_container.innerHTML = `
+async function renderProduct(product, user) {
+  recieverID = product["userID"];
+  section_container.innerHTML = `
     <div class="image-section h-fit md:h-auto">
             <img src="${product["image"]}" alt="" class=" w-full md:w-1/2 mx-auto my-0">
         </div>
@@ -116,7 +281,7 @@ async function loadProduct() {
             </div>
 
              <div class="lower-fourth flex flex-col space-y-5 rounded-sm [&_*]:w-full">
-                <a href="/pages/msg.html"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
+                <a id="msgbtn" href="?id=${product["id"]}&rid=${product["userID"]}"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
                 <input id="qtyid" min="1" type="number" placeholder="Quantity" class="p-3 outline-none border border-black">
                 <button id="cartaddbtn" type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md">Add to Cart</button>
                 <a href="/pages/checkout.html"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md">Proceed to Checkout</button></a>
@@ -138,41 +303,41 @@ async function loadProduct() {
         </div>
 
     `;
-  }
+}
 
 //--ADD TO CART
 
-async function addtocart(ID, item){
-  if (!item){
+async function addtocart(ID, item) {
+  if (!item) {
     alert("EMPTY NO ITEM WAS LOADED")
   }
 
   const qty = document.getElementById('qtyid')
-  if (!qty.value || qty.value === 0){
+  if (!qty.value || qty.value === 0) {
     alert("INPUT A VALID QUANTITY")
     return;
   }
 
-  const payload = {qty: qty.value, pid: ID}
+  const payload = { qty: qty.value, pid: ID }
   const response = await fetch(
-      `${API_URL}/api/cart/add.php`,
-      {
-        credentials: "include", 
-        method: "POST", 
-        headers: { "Content-Type": "application/json" }, 
-        body: JSON.stringify(payload)
-      }
-    );
-    const data = await response.json();
-
-    if (data.success){
-      alert(data.message);
+    `${API_URL}/api/cart/add.php`,
+    {
+      credentials: "include",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     }
-    else{
-      console.log(data)
-    }
+  );
+  const data = await response.json();
 
-  
+  if (data.success) {
+    alert(data.message);
+  }
+  else {
+    console.log(data)
+  }
+
+
 }
 
 

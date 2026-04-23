@@ -151,8 +151,7 @@ const renderConversations = () => {
                                 <span class="font-semibold text-sm block truncate">${convo.username ?? "UNKNOWN"}</span>
                                 <p class="text-xs text-gray-500 truncate">${convo.lastMessage}</p>
                             </div>
-                            <!-- Unread badge -->
-                            <span class="bg-darkgray text-white text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0">3</span>
+                         
                         </div>`;
 
         entry.addEventListener('click', async (e) => {
@@ -183,10 +182,11 @@ const renderMessages = () => {
     scrollzone.innerHTML = "";
     current_messages.map(msg=>{
 
-        if (USER["id"] === msg['sID']){
-            const sent = document.createElement('article');
-            sent.classList = 'flex items-end gap-2'
-            sent.innerHTML = `
+       if (String(USER["user"]) !== msg['sID']) {
+
+      const reciever = document.createElement('article');
+      reciever.classList = 'flex items-end gap-2'
+      reciever.innerHTML = `
                         <img src="${msg.avatar}?t=${current_version}"
                             class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
                         <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
@@ -195,21 +195,21 @@ const renderMessages = () => {
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
                         `
 
-            scrollzone.append(sent);
+      scrollzone.append(reciever);
 
-        }
-        else{
-            const recieve = document.createElement('article');
-            recieve.classList = 'flex items-end flex-row-reverse gap-2'
-            recieve.innerHTML= `
+    }
+    else {
+      const sender = document.createElement('article');
+      sender.classList = 'flex items-end flex-row-reverse gap-2'
+      sender.innerHTML = `
                         <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
                             ${msg.messageText}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
             `;
-            scrollzone.append(recieve);
+      scrollzone.append(sender);
 
-        }
+    }
         
         
     });
@@ -218,6 +218,8 @@ const renderMessages = () => {
 
 
 }
+
+
 
 document.addEventListener('DOMContentLoaded', async (e) => {
     conversations = await getConversations();
@@ -252,5 +254,14 @@ document.addEventListener('DOMContentLoaded', async (e) => {
     renderMessages();
 
     sendbtn.addEventListener('click', async () => sendMessage());
+    inputbar.addEventListener('keydown', async (e)=>{
+        if (e.key === "Enter"){
+            sendMessage();
+        }
+        else if (e.key === "Escape"){
+            inputbar.blur();
+            inputbar.value = "";
+        }
+    })
 
 });

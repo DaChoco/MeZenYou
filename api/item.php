@@ -16,7 +16,7 @@ else {
 
 try{
     $stmt = $conn->prepare("SELECT 
-    Products.id, product_name, author, price, category, descriptiontxt, location, stock, image, username 
+    Products.id, Users.id as userID, product_name, author, price, category, descriptiontxt, location, stock, image, username 
     FROM Products INNER JOIN Users ON Products.seller_id = Users.id WHERE Products.id = :id");
     $stmt->execute(["id"=>$id]);
 
