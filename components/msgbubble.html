@@ -1,49 +1,40 @@
-            <div class="mx-auto my-0 w-3/4 md:w-full h-screen bg-white flex flex-col border-x-2 border-black">
-
-                <!-- Header Gives the recievers name -->
-                <div class="w-full bg-darkgray h-12 p-2 shrink-0">
-                    <span class="text-white font-semibold">Messaging Name</span>
+     <!-- Main Admin Layout -->
+    <section id="msg-admin" class="grid h-screen transition-all duration-100">
+        <!-- Message Panel-->
+        <div class="grid grid-cols-[260px_1fr] h-screen overflow-hidden">
+ 
+            <!-- Conversations -->
+            <div id="sidemsg-zone" class="flex flex-col overflow-hidden border-r border-gray-200 bg-gray-50">
+ 
+                <!-- Section Label -->
+                <div class="px-4 py-3 text-xs font-semibold uppercase tracking-widest text-gray-400 border-b border-gray-200">
+                    Messages
                 </div>
-
-                <!-- Scroll Zone -->
-                <div class="flex-1 overflow-y-auto md:p-10 space-y-6">
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="/images/teruicon.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, culpa?</span>
-                        </div>
-                    </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/56/25/f1/5625f1e4e9d531a6bf7d501f828cd368.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit eum ex, odio dolores sed nihil a quibusdam et maiores voluptatibus exercitationem veritatis cum fugit, asperiores doloremque eius possimus tempora ducimus.</span>
-                        </div>
-                    </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="/images/teruicon.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, culpa?</span>
-                        </div>
-                    </div>
-
-                    <div class="msg-block grid grid-cols-[1fr_4fr] grid-rows-[100px]">
-                        <img src="https://i.pinimg.com/1200x/56/25/f1/5625f1e4e9d531a6bf7d501f828cd368.jpg" class="rounded-full w-14" alt="img-icon">
-                        <div class="bg-gray-400 w-full h-fit p-3">
-                            <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit eum ex, odio dolores sed nihil a quibusdam et maiores voluptatibus exercitationem veritatis cum fugit, asperiores doloremque eius possimus tempora ducimus.</span>
-                        </div>
-                    </div>
-
-                    
-
+ 
+                <!-- CONVERSATION ENTRIES -->
+                <div id="convo-entries" class="overflow-y-auto flex-1 relative">
+ 
                 </div>
-
-                <div class="mx-auto my-0 py-2 px-4 w-full grid grid-cols-[3fr_1fr] grid-rows-1">
-                    <input type="text" placeholder="Type..." class="w-full p-2 outline-none border border-black">
-                    <button aria-label="send" class="bg-darkgray"><i
-                            class="fa-regular fa-paper-plane bg-darkgray text-white"></i></button>
-                </div>
-
             </div>
+ 
+            <!-- Chat View -->
+            <div class="flex flex-col h-screen bg-white">
+ 
+                <!-- THE CHAT HEADER -->
+                <div class="flex items-center gap-3 px-5 py-3 bg-darkgray border-b border-black flex-shrink-0">
+                    <img id="header-icon" src=""
+                        class="rounded-full w-8 h-8 object-cover" alt="Welt Yang">
+                    <div>
+                        <span id="header-username" class="text-white font-semibold text-sm block"></span>
+                        <span class="text-green-400 text-xs">Online</span>
+                    </div>
+                    <!-- ARE THEY ONLINE -->
+                    <div class="ml-auto w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                </div>
+ 
+                <!-- Scrollable Message Thread -->
+                <div id="scroll-zone" class="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gray-50">
+ 
+            </div>
+        </div>
+    </section>

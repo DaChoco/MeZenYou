@@ -95,16 +95,56 @@ async function getConversations() {
 }
 
 const renderConversations = () => {
+
+    const search_user_bar = document.createElement('input');
+    search_user_bar.setAttribute('type', 'text')
+    search_user_bar.classList = 'w-full p-2';
+
+
+    search_user_bar.addEventListener('keydown', async (e)=>{
+
+        if (e.key === "Enter"){
+            //temporarily makes a conversation that can be anchored off of
+            let url = `${API_URL}/api/admin/search.php`;
+            const response = await fetch(url, {credentials: "include", method: "POST", body: JSON.stringify({txt:search_user_bar.value})})
+            const data = await response.json();
+            console.log(data)
+            recieverID = data.user.rID;
+
+            urlbar.searchParams.set('rid', recieverID);
+            window.history.pushState({}, "", urlbar);
+
+            headericon.setAttribute('src', `${data.user.icon}?t=${current_version}`);
+            headericon.setAttribute('alt', data.user.username)
+            headerusername.innerText = data.user.username;
+
+            current_messages = await getMessages();
+
+            renderMessages();
+
+        }
+        else if (e.key === "Escape"){
+            e.preventDefault();
+            search_user_bar.value = ""
+            search_user_bar.blur();
+        }
+
+    })
     convoentries.innerHTML = '';
+    convoentries.append(search_user_bar);
+    let borderstyle = ""
+    
+    console.log(conversations)
 
     conversations.map(convo => {
-
+        const isActive = convo.otherID == recieverID;
         const entry = document.createElement('a')
         entry.href = `?rid=${convo.otherID}`
 
-        entry.classList = 'block'
+       
+        entry.className = 'block'
         entry.innerHTML = `
-                        <div class="message-options flex items-center gap-3 px-4 py-3 border-l-2 border-darkgray bg-white hover:bg-white transition-colors">
+                        <div class="message-options flex items-center gap-3 px-4 py-3 ${isActive ? 'border-l-2 border-gray-800' : ''}  bg-white hover:bg-white transition-colors">
                             <img src="${convo.avatar}?t=${current_version}"
                                 class="rounded-full w-9 h-9 object-cover flex-shrink-0" alt="Welt Yang">
                             <div class="min-w-0 flex-1">
@@ -130,6 +170,7 @@ const renderConversations = () => {
             current_messages = await getMessages();
 
             renderMessages();
+            renderConversations();
         });
         convoentries.append(entry);
 
@@ -171,7 +212,9 @@ const renderMessages = () => {
         }
         
         
-    })
+    });
+
+    scrollzone.scrollTop = scrollzone.scrollHeight
 
 
 }

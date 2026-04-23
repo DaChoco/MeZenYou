@@ -24,11 +24,14 @@ if (!$data['email'] || !$data['password']) {
     echo json_encode(["error" => "Missing required fields"]);
     exit;
 }
-
+$address = "";
+if (isset($data['address'])){
+    $address = trim($data['address']);
+}
 $email = trim($data['email']);
 $password = $data['password'];
 $username = $data['username'];
-$address = trim($data['address']);
+
 
 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 //THEREST-----------------------------------------------------
