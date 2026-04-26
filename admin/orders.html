@@ -10,6 +10,7 @@
     <script src="https://kit.fontawesome.com/dad52afab5.js" crossorigin="anonymous"></script>
     <script src="/variables.js"></script>
     <script src="/adminjs/includesidenav.js"></script>
+    <script src="/adminjs/adminorders.js" defer></script>
 </head>
 
 <body>
@@ -35,7 +36,7 @@
             <div>
                 <div id="tblOrders" class="col-span-3">
                     <span class="text-2xl">List of Orders</span>
-                    <table
+                    <table id="order-table"
                         class="border-collapse border-solid [&_*]:border-black [&_*]:border [&_*]:text-sm [&_*]:p-2 w-full">
                         <tr class="bg-darkgray text-white">
                             <th>Buyer</th>
@@ -43,32 +44,26 @@
                             <th>Date</th>
                             <th>Method</th>
                             <th>Price</th>
+                            <th>Status</th>
                         </tr>
 
                         <tr>
-                            <td>#01</td>
-                            <td>MaileEnFranklin@yahoo.com</td>
-                            <td>ADMIN</td>
-                            <td>Active</td>
-                            <td>13 Jan 2025</td>
-                        </tr>
-
-                        <tr>
-                            <td>#01</td>
-                            <td>MaileEnFranklin@yahoo.com</td>
-                            <td>Seller</td>
-                            <td>Active</td>
-                            <td>13 Jan 2025</td>
-                        </tr>
-
-                        <tr>
-                            <td>#01</td>
-                            <td>MaileEnFranklin@yahoo.com</td>
-                            <td>Buyer</td>
-                            <td>Active</td>
-                            <td>13 Jan 2025</td>
+                            <th>Maile</th>
+                            <th>Welt</th>
+                            <th>23 Jan</th>
+                            <th>Yoco</th>
+                            <th>400</th>
+                            <th contenteditable="true">Pending</th>
                         </tr>
                     </table>
+
+                    
+                </div>
+
+               <div class="flex flex-row justify-between">
+                    <span id="row-id-zone">Rows per page (10) out of BLANK rows</span>
+
+                    <div id="page-btns" class="m-5"></div>
                 </div>
 
                 

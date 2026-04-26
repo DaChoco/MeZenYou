@@ -3,8 +3,8 @@ const queryString = window.location.href;
 
 const urlbar = new URL(queryString);
 if (!urlbar.searchParams.has("pg")) {
-    urlbar.searchParams.set("pg", "1");
-    window.history.replaceState({}, "", urlbar);
+  urlbar.searchParams.set("pg", "1");
+  window.history.replaceState({}, "", urlbar);
 }
 
 const searchParams = urlbar.searchParams.get('q');
@@ -39,8 +39,6 @@ async function loadProducts() {
   const data = await res.json();
   console.log(data);
 
-  // Show user email
-  console.log(userEmail);
   userEmail.textContent = data.user
     ? `Signed in as: ${data.user}`
     : "Not logged in";
@@ -90,7 +88,7 @@ function renderProducts(products, reviews) {
   });
 }
 
-function renderPageBoxes(totalPages){
+function renderPageBoxes(totalPages) {
   const outputarea = document.getElementById('page-btns')
   const btnclasses = `p-3 border-2 border-black pgbtn hover:border-white hover:bg-hoverbtnred hover:text-white`;
   outputarea.innerHTML = "";
@@ -98,18 +96,18 @@ function renderPageBoxes(totalPages){
   leftarrow.setAttribute('id', "leftarrowid")
   leftarrow.innerText = "<-"
   leftarrow.className = btnclasses
-  leftarrow.addEventListener('click', ()=> prevPage());
-  
+  leftarrow.addEventListener('click', () => prevPage());
+
   const pageboxcontainer = document.createElement('ul');
   pageboxcontainer.append(leftarrow)
   pageboxcontainer.className = `flex flex-row w-full p-0 relative space-x-5 justify-end`;
-  for (let i = 1; i<totalPages+1; i++){
+  for (let i = 1; i < totalPages + 1; i++) {
     const btncard = document.createElement('li')
     btncard.setAttribute('id', `pgnum${i}`)
     btncard.className = btnclasses;
     btncard.innerText = i;
 
-    btncard.addEventListener('click', async ()=>{
+    btncard.addEventListener('click', async () => {
       urlbar.searchParams.set('pg', btncard.innerText);
       window.location.href = urlbar.toString();
     })
@@ -121,33 +119,33 @@ function renderPageBoxes(totalPages){
   rightarrow.setAttribute('id', "rightarrowid")
   rightarrow.className = btnclasses;
   rightarrow.innerText = "->"
-  rightarrow.addEventListener('click', ()=> nextPage(totalPages));
+  rightarrow.addEventListener('click', () => nextPage(totalPages));
   pageboxcontainer.append(rightarrow);
   outputarea.append(pageboxcontainer);
-  
+
 }
 
-function nextPage(maxValue){
-  if (pageNum < maxValue){
-  urlbar.searchParams.set('pg', String(pageNum + 1))
-  window.location.href = urlbar.toString();
+function nextPage(maxValue) {
+  if (pageNum < maxValue) {
+    urlbar.searchParams.set('pg', String(pageNum + 1))
+    window.location.href = urlbar.toString();
 
   }
-  else{
+  else {
     alert("This is the highest number of pages.")
   }
-  
+
 }
 
-function prevPage(){
-  if (pageNum > 1){
+function prevPage() {
+  if (pageNum > 1) {
     urlbar.searchParams.set('pg', String(pageNum - 1))
     window.location.href = urlbar.toString();
   }
-  else{
+  else {
     alert("This is the lowest number of pages.")
   }
-  
+
 
 }
 

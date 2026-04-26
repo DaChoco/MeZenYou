@@ -1,5 +1,5 @@
 const API = window.ENV.API_URL;
-let usersState = [];
+let orderState = [];
 const rolecolors = {
     ADMIN: "bg-[#87f1f5]",
     MODERATOR: "bg-[#51aafc]",
@@ -48,7 +48,7 @@ async function deleteUser(userid){
 
     console.log(data.message)
 
-    usersState = usersState.map(user => {
+    orderState = orderState.map(user => {
         if (user.id !== userid) return user;
 
         return {
@@ -80,7 +80,7 @@ async function changeStatus(newStatus, newRole, userid) {
     const response = await fetch(url, { credentials: "include", method: "POST", body: JSON.stringify(body) });
     const data = await response.json();
 
-    usersState = usersState.map(user => {
+    orderState = orderState.map(user => {
         if (user.id !== userid) return user;
 
         return {
@@ -98,7 +98,7 @@ async function loadUsers() {
 
     const response = await fetch(url);
     const data = await response.json();
-    usersState = data.users || [];
+    orderState = data.users || [];
     renderTableRows()
     renderPageBoxes(data.totalpages, data.rows);
 
@@ -106,9 +106,9 @@ async function loadUsers() {
 
 function renderTableRows() {
     const myTable = document.getElementById('user-table');
-    console.log(usersState)
+    console.log(orderState)
     myTable.innerHTML = "";
-    if (!usersState.length) {
+    if (!orderState.length) {
         return;
     }
     const tableheadings = document.createElement('tr')
@@ -123,7 +123,7 @@ function renderTableRows() {
     tableheadings.className = `bg-darkgray text-white`;
     myTable.append(tableheadings);
 
-    usersState.forEach(user => {
+    orderState.forEach(user => {
         const tablerow = document.createElement('tr')
         tablerow.className = "[&>*]:p-2"
         const status_class = user.status === "ACTIVE" ? "bg-green-400 text-black" : "bg-normalred text-white";

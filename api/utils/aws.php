@@ -304,7 +304,7 @@ class AWSservice
             $this->dynamo->transactWriteItems([
                 'TransactItems' => [
 
-                    // 1. Message record
+                    // 1. Individual message - Eg. "I like water"
                     [
                         'Put' => [
                             'TableName' => 'mezenyoumsg',
@@ -322,7 +322,7 @@ class AWSservice
                         ]
                     ],
 
-                    // 2. For me
+                    // 2. My message summary
                     [
                         'Put' => [
                             'TableName' => 'mezenyoumsg',
@@ -338,7 +338,7 @@ class AWSservice
                         ]
                     ],
 
-                    // For Reciever
+                    // 3. Their message summary
                     [
                         'Put' => [
                             'TableName' => 'mezenyoumsg',

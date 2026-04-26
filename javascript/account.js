@@ -9,6 +9,12 @@ const newpw2 = document.getElementById('newpw2')
 
 const iconselect = document.getElementById('iconupload')
 
+const statuscolors = {
+    COMPLETED: "text-[#02b835]",
+    pending: "text-[#d18902]",
+    cancelled: "text-[#eb1000]"
+};
+
 function capitalizeFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -109,11 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     orders.forEach((order) => {
       const card = document.createElement("article");
 
-      if (order["order_status"] !== "cancelled") {
-        is_delivered = `<p class="text-green-600 mr-2">${capitalizeFirst(order["order_status"])}</p>`;
-      } else {
-        is_delivered = `<p class="text-normalred mr-2">Cancelled</p>`;
-      }
+      const order_status_color = statuscolors[order.order_status] || ""
       card.className =
         "order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3";
       card.innerHTML = `
@@ -121,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="flex flex-col">
           <h4 class="sm:text-base lg:text-xl font-bold">Order #${order["id"]}</h4>
           <span class="flex flex-row">
-             ${is_delivered}
+             <p class="${order_status_color} mr-2">${capitalizeFirst(order["order_status"])}</p>
           </span>
           <ul>
               <li class="sm:text-base lg:text-lg">${order["name"]}</li>

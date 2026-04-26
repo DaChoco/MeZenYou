@@ -62,7 +62,11 @@
             sm:grid-cols-3 md:grid-cols-4 
             lg:grid-cols-[repeat(auto-fill,minmax(150px,1fr))] 
             gap-3 sm:gap-6 items-start content-start
-            p-4 sm:p-6 lg:p-10">
+            p-4 sm:p-6 lg:p-10 relative">
+
+            <div id="loadbar" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div class="border-8 border-gray-700 border-t-cerulean animate-spin rounded-full w-[200px] h-[200px]"></div>
+            </div>
             </section>
         <div id="page-btns" class="m-5"></div>
 
