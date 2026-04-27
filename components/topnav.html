@@ -1,4 +1,5 @@
-<nav class="bg-darkgray snap-x snap-mandatory text-white w-full h-fit p-6 flex flex-row items-center overflow-auto lg:overflow-visible whitespace-nowrap lg:whitespace-normal scroll-smooth scrollbar-hide [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+<nav
+    class="bg-darkgray snap-x snap-mandatory text-white w-full h-fit p-6 flex flex-row items-center overflow-auto lg:overflow-visible whitespace-nowrap lg:whitespace-normal scroll-smooth scrollbar-hide [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
     <!-- LEFT: MEZENYOU'S LOGO -->
     <div class="flex flex-none items-center space-x-2">
         <i id="menuToggle" class="fa-solid fa-bars fa-2x self-end"></i>
@@ -13,7 +14,8 @@
             placeholder="Search For an Item..." type="text" />
         <div
             class="absolute rounded-sm border border-gray-800 z-50 max-h-[150px] text-black top-full left-0 right-0 bg-white">
-            <ul id="autocomplete-srch" class="[&>*]:border-b-2 [&>*]:border-gray-400 [&>*]:p-2 hover:[&>*]:bg-red-100 [&_*]:z-50 z-[100]">
+            <ul id="autocomplete-srch"
+                class="[&>*]:border-b-2 [&>*]:border-gray-400 [&>*]:p-2 hover:[&>*]:bg-red-100 [&_*]:z-50 z-[100]">
             </ul>
         </div>
         <button type="button" aria-label="Search" class="absolute right-0 top-0 h-full w-12">
@@ -28,19 +30,28 @@
 
     <!-- RIGHT -->
     <ul class="flex items-center space-x-4 ml-auto">
-        <li><a href="/pages/checkout.html"><i class="fa-solid fa-cart-arrow-down fa-2x block md:!hidden"></i><p class="hidden md:block">Checkout</p></a></li>
-        <li><a href="/pages/about.html"><i class="fa-solid fa-group-arrows-rotate fa-2x block md:!hidden"></i><p class="hidden md:block">About</p></a></li>
-        <li><a href="/pages/auth.html?type=login"><i class="fa-solid fa-arrow-right-to-bracket fa-2x block md:!hidden"></i><p class="hidden md:block">Sign in</p></a></li>
-        <li><a href="/pages/account.html"><p class="hidden md:block">Account</p></a></li>
+        <li><a href="/pages/checkout.html"><i class="fa-solid fa-cart-arrow-down fa-2x block md:!hidden"></i>
+                <p class="hidden md:block">Checkout</p>
+            </a></li>
+        <li><a href="/pages/about.html"><i class="fa-solid fa-group-arrows-rotate fa-2x block md:!hidden"></i>
+                <p class="hidden md:block">About</p>
+            </a></li>
+        <li><a href="/pages/auth.html?type=login"><i
+                    class="fa-solid fa-arrow-right-to-bracket fa-2x block md:!hidden"></i>
+                <p class="hidden md:block">Sign in</p>
+            </a></li>
+        <li><a href="/pages/account.html">
+                <p class="hidden md:block">Account</p>
+            </a></li>
 
         <!--SHOW USERNAME WHEN YOU HOVER OVER THE BTN-->
-        <li class="w-12 h-12 relative inline-block group after:content-[attr(data-username)] after:absolute after:left-1/2 after:-translate-x-1/2 after:top-full after:mt-2
+        <li>
+            <a class="w-12 h-12 relative inline-block group after:content-[attr(data-username)] after:absolute after:left-1/2 after:-translate-x-1/2 after:top-full after:mt-2
         after:bg-black after:text-white 
          after:text-xs after:p-2 after:rounded
          after:whitespace-nowrap after:opacity-0 after:transition-opacity
-        hover:after:opacity-100" >
-            <a id="usericonzone" href="/pages/account.html"></a>
-            <!-- DYNAMIC USER ICON GOES HERE -->
+        hover:after:opacity-100 cursor-pointer" id="usericonzone" href="/pages/account.html"></a>
+            <!-- DYNAMIC USER ICON GOES HRE -->
         </li>
     </ul>
 </nav>

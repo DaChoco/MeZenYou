@@ -6,6 +6,7 @@ const statuscolors = {
     pending: "bg-[#d18902]",
     cancelled: "bg-[#eb1000]"
 };
+
 const myTable = document.getElementById('order-table');
 const queryString = window.location.href;
 const urlbar = new URL(queryString);

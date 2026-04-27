@@ -1,3 +1,4 @@
+const searchbar = document.getElementById('usersearch');
 const API = window.ENV.API_URL;
 const provinces = ['Western Cape', 'Kwa-Zulu Natal', 'Gauteng', 'Limpopo', 'North-West', 'Mmpumalanga', 'Northern Cape', 'Eastern Cape', 'Free State'];
 const categories = ['Novels','Comics/Manga', 'Video Games', 'Electronics', 'Office', 'Colelctibles', 'Other']
@@ -41,6 +42,26 @@ async function retrieveAdminUserData() {
 
     return data
 }
+
+async function SearchDB(user_input){
+    const res = await fetch(`${API}/api/admin/search.php`, {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({txt: user_input})
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    return data
+
+}
+
+searchbar.addEventListener('keydown', async (e)=>{
+    if (e.key === "Enter"){
+        const result = await SearchDB(searchbar.value);
+    }
+})
 document.addEventListener("DOMContentLoaded", async () => {
     // Geting the canvas
     var ctx = document.getElementById('myProvinceChart').getContext('2d');

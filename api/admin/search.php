@@ -31,9 +31,13 @@ try{
 
     $statement = $conn->prepare("SELECT id as rID, username, icon, updated_at, user_role AS role, created_at FROM Users WHERE (username LIKE :username OR email LIKE :email) OR id = :id LIMIT 10");
     $statement->execute(["username" => "%$USER_INPUT%", "email"=> "%$USER_INPUT%", "id"=> $USER_INPUT]);
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    $USER_result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode(["status" => true, "user"=>$result]);
+    $statement = $conn->prepare("SELECT * FROM Products WHERE (product_name LIKE :pname OR category LIKE :categ) AND is_active = TRUE LIMIT 10");
+    $statement->execute(["pname" => "%$USER_INPUT%", "categ"=> "%$USER_INPUT%"]);
+    $PROD_result = $statement->fetch(PDO::FETCH_ASSOC);
+
+    echo json_encode(["status" => true, "user"=>$USER_result, "product"=>$PROD_result]);
 } catch (PDOException $e) {
     http_response_code(500);
     error_log("PDO ERROR: " . $e->getMessage());

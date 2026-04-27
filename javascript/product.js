@@ -45,29 +45,18 @@ function sKtoTime(sk) {
 
 }
 
-const renderMessages = () => {
-  const scrollzone = document.getElementById('scroll-zone');
-  const sendbtn = document.getElementById('senditbtn');
-  const inputbar = document.getElementById('sendmsgtxt');
-  const headericon = document.getElementById('header-icon');
-  const headerusername = document.getElementById('header-username')
-
-  const recieverAvatar = current_messages.find(c => (c.rID !== USER["user"]))
-  headericon.setAttribute('src', `${recieverAvatar["avatar"]}?t=${current_version}`);
-  headerusername.innerText = recieverAvatar['username']
-
-  async function sendMessage() {
-    if (!inputbar.value || !recieverID) {
+  async function sendMessage(msgtxt) {
+    if (!msgtxt || !recieverID) {
       return;
     }
 
 
     let url = `${API_URL}/api/messages/send.php`;
-    if (!USER){
+    if (!USER) {
       alert("You need to be logged in to send messages. Sorry")
       return;
     }
-    const body = { icon: USER["icon"], message: inputbar.value, rID: recieverID }
+    const body = { icon: USER["icon"], message: msgtxt, rID: recieverID }
     const response = await fetch(url, { credentials: "include", body: JSON.stringify(body), method: "POST" })
     const data = await response.json();
 
@@ -82,22 +71,22 @@ const renderMessages = () => {
       return;
     }
 
+
   }
 
-  sendbtn.addEventListener('click', async () => sendMessage());
-  inputbar.addEventListener('keydown', async (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
-    }
-    else if (e.key === "Escape") {
-      inputbar.blur();
-      inputbar.value = "";
-    }
-  })
-  scrollzone.innerHTML = "";
-  console.log("user:", USER)
+function renderMessages(){
+  const scrollzone = document.getElementById('scroll-zone');
+  const headericon = document.getElementById('header-icon');
+  const headerusername = document.getElementById('header-username')
 
-  current_messages.map(msg => {
+  const recieverAvatar = current_messages.find(c => (c.rID !== USER["user"]))
+  headericon.setAttribute('src', `${recieverAvatar["avatar"]}?t=${current_version}`);
+  headerusername.innerText = recieverAvatar['username']
+
+  scrollzone.innerHTML = "";
+   console.log("user:", USER)
+
+   current_messages.map(msg => {
     if (String(USER["user"]) !== msg['sID']) {
 
       const reciever = document.createElement('article');
@@ -135,6 +124,11 @@ const renderMessages = () => {
 
 }
 
+  
+ 
+
+  
+
 
 async function retrieveUserData() {
   let url = `${API_URL}/api/account/role.php`
@@ -149,7 +143,7 @@ async function retrieveUserData() {
 
 async function getMessages() {
   let url = `${API_URL}/api/messages/currentmsgs.php?rid=${recieverID}`;
-  if (recieverID === USER["user"]){
+  if (recieverID === USER["user"]) {
     return []
   }
   const response = await fetch(url, { credentials: "include" });
@@ -168,9 +162,7 @@ async function getMessages() {
 
 }
 
-
 async function loadMessageBox() {
-
   const container = document.getElementById("messagebox");
 
   if (is_rendered == false) {
@@ -178,13 +170,24 @@ async function loadMessageBox() {
     const html = await response.text();
 
     container.innerHTML = html;
-  }
-  else {
-    container.innerHTML = ""
-  }
-  is_rendered = !is_rendered;
+    const sendbtn = document.getElementById('senditbtn');
+    const inputbar = document.getElementById('sendmsgtxt');
 
+    sendbtn.addEventListener('click', ()=> sendMessage(inputbar.value));
+    inputbar.addEventListener('keydown', (e) => {
+      if (e.key === "Enter") sendMessage(inputbar.value);
+      if (e.key === "Escape") {
+        inputbar.blur();
+        inputbar.value = "";
+      }
+    });
+  } else {
+    container.innerHTML = "";
+  }
+
+  is_rendered = !is_rendered;
 }
+
 async function loadProduct() {
   const ID = urlParams.get("id");
   let url = `${API_URL}/api/item.php?id=${ID}`;

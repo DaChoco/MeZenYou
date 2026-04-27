@@ -118,7 +118,6 @@ function renderTableRows() {
                         <th>Role</th>
                         <th>Status</th>
                         <th>Registered</th>
-                        <th>Last Active</th>
                         <th>Actions</th>`
     tableheadings.className = `bg-darkgray text-white`;
     myTable.append(tableheadings);
@@ -136,7 +135,6 @@ function renderTableRows() {
                         <td contenteditable="true" tabindex="0" id="ROLE-${user.id}" class="${role_class}">${user.role}</td>
                         <td contenteditable="true" tabindex="0" id="STATUS-${user.id}" class="${status_class}">${user.status}</td>
                         <td>${timeConverter(user.created_at)}</td>
-                        <td>5 mins ago</td>
                         <td>
                             <i id="DELETE-${user.id}" class="fa-solid fa-trash text-normalred"></i>
                         </td>
