@@ -48,14 +48,9 @@ async function loadSignedInData() {
       uname.value = data.username;
       email.value = data.email;
     }
-
-
-
-
   }
   else {
     console.log("USER APPEARS TO LACK A CART")
-    console.log(data);
   }
 
 
