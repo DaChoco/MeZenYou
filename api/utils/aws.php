@@ -120,6 +120,19 @@ class AWSservice
         return "{$ids[0]}#{$ids[1]}";
     }
 
+    private function censorMessage($txt){
+        
+        $PROFANITY_WORDS = ["shit", "crap", "asshole", "bastard", "fuck", "bitch"];
+        $pattern = '/\b(' . implode('|', $PROFANITY_WORDS) . ')\w*\b/i';
+
+        return preg_replace_callback($pattern, function($matches) {
+            return str_repeat('*', strlen($matches[0]));
+        }, $txt);
+
+        
+
+    }
+
     #AWS DynamoDB -REVIEWS-------------------------
     public function retrieveProductReviews($productID)
     {
@@ -298,6 +311,8 @@ class AWSservice
 
             $messageSK = "MSG#{$timestamp}";
             $convSK = "CONV#{$conversationID}";
+
+            $messageText = $this->censorMessage($messageText);
 
 
 
