@@ -8,89 +8,98 @@ const reviewarea = document.getElementById("ratingid");
 let is_rendered = false;
 let USER = {};
 let current_messages = [];
-let conversations = []
+let conversations = [];
 let recieverID = 0;
 let current_version = "";
 
 const clean = (val) => DOMPurify.sanitize(val);
 
-
 document.addEventListener("DOMContentLoaded", async () => {
-  addreview.addEventListener('click', () => uploadReview(urlParams.get("id")));
+  addreview.addEventListener("click", () => uploadReview(urlParams.get("id")));
 
   const item = await loadProduct();
-  const cartaddbtn = document.getElementById('cartaddbtn')
-  cartaddbtn.addEventListener('click', () => addtocart(urlParams.get("id"), item))
-  const messagebtn = document.getElementById('msgbtn');
+  const cartaddbtn = document.getElementById("cartaddbtn");
+  cartaddbtn.addEventListener("click", () =>
+    addtocart(urlParams.get("id"), item),
+  );
+  const messagebtn = document.getElementById("msgbtn");
 
-  messagebtn.addEventListener('click', async (e) => {
+  messagebtn.addEventListener("click", async (e) => {
     e.preventDefault();
     await loadMessageBox();
-    [USER, current_messages] = await Promise.all([retrieveUserData(), getMessages()]);
+    [USER, current_messages] = await Promise.all([
+      retrieveUserData(),
+      getMessages(),
+    ]);
 
     renderMessages();
-  })
+  });
 });
 
-
 function sKtoTime(sk) {
-  const timestamp = Number(sk.split('#')[1]); // extract ms timestamp
+  const timestamp = Number(sk.split("#")[1]); // extract ms timestamp
   const date = new Date(timestamp);
 
   return date.toLocaleTimeString([], {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
-
 }
 
-  async function sendMessage(msgtxt) {
-    if (!msgtxt || !recieverID) {
-      return;
-    }
-
-
-    let url = `${API_URL}/api/messages/send.php`;
-    if (!USER) {
-      alert("You need to be logged in to send messages. Sorry")
-      return;
-    }
-    const body = { icon: USER["icon"], message: msgtxt, rID: recieverID }
-    const response = await fetch(url, { credentials: "include", body: JSON.stringify(body), method: "POST" })
-    const data = await response.json();
-
-    if (data.success) {
-      alert("Message successfully sent!");
-      current_messages = await getMessages();
-      renderMessages()
-
-    }
-    else {
-      alert("Something went wrong")
-      return;
-    }
-
-
+async function sendMessage(msgtxt) {
+  if (!msgtxt || !recieverID) {
+    return;
   }
 
-function renderMessages(){
-  const scrollzone = document.getElementById('scroll-zone');
-  const headericon = document.getElementById('header-icon');
-  const headerusername = document.getElementById('header-username')
+  let url = `${API_URL}/api/messages/send.php`;
+  if (!USER) {
+    alert("You need to be logged in to send messages. Sorry");
+    return;
+  }
+  const body = { icon: USER["icon"], message: msgtxt, rID: recieverID };
+  const response = await fetch(url, {
+    credentials: "include",
+    body: JSON.stringify(body),
+    method: "POST",
+  });
+  const data = await response.json();
 
-  const recieverAvatar = current_messages.find(c => (c.rID !== USER["user"]))
-  headericon.setAttribute('src', `${recieverAvatar["avatar"]}?t=${current_version}`);
-  headerusername.innerText = recieverAvatar['username']
+  if (data.success) {
+    alert("Message successfully sent!");
+    current_messages = await getMessages();
+    renderMessages();
+  } else {
+    alert("Something went wrong");
+    return;
+  }
+}
+
+function renderMessages() {
+  const scrollzone = document.getElementById("scroll-zone");
+  const headericon = document.getElementById("header-icon");
+  const headerusername = document.getElementById("header-username");
+  
+  if (!current_messages || current_messages.length === 0) {
+    scrollzone.innerHTML = "<p class='text-gray-400'>No messages yet</p>";
+    return;
+  }
+
+
+  const recieverAvatar = current_messages.find((c) => c.rID !== USER["user"]);
+  if (recieverAvatar) {
+    headericon.setAttribute("src", `${recieverAvatar.avatar}?t=${current_version}`,
+    );
+    headerusername.innerText = recieverAvatar.username;
+  }
 
   scrollzone.innerHTML = "";
-   console.log("user:", USER)
+  console.log("user:", USER);
 
-   current_messages.map(msg => {
-    if (String(USER["user"]) !== msg['sID']) {
-
-      const reciever = document.createElement('article');
-      reciever.classList = 'flex items-end gap-2'
+  current_messages.map((msg) => {
+    if (String(USER["user"]) !== msg["sID"]) {
+      const reciever = document.createElement("article");
+      reciever.classList = "flex items-end gap-2";
       reciever.innerHTML = `
                         <img src="${msg.avatar}?t=${current_version}"
                             class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
@@ -98,14 +107,12 @@ function renderMessages(){
                             ${msg.messageText}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
-                        `
+                        `;
 
       scrollzone.append(reciever);
-
-    }
-    else {
-      const sender = document.createElement('article');
-      sender.classList = 'flex items-end flex-row-reverse gap-2'
+    } else {
+      const sender = document.createElement("article");
+      sender.classList = "flex items-end flex-row-reverse gap-2";
       sender.innerHTML = `
                         <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
                             ${msg.messageText}
@@ -113,53 +120,37 @@ function renderMessages(){
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
             `;
       scrollzone.append(sender);
-
     }
-
-
   });
 
-  scrollzone.scrollTop = scrollzone.scrollHeight
-
-
+  scrollzone.scrollTop = scrollzone.scrollHeight;
 }
 
-  
- 
-
-  
-
-
 async function retrieveUserData() {
-  let url = `${API_URL}/api/account/role.php`
+  let url = `${API_URL}/api/account/role.php`;
 
   const response = await fetch(url, { credentials: "include" });
   const data = await response.json();
-  console.log(data)
-  current_version = data.timestamp
-  return data
-
+  console.log(data);
+  current_version = data.timestamp;
+  return data;
 }
 
 async function getMessages() {
   let url = `${API_URL}/api/messages/currentmsgs.php?rid=${recieverID}`;
   if (recieverID === USER["user"]) {
-    return []
+    return [];
   }
   const response = await fetch(url, { credentials: "include" });
 
   const data = await response.json();
 
   if (data.status) {
-    console.log(data)
-    return data.messages
-  }
-  else {
+    return data.messages;
+  } else {
     alert("INTERNAL SERVER ERROR");
-    return []
+    return [];
   }
-
-
 }
 
 async function loadMessageBox() {
@@ -170,11 +161,11 @@ async function loadMessageBox() {
     const html = await response.text();
 
     container.innerHTML = html;
-    const sendbtn = document.getElementById('senditbtn');
-    const inputbar = document.getElementById('sendmsgtxt');
+    const sendbtn = document.getElementById("senditbtn");
+    const inputbar = document.getElementById("sendmsgtxt");
 
-    sendbtn.addEventListener('click', ()=> sendMessage(inputbar.value));
-    inputbar.addEventListener('keydown', (e) => {
+    sendbtn.addEventListener("click", () => sendMessage(inputbar.value));
+    inputbar.addEventListener("keydown", (e) => {
       if (e.key === "Enter") sendMessage(inputbar.value);
       if (e.key === "Escape") {
         inputbar.blur();
@@ -197,13 +188,12 @@ async function loadProduct() {
   console.log(data);
 
   renderProduct(data.product, data.user);
-  const reviewscoreval = document.getElementById('reviewscore')
+  const reviewscoreval = document.getElementById("reviewscore");
   const score = await loadReviews(ID);
 
   reviewscoreval.innerText = score;
 
-  return data
-
+  return data;
 }
 
 async function uploadReview(ID) {
@@ -216,7 +206,7 @@ async function uploadReview(ID) {
   const rating = Number(clean(reviewarea.value));
 
   if (!rating || rating === 0) {
-    alert("Please input a valid value between 1 and 5. Thank you.")
+    alert("Please input a valid value between 1 and 5. Thank you.");
     return;
   }
 
@@ -260,7 +250,7 @@ async function loadReviews(ID) {
     reviewzone.appendChild(review);
   });
 
-  return data.avg
+  return data.avg;
 }
 
 async function renderProduct(product, user) {
@@ -316,35 +306,27 @@ async function renderProduct(product, user) {
 
 async function addtocart(ID, item) {
   if (!item) {
-    alert("EMPTY NO ITEM WAS LOADED")
+    alert("EMPTY NO ITEM WAS LOADED");
   }
 
-  const qty = document.getElementById('qtyid')
+  const qty = document.getElementById("qtyid");
   if (!qty.value || qty.value === 0) {
-    alert("INPUT A VALID QUANTITY")
+    alert("INPUT A VALID QUANTITY");
     return;
   }
 
-  const payload = { qty: qty.value, pid: ID }
-  const response = await fetch(
-    `${API_URL}/api/cart/add.php`,
-    {
-      credentials: "include",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }
-  );
+  const payload = { qty: qty.value, pid: ID };
+  const response = await fetch(`${API_URL}/api/cart/add.php`, {
+    credentials: "include",
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
   const data = await response.json();
 
   if (data.success) {
     alert(data.message);
+  } else {
+    console.log(data);
   }
-  else {
-    console.log(data)
-  }
-
-
 }
-
-

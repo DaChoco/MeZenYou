@@ -24,6 +24,13 @@ if (!$userID2) {
 
 }
 
+if ($userID1 === $userID2){
+    http_response_code(401);
+    echo json_encode(["error" => "Same user", "status"=> false]);
+    exit;
+
+}
+
 try {
     $conn = require __DIR__ . "/../conn.php";
     $statement = $conn->prepare('SELECT id, username FROM users WHERE id IN (:uID1, :uID2)');
@@ -58,5 +65,5 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => $e->getMessage()]);
+    echo json_encode(["error" => "INTERNAL SERVER ERROR"]);
 }

@@ -121,7 +121,7 @@ class AWSservice
     }
 
     private function censorMessage($txt){
-        
+        #this is just to censor messages
         $PROFANITY_WORDS = ["shit", "crap", "asshole", "bastard", "fuck", "bitch"];
         $pattern = '/\b(' . implode('|', $PROFANITY_WORDS) . ')\w*\b/i';
 
@@ -196,8 +196,6 @@ class AWSservice
             ]);
             $average_ratings = [];
 
-            $average_ratings = [];
-
             if (!isset($result['Items']) || count($result['Items']) === 0) {
                 return [];
             }
@@ -227,6 +225,8 @@ class AWSservice
     public function uploadProductReview(string $userID, $productID, $txt, $rating, $username): bool
     {
         $current_time = (string) time();
+
+        $txt = $this->censorMessage($txt);
         try {
             $this->dynamo->transactWriteItems([
                 'TransactItems' => [

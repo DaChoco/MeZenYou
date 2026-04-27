@@ -37,17 +37,21 @@ async function loadSignedInData() {
   const data = await response.json()
 
   if (data.success) {
-    const addressarray = data.address.split("-")
+    if (data.address) {
+      const addressarray = data.address.split("-")
+      street.value = `${addressarray[0]}, ${addressarray[1]}`;
+      city.value = addressarray[2];
+      province.value = addressarray[3];
+      postal.value = addressarray[4];
+
+      tel.value = data.phone;
+      uname.value = data.username;
+      email.value = data.email;
+    }
 
 
-    street.value = `${addressarray[0]}, ${addressarray[1]}`;
-    city.value = addressarray[2];
-    province.value = addressarray[3];
-    postal.value = addressarray[4];
 
-    tel.value = data.phone;
-    uname.value = data.username;
-    email.value = data.email;
+
   }
   else {
     console.log("USER APPEARS TO LACK A CART")
@@ -128,11 +132,11 @@ async function renderCart(cart) {
   }
 
   totalprice.innerText = `R${(sum + 30).toFixed(2)}`
-  submit.addEventListener('click', async (e)=>{
+  submit.addEventListener('click', async (e) => {
     e.preventDefault();
     const result = await initiateOrder(cart)
 
-    if (result){
+    if (result) {
       //Not serious just to help simulate
       window.open("https://paystack.shop/pay/nh0g97ih1l", "_blank")
       window.location.href = result;
@@ -142,8 +146,8 @@ async function renderCart(cart) {
 
 }
 
-async function initiateOrder(current_cart){
-  if (!current_cart){
+async function initiateOrder(current_cart) {
+  if (!current_cart) {
     alert("Something has gone wrong")
     return;
   }
@@ -153,8 +157,8 @@ async function initiateOrder(current_cart){
   const price = totalprice.innerText.replace("R", "");
   //The cart is already stored on the backend so don't send it.
   const payload = {
-    fullname: uname.value, 
-    email: email.value, 
+    fullname: uname.value,
+    email: email.value,
     phone: tel.value,
     province: province.value,
     street: street.value,
@@ -162,27 +166,28 @@ async function initiateOrder(current_cart){
     postal: postal.value,
     price: Number(price),
     payment: payment_type,
-    delivery: deliverytype}
+    delivery: deliverytype
+  }
 
-  
+
   let url = `${API_URL}/api/cart/checkout.php`
 
-  const response = await fetch(url, 
+  const response = await fetch(url,
     {
-    credentials: "include", 
-    method: "POST",
-    headers: { "Content-Type": "application/json" }, 
-    body: JSON.stringify(payload)
-  })
+      credentials: "include",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
 
   const data = await response.json();
 
-  if (data.success){
+  if (data.success) {
     alert(data.message);
 
     return data.redirect;
   }
-  else{
+  else {
     alert(data.message)
     console.log("INTERNAL SERVER ERROR");
     console.log(data)
