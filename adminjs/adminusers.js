@@ -130,7 +130,7 @@ function renderTableRows() {
         const role_class = rolecolors[user.role] || "";
         tablerow.innerHTML = `
                         <td>${user.id}</td>
-                        <td><img src="${user.icon}?t=${user.updated_at ?? 0}" alt="${user.username}" class="rounded-full w-12 p-0"></td>
+                        <td><img src="${user.icon}?t=${user.updated_at ?? 0}&tr=w-100,c-maintain_ratio,f-auto,q-70" alt="${user.username}" class="rounded-full w-12 p-0"></td>
                         <td>${user.email}</td>
                         <td contenteditable="true" tabindex="0" id="ROLE-${user.id}" class="${role_class}">${user.role}</td>
                         <td contenteditable="true" tabindex="0" id="STATUS-${user.id}" class="${status_class}">${user.status}</td>

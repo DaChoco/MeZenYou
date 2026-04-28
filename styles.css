@@ -27,19 +27,45 @@
   transition: all 300ms;
 }
 
-/* When sidebar is collapsed */
 #layout-admin.sidebar-collapsed {
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 60px 1fr;
 }
 
-/* Hide THE text elements when collapsed */
+/* On mobile, sidebar is fixed overlay — grid only has 1 column */
+@media (max-width: 1023px) {
+  #layout-admin {
+    grid-template-columns: 1fr;
+  }
+
+  #layout-admin.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  #sidebar {
+    transform: translateX(-100%);
+    width: 250px;
+  }
+
+  /* Backdrop */
+  #sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+  }
+
+  #sidebar-backdrop.active {
+    display: block;
+  }
+}
+
 .sidebar-collapsed #sidebar p,
 .sidebar-collapsed #sidebar span,
 .sidebar-collapsed #sidebar h1 {
   display: none;
 }
 
-/* Center sidebar items when collapsed */
 .sidebar-collapsed #sidebar ul li {
   justify-content: center;
 }

@@ -1,15 +1,35 @@
-<nav id="sidebar" class="flex flex-col space-y-4 bg-darkgray [&>*]:text-gray-100 p-6 [&>span]:text-lg h-full fixed lg:relative top-0 left-0 z-50  lg:translate-x-0 transition-transform duration-200">
-            <i id="menuToggle" class="fa-solid fa-bars fa-3x self-end"></i>
-            <h1 class="text-2xl font-bold border-b border-white">Me2YouADMIN</h1>
-            <span>Main Menu</span>
+<div id="sidebar-backdrop"></div>
+<nav id="sidebar"
+    class="flex flex-col space-y-4 bg-darkgray [&>*]:text-gray-100 lg:p-6 [&>span]:text-lg h-full fixed lg:relative top-0 left-0 z-50  lg:translate-x-0 transition-transform duration-200">
+    <i id="menuToggle" class="fa-solid fa-bars fa-3x self-end"></i>
+    <h1 class="text-2xl font-bold border-b border-white">Me2YouADMIN</h1>
+    <span>Main Menu</span>
 
-            <ul class="[&>*]:flex [&>*]:flex-row [&>*]:space-x-5 [&>*]:p-2">
-                <li><a href="/admin/dashboard.html"><i class="fa-solid fa-chart-area hover:text-blue-500"></i></a><a href="/admin/dashboard.html"><p>Dashboard overview</p></a></li>
-                <li><i class="fa-solid fa-file hover:text-blue-500 view-reports"></i><p class="view-reports">View Reports</p></li>
-                <li><a href="/admin/messages.html"><i class="fa-solid fa-message hover:text-blue-500"></i></a><a href="/admin/messages.html"><p>Messages</p></a></li>
-                <li><a href="/admin/db.html"><i class="fa-solid fa-database hover:text-blue-500"></i></a><a href="/admin/orders.html"><p>View Orders</p></a></li>
-                <li><a href="/admin/users.html"><i class="fa-solid fa-user hover:text-blue-500"></i></a><a href="/admin/users.html"><p>Manage Users</p></a></li>
-            </ul>
+    <ul class="[&_*]:flex [&_*]:flex-row [&_*]:space-x-5 [&>*]:p-2">
+        <li><a href="/admin/dashboard.html"><i class="fa-solid fa-chart-area hover:text-blue-500"></i></a><a
+                href="/admin/dashboard.html">
+                <p>Dashboard overview</p>
+            </a></li>
+
+        <li>
+            <div><i class="fa-solid fa-file hover:text-blue-500"></i>
+            <p class="">View Reports</p></div>
+            <div class=""></div>
+        </li>
+        
+        <li><a href="/admin/messages.html"><i class="fa-solid fa-message hover:text-blue-500"></i></a><a
+                href="/admin/messages.html">
+                <p>Messages</p>
+            </a></li>
+        <li><a href="/admin/db.html"><i class="fa-solid fa-database hover:text-blue-500"></i></a><a
+                href="/admin/orders.html">
+                <p>View Orders</p>
+            </a></li>
+        <li><a href="/admin/users.html"><i class="fa-solid fa-user hover:text-blue-500"></i></a><a
+                href="/admin/users.html">
+                <p>Manage Users</p>
+            </a></li>
+    </ul>
 
 
 </nav>

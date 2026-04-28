@@ -72,7 +72,7 @@ function renderProducts(products, reviews) {
     card.innerHTML = `
             <a href="/pages/product.html?id=${product.id}">
                 <div class="w-full h-52 flex items-center justify-center overflow-hidden bg-gray-100">
-                    <img class="object-contain max-h-full" src="${product.image}" alt="Item Card" />
+                    <img class="object-contain max-h-full" src="${product.image}?tr=w-250,c-maintain_ratio,f-auto,q-70" alt="Item Card" />
                 </div>
             </a>
 

@@ -254,7 +254,7 @@ async function renderProduct(product, user) {
   recieverID = product["userID"];
   section_container.innerHTML = `
     <div class="image-section h-fit md:h-auto">
-            <img src="${product["image"]}" alt="" class=" w-full md:w-1/2 mx-auto my-0">
+            <img src="${product["image"]}?tr=w-800,c-maintain_ratio,f-auto,q-85" alt="" class=" w-full md:w-1/2 mx-auto my-0">
         </div>
 
         <div class="add-to-cart-or-buy row-span-2 bg-white border-2 border-red-500">

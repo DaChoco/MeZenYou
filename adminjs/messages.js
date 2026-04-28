@@ -9,6 +9,7 @@ const sendbtn = document.getElementById('senditbtn');
 const inputbar = document.getElementById('sendmsgtxt');
 
 const convoentries = document.getElementById('convo-entries');
+const backconvos = document.getElementById('back-to-convos')
 const headericon = document.getElementById('header-icon');
 const headerusername = document.getElementById('header-username')
 const scrollzone = document.getElementById('scroll-zone');
@@ -66,7 +67,6 @@ async function getMessages() {
     const data = await response.json();
 
     if (data.status) {
-        console.log(data)
         return data.messages
     }
     else {
@@ -108,7 +108,7 @@ const renderConversations = () => {
             let url = `${API_URL}/api/admin/search.php`;
             const response = await fetch(url, {credentials: "include", method: "POST", body: JSON.stringify({txt:search_user_bar.value})})
             const data = await response.json();
-            console.log(data)
+      
             recieverID = data.user.rID;
 
             urlbar.searchParams.set('rid', recieverID);
@@ -134,7 +134,7 @@ const renderConversations = () => {
     convoentries.append(search_user_bar);
     let borderstyle = ""
     
-    console.log(conversations)
+
 
     conversations.map(convo => {
         const isActive = convo.otherID == recieverID;
@@ -144,7 +144,7 @@ const renderConversations = () => {
        
         entry.className = 'block'
         entry.innerHTML = `
-                        <div class="message-options flex items-center gap-3 px-4 py-3 ${isActive ? 'border-l-2 border-gray-800' : ''}  bg-white hover:bg-white transition-colors">
+                        <div id="USER-CHAT-${convo.otherID}" class="message-options flex items-center gap-3 px-4 py-3 ${isActive ? 'border-l-2 border-gray-800' : ''}  bg-white hover:bg-white transition-colors">
                             <img src="${convo.avatar}?t=${current_version}"
                                 class="rounded-full w-9 h-9 object-cover flex-shrink-0" alt="Welt Yang">
                             <div class="min-w-0 flex-1">
@@ -175,15 +175,39 @@ const renderConversations = () => {
 
     })
 
+    const messageoptions = document.querySelectorAll('.message-options');
+
+    document.addEventListener('click', (e)=>{
+
+        const clickedInside = [...messageoptions].some(el => el.contains(e.target));
+
+        if (!clickedInside && !backconvos.contains(e.target)) {
+        document.getElementById('sidemsg-zone').classList.add('-translate-x-full');
+        }
+        })
+
 
 }
+
+document.getElementById('convo-entries').addEventListener('click', (e) => {
+    const entry = e.target.closest('[data-convo]');
+    if (entry && window.innerWidth < 1024) {
+        document.getElementById('sidemsg-zone').classList.add('-translate-x-full');
+    }
+});
+
+
+backconvos.addEventListener('click', () => {
+    document.getElementById('sidemsg-zone').classList.remove('-translate-x-full');
+});
+
 function getReceiverAvatar() {
     const activeConvo = conversations.find(c => c.otherID == recieverID);
     return activeConvo?.avatar ?? "";
 }
 
 const renderMessages = (recieverAvatar) => {
-    console.log(recieverAvatar)
+
     scrollzone.innerHTML = "";
     current_messages.map(msg=>{
 
@@ -250,10 +274,6 @@ document.addEventListener('DOMContentLoaded', async (e) => {
     }
 
     [USER, current_messages] = await Promise.all([retrieveUserData(), getMessages()]);
-
-    console.log(current_messages)
-
-
 
     renderConversations();
     renderMessages(getReceiverAvatar());

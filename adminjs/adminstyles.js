@@ -3,30 +3,46 @@ document.addEventListener("sidebarLoaded", () => {
   const layout = document.getElementById("layout-admin");
   const nav = document.getElementById('sidebar');
 
+    const backdrop = document.getElementById("sidebar-backdrop");
+
   if (!toggleBtn || !layout) return;
 
+  const isMobile = () => window.innerWidth < 1024;
+
+  const openMobileSidebar = () => {
+    nav.style.transform = "translateX(0)";
+    backdrop?.classList.add("active");
+  };
+
+  const closeMobileSidebar = () => {
+    nav.style.transform = "translateX(-100%)";
+    backdrop?.classList.remove("active");
+  };
+
   toggleBtn.addEventListener("click", () => {
-    console.log("HELLO");
+    if (isMobile()) {
+      const isOpen = nav.style.transform === "translateX(0px)" || nav.style.transform === "translateX(0)";
+      isOpen ? closeMobileSidebar() : openMobileSidebar();
+    } else {
 
-    layout.classList.toggle("sidebar-collapsed");
+      layout.classList.toggle("sidebar-collapsed");
 
+      const icons = document.querySelectorAll(".fa-solid.hover\\:text-blue-500");
+      const custicon = document.querySelectorAll(".custom-fa");
 
-  
-    const icons = document.querySelectorAll(".fa-solid.hover\\:text-blue-500");
-    const custicon = document.querySelectorAll(".custom-fa");
+      icons.forEach((icon) => icon.classList.toggle("fa-2x"));
 
-    icons.forEach((icon) => {
-      icon.classList.toggle("fa-2x");
-    });
-
-    custicon.forEach((icon) => {
-      if (icon.classList.contains("w-[1.5rem]")) {
-        icon.classList.replace("w-[1.5rem]", "w-[2rem]");
-      } else {
-        icon.classList.replace("w-[2rem]", "w-[1.5rem]");
-      }
-    });
+      custicon.forEach((icon) => {
+        if (icon.classList.contains("w-[1.5rem]")) {
+          icon.classList.replace("w-[1.5rem]", "w-[2rem]");
+        } else {
+          icon.classList.replace("w-[2rem]", "w-[1.5rem]");
+        }
+      });
+    }
   });
+
+  backdrop?.addEventListener("click", closeMobileSidebar);
   const reportclose = document.getElementById("report-x")
   const reportlogs = document.getElementById("report-logs")
   
