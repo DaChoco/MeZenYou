@@ -6,7 +6,7 @@ require_once __DIR__ ."/../utils/AWSCLIENTS.php";
 header('Content-Type: application/json');
 $ACCESS = require_once __DIR__ ."/../config.php";
 
-
+$dynamoDB = null;
 try{
     $dynamoDB = createDynamoClient($ACCESS);
 

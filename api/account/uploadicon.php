@@ -51,7 +51,7 @@ try{
     if (empty($result) || $result === null){
         throw new Exception("Error with AWS S3");
     }
-    $statement->execute(["iconurl"=> $result, "id"=>$user_id]);
+    $statement->execute([":iconurl"=> $result, ":id"=>$user_id]);
 
     $conn->commit();
 

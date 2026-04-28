@@ -94,7 +94,6 @@ function renderMessages() {
   }
 
   scrollzone.innerHTML = "";
-  console.log("user:", USER);
 
   current_messages.map((msg) => {
     if (String(USER["user"]) !== msg["sID"]) {
@@ -131,7 +130,6 @@ async function retrieveUserData() {
 
   const response = await fetch(url, { credentials: "include" });
   const data = await response.json();
-  console.log(data);
   current_version = data.timestamp;
   return data;
 }
@@ -185,7 +183,6 @@ async function loadProduct() {
 
   const response = await fetch(url, { credentials: "include" });
   const data = await response.json();
-  console.log(data);
 
   renderProduct(data.product, data.user);
   const reviewscoreval = document.getElementById("reviewscore");
@@ -234,7 +231,7 @@ async function loadReviews(ID) {
 
   const reviewzone = document.getElementById("commenthere");
 
-  console.log(data);
+
 
   data.items.forEach((item) => {
     const review = document.createElement("article");
@@ -326,7 +323,5 @@ async function addtocart(ID, item) {
 
   if (data.success) {
     alert(data.message);
-  } else {
-    console.log(data);
-  }
+  } 
 }

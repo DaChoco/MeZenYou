@@ -27,17 +27,17 @@ try{
     INNER JOIN Products ON OrderItems.product_id = Products.id
     WHERE Users.id = :user_id LIMIT 5
     ");
-    $statement->execute(["user_id"=>$user_id]);
+    $statement->execute([":user_id"=>$user_id]);
 
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 
     http_response_code(201);
-    echo json_encode(["orders"=> $results, "id" => $user_id]);
+    echo json_encode([":orders"=> $results, ":id" => $user_id]);
 }
 catch (PDOException $e){
     http_response_code(500);
-    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["error" => "Database error"]);
 }
 
 ?>

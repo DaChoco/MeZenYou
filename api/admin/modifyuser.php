@@ -32,12 +32,12 @@ if (!$data['clientid']){
 $SQL = "";
 $params = [];
 if (isset($data['status'])){
-    $SQL = "UPDATE users SET user_status = :status WHERE id = :id";
-    $params = ["status" => $data['status'], "id"=> $data['clientid']];
+    $SQL = "UPDATE Users SET user_status = :status WHERE id = :id";
+    $params = [":status" => $data['status'], ":id"=> $data['clientid']];
 }
 else if (isset($data['role'])){
-    $SQL = "UPDATE users SET user_role = :role WHERE id = :id";
-    $params = ["role" => $data['role'], "id"=> $data['clientid']];
+    $SQL = "UPDATE Users SET user_role = :role WHERE id = :id";
+    $params = [":role" => $data['role'], ":id"=> $data['clientid']];
 
 }
 else{

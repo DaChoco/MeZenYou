@@ -38,7 +38,7 @@ async function loadProducts() {
   });
 
   const data = await res.json();
-  console.log(data);
+  
 
   userEmail.textContent = data.user
     ? `Signed in as: ${data.user}`

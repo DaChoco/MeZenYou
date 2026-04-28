@@ -47,7 +47,7 @@ try{
     
     //VERIFICATION
     $statement = $conn->prepare("SELECT icon, user_role FROM users WHERE id = :id AND user_status = 'ACTIVE'");
-    $statement->execute(["id"=>$deletedID]);
+    $statement->execute([":id"=>$deletedID]);
     $user = $statement->fetch(PDO::FETCH_ASSOC);
       if (!$user) {
         http_response_code(401);
@@ -68,11 +68,11 @@ try{
     //BUT WE CAN ANONYMIZE THEM AND ERASE AS MUCH NON CRITICAL DATA AS POSSIBLE
     $conn->beginTransaction();
     $statement = $conn->prepare("DELETE FROM carts WHERE user_id = :id");
-    $statement->execute(['id'=> $deletedID]);
+    $statement->execute([':id'=> $deletedID]);
     
     //WIPE ALL THEIR PRODUCTS
     $statement = $conn->prepare("UPDATE Products SET is_active = FALSE WHERE seller_id = :id");
-    $statement->execute(['id'=> $deletedID]);
+    $statement->execute([':id'=> $deletedID]);
 
     #WIPE THEIR ICON FROM AWS
 
@@ -89,7 +89,7 @@ try{
     user_status = 'DELETED'
     WHERE id = :id");
     
-    $statement->execute(["id" => $deletedID]);
+    $statement->execute([":id" => $deletedID]);
 
     $conn->commit();
     $aws = new AWSservice(createS3Client($ACCESS), null);

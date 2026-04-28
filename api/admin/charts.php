@@ -10,12 +10,12 @@ error_reporting(E_ALL);
 try{
     $conn = require __DIR__ . "/../conn.php";
 
-    $statement = $conn->prepare("SELECT province , Count(*) as clients FROM users GROUP BY Province");
+    $statement = $conn->prepare("SELECT province , Count(*) as clients FROM Users GROUP BY Province");
     $statement->execute();
     $provinces = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $statement = $conn->prepare("SELECT category, SUM(price_at_purchase) AS total_sales, Count(*) as clients FROM orderitems
-    INNER JOIN products ON orderitems.product_id = products.id GROUP BY category");
+    $statement = $conn->prepare("SELECT category, SUM(price_at_purchase) AS total_sales, Count(*) as clients FROM OrderItems
+    INNER JOIN Products ON OrderItems.product_id = Products.id GROUP BY category");
     $statement->execute();
     $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
 

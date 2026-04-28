@@ -60,14 +60,14 @@ try {
 ");
 
     $stmt->execute([
-        "name" => $product_name,
-        "price" => $price,
-        "category" => $category,
-        "location" => $location,
-        "seller_id" => $seller_id,
-        "author" => $author,
-        "stock" => $stock,
-        "description" => $description
+        ":name" => $product_name,
+        ":price" => $price,
+        ":category" => $category,
+        ":location" => $location,
+        ":seller_id" => $seller_id,
+        ":author" => $author,
+        ":stock" => $stock,
+        ":description" => $description
     ]);
 
 

@@ -30,20 +30,20 @@ $offset = max(0, (int) $page) * 10;
 try {
     $conn = require __DIR__ . "/../conn.php";
 
-    $statement = $conn->prepare("SELECT orders.id AS id, buyer.username AS buyer, GROUP_CONCAT(DISTINCT seller.username) AS seller, orders.total_price, orders.created_at AS date, payment, order_status AS status FROM orders
-    INNER JOIN orderitems 
-        ON orderitems.order_id = orders.id
-    INNER JOIN users AS seller 
-        ON seller.id = orderitems.seller_id
-    INNER JOIN users AS buyer 
-        ON buyer.id = orders.buyer_id
-    GROUP BY orders.id LIMIT 10 OFFSET $offset");
+    $statement = $conn->prepare("SELECT Orders.id AS id, buyer.username AS buyer, GROUP_CONCAT(DISTINCT seller.username) AS seller, Orders.total_price, Orders.created_at AS date, payment, order_status AS status FROM Orders
+    INNER JOIN OrderItems 
+        ON OrderItems.order_id = Orders.id
+    INNER JOIN Users AS seller 
+        ON seller.id = OrderItems.seller_id
+    INNER JOIN Users AS buyer 
+        ON buyer.id = Orders.buyer_id
+    GROUP BY Orders.id LIMIT 10 OFFSET $offset");
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    $countStmt = $conn->prepare("SELECT COUNT(DISTINCT orders.id) AS total_rows FROM orders  
-    INNER JOIN orderitems  
-        ON orderitems.order_id = orders.id;");
+    $countStmt = $conn->prepare("SELECT COUNT(DISTINCT Orders.id) AS total_rows FROM Orders  
+    INNER JOIN OrderItems  
+        ON OrderItems.order_id = Orders.id;");
     $countStmt->execute();
 
     $totalRows = $countStmt->fetch(PDO::FETCH_ASSOC)['total_rows'];

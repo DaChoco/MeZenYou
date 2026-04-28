@@ -17,7 +17,7 @@ if (!$userID) {
 try {
     $conn = require __DIR__ . "/../conn.php";
     $statement = $conn->prepare('SELECT updated_at as current FROM users WHERE id = :uID');
-    $statement->execute(["uID" => $userID]);
+    $statement->execute([":uID" => $userID]);
 
     //will be used cache busting. Current is the time this user last updated their profile.
     $current = $statement->fetch(PDO::FETCH_ASSOC)['current'];

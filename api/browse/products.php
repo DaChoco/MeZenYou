@@ -20,17 +20,17 @@ try {
 
     if ($min !== null) {
         $whereClauses[] = "price >= :minprice";
-        $filters["minprice"] = $min;
+        $filters[":minprice"] = $min;
     }
 
     if ($max !== null) {
         $whereClauses[] = "price <= :maxprice";
-        $filters["maxprice"] = $max;
+        $filters[":maxprice"] = $max;
     }
 
     if ($category !== null) {
         $whereClauses[] = "category = :category";
-        $filters["category"] = $category;
+        $filters[":category"] = $category;
     }
 
     if ($page === null || $page < 1){
@@ -57,7 +57,7 @@ try {
     SELECT COUNT(*) as total 
     FROM Products 
     $whereSQL");
-    $countStmt->execute();
+    $countStmt->execute($filters);
 
     $totalRows = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
 

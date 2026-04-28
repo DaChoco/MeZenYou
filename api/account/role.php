@@ -14,7 +14,7 @@ $id = $_SESSION["user_id"];
 try{
 $conn = require __DIR__. "/../conn.php";
 $statement = $conn->prepare("SELECT address, username, phone, delivery_instructions, icon, updated_at FROM Users WHERE id = :id AND user_status = 'ACTIVE'");
-$statement->execute(["id"=> $id]);
+$statement->execute([":id"=> $id]);
 
 $result = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -32,7 +32,7 @@ echo json_encode([
 catch (PDOException $e){
     http_response_code(500);
     error_log("PDO ERROR: " . $e->getMessage());
-    echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+    echo json_encode(["error" => "ERROR"]);
 
 }
 

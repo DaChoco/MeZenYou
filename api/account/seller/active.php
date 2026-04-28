@@ -50,7 +50,7 @@ try{
     
     $conn->beginTransaction();
     $statement = $conn->prepare("UPDATE Products SET is_active = :active WHERE id = :pid AND seller_id = :user_id");
-    $statement->execute(['active' => (int) $active,'pid'=> $pid, "user_id"=> $user_id]);
+    $statement->execute([':active' => (int) $active,':pid'=> $pid, ":user_id"=> $user_id]);
 
     $conn->commit();
      echo json_encode([

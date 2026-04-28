@@ -33,7 +33,7 @@ $conn = require '../conn.php';
 
 try {
     $stmt = $conn->prepare("SELECT id, username, password_hash, user_role, user_status FROM Users WHERE email = :email");
-    $stmt->execute(["email" => $email]);
+    $stmt->execute([":email" => $email]);
 
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 

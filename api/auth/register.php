@@ -59,11 +59,11 @@ try{
         exit;
         }
         $SQL = "INSERT INTO users (email, password_hash, username, address, user_role) VALUES (:email, :password_hash, :username, :address, 'seller')";
-        $params = ['email' => $email, 'password_hash' => $hashed_password, 'username'=> $username, 'address'=> $address];
+        $params = [':email' => $email, ':password_hash' => $hashed_password, ':username'=> $username, ':address'=> $address];
     }
     else{
         $SQL = "INSERT INTO users (email, password_hash, username) VALUES (:email, :password_hash, :username)";
-        $params = ['email' => $email, 'password_hash' => $hashed_password, 'username'=> $username];
+        $params = [':email' => $email, ':password_hash' => $hashed_password, ':username'=> $username];
     }
     $statement = $conn->prepare($SQL);
     $statement->execute($params);

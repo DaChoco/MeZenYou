@@ -30,7 +30,7 @@ error_log("ID: " . $user_id);
 try{
     $conn = require '../conn.php';
     $statement = $conn->prepare("UPDATE Users SET password_hash = :hashed WHERE id = :user_id");
-    $statement->execute(["hashed"=> $password_hash, "user_id" =>$user_id]);
+    $statement->execute([":hashed"=> $password_hash, ":user_id" =>$user_id]);
 
     if ($statement->rowCount() > 0) {
         echo json_encode([

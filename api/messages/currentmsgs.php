@@ -34,7 +34,7 @@ if ($userID1 === $userID2){
 try {
     $conn = require __DIR__ . "/../conn.php";
     $statement = $conn->prepare('SELECT id, username FROM users WHERE id IN (:uID1, :uID2)');
-    $statement->execute(["uID1" => $userID1, "uID2" => $userID2]);
+    $statement->execute([":uID1" => $userID1, ":uID2" => $userID2]);
 
     $userRows = $statement->fetchAll(PDO::FETCH_ASSOC);
 

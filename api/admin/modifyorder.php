@@ -34,7 +34,7 @@ try{
     $conn = require __DIR__ . "/../conn.php";
 
     $statement = $conn->prepare("UPDATE Orders SET order_status = :status WHERE id = :id");
-    $statement->execute(["status"=> $data['status'], "id" => $data['id']]);
+    $statement->execute([":status"=> $data['status'], ":id" => $data['id']]);
     
 
     echo json_encode(["status" => true, "message" => "Successfully updated order"]);

@@ -26,10 +26,11 @@ try {
     $dynamoDB = createDynamoClient($ACCESS);
     $aws = new AWSservice(null, $dynamoDB);
     
-    //$messages = $aws->retrieveConversation($userID, $recieverID, $limit);
+    $messages = $aws->getChatMessages($userID, $recieverID, $limit);
     
-    if ($messages === false) {
+    if ($messages['success'] === false) {
         echo json_encode(["messages" => [], "error" => "Could not retrieve messages"]);
+        exit;
     } else {
         // Mark this conversation as read
         $conversationID = $userID < $recieverID ? "$userID#$recieverID" : "$recieverID#$userID";

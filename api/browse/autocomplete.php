@@ -10,7 +10,7 @@ if (!isset($name) || strlen($name)<2){
     echo json_encode(["results" =>[]]);
 }
     $statement = $conn->prepare("SELECT id, product_name FROM Products WHERE (product_name LIKE :product_name OR author LIKE :author) AND is_active = TRUE LIMIT 10");
-    $statement->execute(["product_name" => "%$name%", "author" => "%$name%"]);
+    $statement->execute([":product_name" => "%$name%", ":author" => "%$name%"]);
 try{
 
 
