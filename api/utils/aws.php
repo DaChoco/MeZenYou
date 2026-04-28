@@ -120,16 +120,17 @@ class AWSservice
         return "{$ids[0]}#{$ids[1]}";
     }
 
-    private function censorMessage($txt){
+    private function censorMessage($txt)
+    {
         #this is just to censor messages
         $PROFANITY_WORDS = ["shit", "crap", "asshole", "bastard", "fuck", "bitch"];
         $pattern = '/\b(' . implode('|', $PROFANITY_WORDS) . ')\w*\b/i';
 
-        return preg_replace_callback($pattern, function($matches) {
+        return preg_replace_callback($pattern, function ($matches) {
             return str_repeat('*', strlen($matches[0]));
         }, $txt);
 
-        
+
 
     }
 
@@ -278,26 +279,42 @@ class AWSservice
         //When someone updates messages in the sql, call this as well to line up their icons on dynamo
 
         try {
-            $result = $this->dynamo->updateItem([
-                'TableName' => 'mezenyoumsg',
-                'Key' => [
-                    'cID' => ['S' => $userID]
-                ],
-                'UpdateExpression' => 'SET avatar = :icon',
-                'ExpressionAttributeValues' => [
-                    ':icon' => ['S' => $icon]
-                ],
-                'ReturnValues' => 'UPDATED_NEW'
-            ]);
-            return ["result" => $result['Attributes'], "success" => true];
+
+            $conversations = $this->getConversations($userID);
+            $messages = $this->getChatMessages($userID, $conversations[0]['otherID']);
+
+            if (empty($conversations) || empty($messages)) {
+                return ["success" => true, "message" => "No conversations to update"];
+            }
+
+            foreach ($conversations as $conv) {
+                $otherID = $conv['otherID'];
+                $convID = $conv['convID'];
+
+                $this->dynamo->updateItem([
+                    'TableName' => 'mezenyoumsg',
+                    'Key' => [
+                        'cID' => ['S' => $otherID],
+                        'SK' => ['S' => "CONV#{$convID}"]
+                    ],
+                    'UpdateExpression' => 'SET avatar = :icon',
+                    'ExpressionAttributeValues' => [
+                        ':icon' => ['S' => $icon]
+                    ],
+                ]);
+            }
+
+            
+
+
+
+            return ["success" => true];
 
         } catch (\Aws\DynamoDb\Exception\DynamoDbException $e) {
             if ($e->getAwsErrorCode() === 'ConditionalCheckFailedException') {
-            return ["success" => true, "message" => "No conversations to update"];
-        }
-        }
-        
-        catch (Exception $e) {
+                return ["success" => true, "message" => "No conversations to update"];
+            }
+        } catch (Exception $e) {
             echo "Failed to send message: " . $e->getMessage();
             return ['success' => false, 'error' => $e->getMessage()];
         }

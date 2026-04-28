@@ -120,7 +120,7 @@ const renderConversations = () => {
 
             current_messages = await getMessages();
 
-            renderMessages();
+            renderMessages(getReceiverAvatar());
 
         }
         else if (e.key === "Escape"){
@@ -168,7 +168,7 @@ const renderConversations = () => {
 
             current_messages = await getMessages();
 
-            renderMessages();
+            renderMessages(getReceiverAvatar());
             renderConversations();
         });
         convoentries.append(entry);
@@ -177,8 +177,13 @@ const renderConversations = () => {
 
 
 }
+function getReceiverAvatar() {
+    const activeConvo = conversations.find(c => c.otherID == recieverID);
+    return activeConvo?.avatar ?? "";
+}
 
-const renderMessages = () => {
+const renderMessages = (recieverAvatar) => {
+    console.log(recieverAvatar)
     scrollzone.innerHTML = "";
     current_messages.map(msg=>{
 
@@ -187,7 +192,7 @@ const renderMessages = () => {
       const reciever = document.createElement('article');
       reciever.classList = 'flex items-end gap-2'
       reciever.innerHTML = `
-                        <img src="${msg.avatar}?t=${current_version}"
+                        <img src="${recieverAvatar}?t=${current_version}"
                             class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
                         <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
                             ${msg.messageText}
@@ -251,7 +256,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
 
 
     renderConversations();
-    renderMessages();
+    renderMessages(getReceiverAvatar());
 
     sendbtn.addEventListener('click', async () => sendMessage());
     inputbar.addEventListener('keydown', async (e)=>{

@@ -17,6 +17,62 @@
 </head>
 
 <body class="[&_button]:text-white">
+
+    <div id="messagebox" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10000] lg:w-[700px]">
+                <!-- Message Panel-->
+        <div class="grid grid-cols-[260px_1fr] h-screen overflow-hidden">
+
+            <!-- Conversations -->
+            <div id="sidemsg-zone" class="flex flex-col overflow-hidden border-r border-gray-200 bg-gray-50">
+
+                <!-- Section Label -->
+                <div
+                    class="px-4 py-3 text-xs font-semibold uppercase tracking-widest text-gray-400 border-b border-gray-200">
+                    Messages
+                </div>
+
+                <!-- CONVERSATION ENTRIES -->
+                <div id="convo-entries" class="overflow-y-auto flex-1">
+
+                </div>
+            </div>
+
+            <!-- Chat View -->
+            <div class="flex flex-col h-screen bg-white">
+
+                <!-- THE CHAT HEADER -->
+                <div class="flex items-center gap-3 px-5 py-3 bg-darkgray border-b border-black flex-shrink-0">
+                    <img id="header-icon" src="" class="rounded-full w-8 h-8 object-cover" alt="Welt Yang">
+                    <div>
+                        <span id="header-username" class="text-white font-semibold text-sm block"></span>
+                        <span class="text-green-400 text-xs">Online</span>
+                    </div>
+                    <!-- ARE THEY ONLINE -->
+                    <div class="ml-auto w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                </div>
+
+                <!-- Scrollable Message Thread -->
+                <div id="scroll-zone" class="flex-1 overflow-y-auto px-6 py-6 space-y-5 bg-gray-50">
+
+                    <div id="loadbar" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div
+                            class="border-8 border-gray-700 border-t-cerulean animate-spin rounded-full w-[200px] h-[200px]">
+                        </div>
+                    </div>
+
+                </div>
+                <!-- SEND A MESSAGE -->
+                <div class="flex items-center gap-3 px-4 py-3 border-t border-gray-200 bg-white flex-shrink-0">
+                    <input id="sendmsgtxt" type="text" placeholder="Type a message…"
+                        class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm outline-none border border-transparent focus:border-gray-400 transition-colors">
+                    <button id="senditbtn" aria-label="Send message"
+                        class="w-9 h-9 rounded-full bg-darkgray flex items-center justify-center flex-shrink-0 hover:opacity-80 transition-opacity">
+                        <i class="fa-regular fa-paper-plane text-white text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="topnav"></div>
 
     <section class="grid grid-cols-1 lg:grid-cols-[300px_1fr] m-5 gap-5 [&_*]:duration-200">
@@ -43,7 +99,7 @@
             </div>
 
             <div>
-                <span class="text-lg font-semibold hover:text-hoverbtnred">Message Buyers / Sellers</span>
+                <span id="msgbtntab" class="text-lg font-semibold hover:text-hoverbtnred">Message Buyers / Sellers</span>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque corporis molestiae voluptatem
                     voluptates neque maiores ea iste quis? Ut, sequi?</p>
             </div>

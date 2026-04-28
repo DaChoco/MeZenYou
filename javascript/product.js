@@ -148,7 +148,7 @@ async function getMessages() {
   if (data.status) {
     return data.messages;
   } else {
-    alert("INTERNAL SERVER ERROR");
+    alert("You may not be signed in. Or something has gone wrong with the server.");
     return [];
   }
 }
@@ -265,7 +265,7 @@ async function renderProduct(product, user) {
             <div class="top-fourth border-b-2 border-gray-400">
                 <h1 class="text-2xl md:text-4xl">${product["product_name"]}</h1>
                 <p>By ${product["author"]}</p>
-                <p class="text-xl">February 2026</p>
+                
 
             </div>
 
@@ -273,7 +273,7 @@ async function renderProduct(product, user) {
                 <span class="text-2xl md:text-4xl font-bold">R${product["price"]}</span>
                 <p>All prices include VAT</p>
                 <p>Get it Tommorrow for an extra R30.00</p>
-                <p>Deliver to ${user} - Sea Point, Cape Town</p>
+                <p>Deliver to ${user.email} - ${user.city}</p>
                 <span class="text-lg text-green-700">IN STOCK</span>
             </div>
 

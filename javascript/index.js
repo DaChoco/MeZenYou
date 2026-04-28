@@ -34,6 +34,7 @@ async function loadProducts() {
 
   const res = await fetch(url, {
     credentials: "include",
+    
   });
 
   const data = await res.json();
