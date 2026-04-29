@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 //VALIDATION STAGE----------------------------------------------------
@@ -41,7 +41,7 @@ if (!$productID || !$userID || $qty <= 0) {
 }
 try {
     //DOES AVAILABLE STOCK ALLOW THIS?
-    $statement = $conn->prepare("SELECT id, stock FROM products WHERE id = :id");
+    $statement = $conn->prepare("SELECT id, stock FROM Products WHERE id = :id");
     $statement->execute(["id" => $productID]);
     $result = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -115,7 +115,7 @@ try {
 } catch (Exception $e) {
     http_response_code(500);
     error_log("PDO ERROR: " . $e->getMessage());
-    echo json_encode(["error" => "error: " . $e->getMessage(), "success"=>false]);
+    echo json_encode(["error" => "error: " . "INTERNAL SERVER ERROR", "success"=>false]);
 } finally {
     exit;
 }

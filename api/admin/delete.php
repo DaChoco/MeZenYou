@@ -6,8 +6,7 @@ require __DIR__ ."/../utils/AWSCLIENTS.php";
 require __DIR__ ."/../utils/aws.php";
 $ACCESS = require __DIR__ ."/../config.php";
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 //this route is an extreme last resort, once this is done they are unrecoverable essentially
@@ -46,7 +45,7 @@ try{
     $conn = require __DIR__ . "/../conn.php";
     
     //VERIFICATION
-    $statement = $conn->prepare("SELECT icon, user_role FROM users WHERE id = :id AND user_status = 'ACTIVE'");
+    $statement = $conn->prepare("SELECT icon, user_role FROM Users WHERE id = :id AND user_status = 'ACTIVE'");
     $statement->execute([":id"=>$deletedID]);
     $user = $statement->fetch(PDO::FETCH_ASSOC);
       if (!$user) {
@@ -67,7 +66,7 @@ try{
     //START THE PROCESS TO DELETE THE USER. WE CANT COMPLETELY WIPE THEM'
     //BUT WE CAN ANONYMIZE THEM AND ERASE AS MUCH NON CRITICAL DATA AS POSSIBLE
     $conn->beginTransaction();
-    $statement = $conn->prepare("DELETE FROM carts WHERE user_id = :id");
+    $statement = $conn->prepare("DELETE FROM Carts WHERE user_id = :id");
     $statement->execute([':id'=> $deletedID]);
     
     //WIPE ALL THEIR PRODUCTS

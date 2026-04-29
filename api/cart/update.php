@@ -38,7 +38,7 @@ try {
     $cartStmt = $conn->prepare("
         SELECT id FROM Carts WHERE user_id = :userid
     ");
-    $cartStmt->execute(["userid" => $userid]);
+    $cartStmt->execute([":userid" => $userid]);
     $cart = $cartStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$cart) {
@@ -53,8 +53,8 @@ try {
         FOR UPDATE
     ");
     $itemStmt->execute([
-        "cart" => $cartId,
-        "pid" => $productid
+        ":cart" => $cartId,
+        ":pid" => $productid
     ]);
 
     $item = $itemStmt->fetch(PDO::FETCH_ASSOC);
@@ -70,7 +70,7 @@ try {
     $stockStmt = $conn->prepare("
         SELECT stock FROM Products WHERE id = :pid
     ");
-    $stockStmt->execute(["pid" => $productid]);
+    $stockStmt->execute([":pid" => $productid]);
     $product = $stockStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$product) {
@@ -87,8 +87,8 @@ try {
             WHERE cart_id = :cart AND product_id = :pid
         ");
         $deleteStmt->execute([
-            "cart" => $cartId,
-            "pid" => $productid
+            ":cart" => $cartId,
+            ":pid" => $productid
         ]);
 
     } else {
@@ -98,9 +98,9 @@ try {
             WHERE cart_id = :cart AND product_id = :pid
         ");
         $updateStmt->execute([
-            "quantity" => $targetQuantity,
-            "cart" => $cartId,
-            "pid" => $productid
+            ":quantity" => $targetQuantity,
+            ":cart" => $cartId,
+            ":pid" => $productid
         ]);
     }
 

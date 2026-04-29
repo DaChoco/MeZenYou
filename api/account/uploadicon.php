@@ -1,16 +1,12 @@
 <?php
 require_once __DIR__ . "/../utils/cors.php";
-require '../session.php';
+require_once __DIR__ ."/../session.php";
 header("Content-Type: application/json");
 require __DIR__ . "/../utils/aws.php";
 require __DIR__ . "/../utils/AWSCLIENTS.php";
 $conn = require '../conn.php';
 $ACCESS = require __DIR__ . "/../config.php";
 $user_id = $_SESSION['user_id'];
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 if (!isset($_FILES['image'])) {
     http_response_code(400);
@@ -39,8 +35,8 @@ if (!in_array($realType, $allowedTypes)) {
 
 try{
     $conn->beginTransaction();
-
-    $statement = $conn->prepare("UPDATE Users SET icon = :iconurl WHERE id = :id");
+    $current_time = (int) time();
+    $statement = $conn->prepare("UPDATE Users SET icon = :iconurl, updated_at = :clock WHERE id = :id");
 
     $s3 = createS3Client($ACCESS);
     $dynamo = createDynamoClient($ACCESS);
@@ -51,7 +47,7 @@ try{
     if (empty($result) || $result === null){
         throw new Exception("Error with AWS S3");
     }
-    $statement->execute([":iconurl"=> $result, ":id"=>$user_id]);
+    $statement->execute([":iconurl"=> $result, ":clock"=> $current_time, ":id"=>$user_id]);
 
     $conn->commit();
 

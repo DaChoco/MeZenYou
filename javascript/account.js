@@ -195,7 +195,6 @@ async function loadUser() {
     window.location.href = data.redirect;
   }
   const role = data.role;
-  console.log(data);
 
   if (role === "seller" || role === "ADMIN" || role === "MODERATOR") {
     document.getElementById("seller-nav").classList.remove("hidden");
@@ -213,6 +212,10 @@ async function getMessages() {
     return [];
   }
   const response = await fetch(url, { credentials: "include" });
+
+  if (!response.ok){
+    return [];
+  }
 
   const data = await response.json();
 
@@ -250,7 +253,6 @@ async function getConversations() {
         return data.conversations;
     }
     else {
-        alert("INTERNAL SERVER ERROR");
         return []
     }
 
@@ -485,6 +487,10 @@ document
       },
       body: JSON.stringify(fields),
     });
+    if (!response.ok){
+      const text = await response.text()
+      console.log(text)
+    }
 
     const data = await response.json();
 

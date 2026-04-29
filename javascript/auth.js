@@ -97,6 +97,10 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
         credentials: "include",
         body: JSON.stringify({ email: email_register, password: password_register, username: username_register }),
       });
+      if (!res.ok){
+        const text = await res.text()
+        console.log(text)
+    }
 
       const data = await res.json();
       if (data.redirect){

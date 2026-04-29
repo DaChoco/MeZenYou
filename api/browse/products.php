@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . "/../utils/cors.php";
 require_once "../session.php";
 header('Content-Type: application/json');
@@ -11,6 +12,7 @@ $page = isset($_GET['pg']) && $_GET['pg'] !== '' ? (string)$_GET['pg']: null;
 
 //THE REAL RESULTS
 $conn = require __DIR__ . "/../conn.php";
+ob_clean();
 
 try {
     $filters = [];
@@ -72,6 +74,11 @@ try {
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(["error" => "Database error: " . $e->getMessage()]);
+}
+catch (Exception $e){
+    http_response_code(500);
+    echo json_encode(["error" => "INTERNAL SERVER ERROR", "products" => [], "totalpages"=> 0]);
+
 }
 
 

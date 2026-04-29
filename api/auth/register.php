@@ -5,7 +5,7 @@ require_once "../session.php";
 
 //MAKE SURE THIS IS JSON OR REJECT THE REQUEST------------------------------------
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 

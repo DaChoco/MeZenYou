@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use Aws\DynamoDb\Marshaler;
 
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 

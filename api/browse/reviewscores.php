@@ -24,9 +24,8 @@ try{
 }
 catch(Exception $e){
     http_response_code(500);
-    error_log(print_r($ACCESS, true));
     error_log(print_r($dynamoDB, true));
-    echo json_encode(["error" => "error: " . $e->getMessage()]);
+    echo json_encode(["error" => "REVIEW SCORE ERROR"]);
 
 }
 finally{

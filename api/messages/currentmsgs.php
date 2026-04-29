@@ -6,12 +6,18 @@ require_once __DIR__ . "/../utils/AWSCLIENTS.php";
 $ACCESS = require __DIR__ . "/../config.php";
 header('Content-Type: application/json');
 
-$userID1 = $_SESSION['user_id'] ?? null;
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(405);
+    echo json_encode(["error" => "Unauthorized"]);
+    exit;
+}
+
+$userID1 = isset($_SESSION['user_id']) ? (string) $_SESSION['user_id'] : null;
 $userID2 = $_GET['rid'] ?? null;
 $role = $_SESSION['role'] ?? null;
 
 
-if (!$userID1 || !$role) {
+if (!isset($userID1, $role)) {
     http_response_code(401);
     echo json_encode(["error" => "Unauthorized"]);
     exit;
@@ -33,7 +39,7 @@ if ($userID1 === $userID2){
 
 try {
     $conn = require __DIR__ . "/../conn.php";
-    $statement = $conn->prepare('SELECT id, username FROM users WHERE id IN (:uID1, :uID2)');
+    $statement = $conn->prepare('SELECT id, username FROM Users WHERE id IN (:uID1, :uID2)');
     $statement->execute([":uID1" => $userID1, ":uID2" => $userID2]);
 
     $userRows = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -65,5 +71,5 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => "INTERNAL SERVER ERROR"]);
+    echo json_encode(["error" => "INTERNAL SERVER ERROR", "messages" => [], "status" => false]);
 }

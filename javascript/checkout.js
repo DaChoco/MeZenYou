@@ -147,8 +147,12 @@ async function initiateOrder(current_cart) {
     return;
   }
   const selectedPayment = document.querySelector('input[name="payment"]:checked');
-  const payment_type = selectedPayment.value;
+  const payment_type = selectedPayment ? selectedPayment.value : null;
 
+  if (!payment_type){
+    alert("PAYMENT TYPE NOT SELECTED");
+    return;
+  }
   const price = totalprice.innerText.replace("R", "");
   //The cart is already stored on the backend so don't send it.
   const payload = {

@@ -7,7 +7,7 @@ require __DIR__ . "/../../utils/AWSCLIENTS.php";
 $ACCESS = require __DIR__ . "/../../config.php";
 $conn = require __DIR__ .'/../../conn.php';
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 

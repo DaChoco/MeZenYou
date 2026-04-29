@@ -8,9 +8,6 @@ const author = document.getElementById('author')
 const stock = document.getElementById('stock')
 const description = document.getElementById('desc')
 
-console.log(description)
-
-
 submitform.addEventListener('submit', async (e) => {
     e.preventDefault()
     const formData = new FormData();

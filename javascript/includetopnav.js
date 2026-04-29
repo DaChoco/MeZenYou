@@ -131,9 +131,9 @@ async function renderNavbar() {
   const user = await iconresponse.json()
   if (user.icon){
     usericonzone.setAttribute("data-username", user.username);
+    usericonzone.classList.add('w-12');
     usericonzone.innerHTML = `<img class="rounded-full" src="${user.icon}?t=${user.timestamp}" alt="${user.username}">`;
   }
-  console.log(user);
   
 }
 

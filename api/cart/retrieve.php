@@ -31,7 +31,7 @@ INNER JOIN Products
 WHERE Carts.user_id = :id";
 
     $statement = $conn->prepare($sql);
-    $statement->execute(["id" => $userID]);
+    $statement->execute([":id" => $userID]);
 
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 

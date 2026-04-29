@@ -42,7 +42,7 @@ if ($recieverID === $senderID){
 
 try {
     $conn = require __DIR__ . "/../conn.php";
-    $statement = $conn->prepare('SELECT id, icon FROM users WHERE id = :rID');
+    $statement = $conn->prepare('SELECT id, icon FROM Users WHERE id = :rID');
     $statement->execute([":rID"=> $recieverID]);
 
     $result = $statement->fetch(PDO::FETCH_ASSOC);

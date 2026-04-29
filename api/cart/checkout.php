@@ -19,7 +19,7 @@ if (empty($data['fullname']) || empty($data['payment']) || empty($data['price'])
 }
 
 // AUTH AND SUCH
-$user_id = $_SESSION['user_id'] ?? null;
+$user_id = isset($_SESSION['user_id']) ? (string) $_SESSION['user_id'] : null;
 
 if (!$user_id) {
     // Are they not signed in? Then make a guest account
@@ -42,7 +42,7 @@ try{
     $conn->beginTransaction();
     //STATEMENT #1
     $statement = $conn->prepare("SELECT c.id as cart_id
-        FROM Carts c INNER JOIN users ON c.user_id = users.id
+        FROM Carts c INNER JOIN Users ON c.user_id = users.id
         WHERE c.user_id = :id AND user_status = 'ACTIVE'
         LIMIT 1
     ");

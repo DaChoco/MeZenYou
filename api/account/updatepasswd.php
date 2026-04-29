@@ -3,7 +3,7 @@ require_once __DIR__ . "/../utils/cors.php";
 require __DIR__. "/../session.php";
 header("Content-Type: application/json");
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
@@ -29,7 +29,8 @@ error_log("ID: " . $user_id);
 
 try{
     $conn = require '../conn.php';
-    $statement = $conn->prepare("UPDATE Users SET password_hash = :hashed WHERE id = :user_id");
+    $current_time = (int) time();
+    $statement = $conn->prepare("UPDATE Users SET password_hash = :hashed, updated_at = $current_time WHERE id = :user_id");
     $statement->execute([":hashed"=> $password_hash, ":user_id" =>$user_id]);
 
     if ($statement->rowCount() > 0) {

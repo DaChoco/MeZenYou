@@ -16,7 +16,7 @@ try{
     $sql = "SELECT email, address, phone FROM Users WHERE id = :id";
 
     $statement = $conn->prepare($sql);
-    $statement->execute(["id" => $userID]);
+    $statement->execute([":id" => $userID]);
 
     $results = $statement->fetch(PDO::FETCH_ASSOC);
 

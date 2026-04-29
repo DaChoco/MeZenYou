@@ -6,6 +6,12 @@ require __DIR__ . "/../../utils/aws.php";
 require __DIR__ . "/../../utils/AWSCLIENTS.php";
 $conn = require '../../conn.php';
 $ACCESS = require __DIR__ . "/../../config.php";
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(["error" => "Method not allowed"]);
+    exit;
+}
 $seller_id = $_SESSION['user_id'];
 
 $product_name = $_POST['product_name'] ?? null;
