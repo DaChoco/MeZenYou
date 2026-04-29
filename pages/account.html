@@ -19,11 +19,15 @@
 <body class="[&_button]:text-white">
 
     <div id="messagebox" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10000] lg:w-[700px]">
-                <!-- Message Panel-->
-        <div class="grid grid-cols-[260px_1fr] h-screen overflow-hidden">
+        <!-- Message Panel-->
+        <div class="flex lg:grid lg:grid-cols-[260px_1fr] h-screen overflow-hidden">
 
             <!-- Conversations -->
-            <div id="sidemsg-zone" class="flex flex-col overflow-hidden border-r border-gray-200 bg-gray-50">
+            <div id="sidemsg-zone" class="flex flex-col overflow-hidden border-r border-gray-200 bg-gray-50
+         w-[260px] flex-shrink-0
+         lg:relative lg:translate-x-0
+         absolute inset-y-0 left-0 z-40 transition-transform duration-200
+         -translate-x-full">
 
                 <!-- Section Label -->
                 <div
@@ -38,10 +42,16 @@
             </div>
 
             <!-- Chat View -->
-            <div class="flex flex-col h-screen bg-white">
+            <div class="flex flex-col h-screen bg-white flex-1 min-w-0">
 
                 <!-- THE CHAT HEADER -->
                 <div class="flex items-center gap-3 px-5 py-3 bg-darkgray border-b border-black flex-shrink-0">
+
+                    <!-- Back button: mobile only -->
+                    <button title="backbtn" type="button" id="back-to-convos" class="lg:hidden text-white mr-1">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+
                     <img id="header-icon" src="" class="rounded-full w-8 h-8 object-cover" alt="Welt Yang">
                     <div>
                         <span id="header-username" class="text-white font-semibold text-sm block"></span>

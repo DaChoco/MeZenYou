@@ -29,9 +29,9 @@ if (!$user_id) {
     ");
 
     $statement->execute([
-        "email" => $data['email'],
-        "name" => $data['fullname'],
-        "phone" => $data['phone']
+        ":email" => $data['email'],
+        ":name" => $data['fullname'],
+        ":phone" => $data['phone']
     ]);
 
     $user_id = $conn->lastInsertId();
@@ -42,7 +42,7 @@ try{
     $conn->beginTransaction();
     //STATEMENT #1
     $statement = $conn->prepare("SELECT c.id as cart_id
-        FROM Carts c INNER JOIN Users ON c.user_id = users.id
+        FROM Carts c INNER JOIN Users ON c.user_id = Users.id
         WHERE c.user_id = :id AND user_status = 'ACTIVE'
         LIMIT 1
     ");
@@ -63,7 +63,7 @@ try{
         WHERE CartItems.cart_id = :cart_id
         FOR UPDATE
     ");
-    $statement->execute(["cart_id" => $cart_id]);
+    $statement->execute([":cart_id" => $cart_id]);
     $items = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     if (count($items) === 0) {
@@ -86,11 +86,11 @@ try{
     ");
     $fulladdress = "{$data['street']}-{$data['city']}-{$data['province']}-{$data['postal']}";
     $statement->execute([
-        "buyer_id"=> $user_id, 
-        "total_price" => $total_price, 
-        "payment"=>$data['payment'], 
-        "delivery"=>$data['delivery'],
-        "addr"=> $fulladdress
+        ":buyer_id"=> $user_id, 
+        ":total_price" => $total_price, 
+        ":payment"=>$data['payment'], 
+        ":delivery"=>$data['delivery'],
+        ":addr"=> $fulladdress
         ]);
 
     $order_id = $conn->lastInsertId();
@@ -102,12 +102,12 @@ try{
 
     foreach ($items as $item) {
         $statement->execute([
-            "orid" => $order_id,
-            "bid" => $user_id,
-            "pid" => $item['product_id'],
-            "seid" => $item['seller_id'],
-            "price" => $item['price'],
-            "quantity" => $item['quantity']
+            ":orid" => $order_id,
+            ":bid" => $user_id,
+            ":pid" => $item['product_id'],
+            ":seid" => $item['seller_id'],
+            ":price" => $item['price'],
+            ":quantity" => $item['quantity']
         ]);
     }
         //STATEMENT #5
@@ -118,15 +118,15 @@ try{
 
     foreach ($items as $item) {
         $statement->execute([
-            "q"=> $item['quantity'],
-            "pid" => $item['product_id']
+            ":q"=> $item['quantity'],
+            ":pid" => $item['product_id']
         ]);
     }
 
 
     $statement = $conn->prepare("
         DELETE FROM CartItems WHERE cart_id = :id");
-    $statement->execute(["id" => $cart_id]);
+    $statement->execute([":id" => $cart_id]);
 
     $conn->commit();
 

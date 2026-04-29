@@ -200,7 +200,10 @@ async function loadUser() {
     document.getElementById("seller-nav").classList.remove("hidden");
     document.getElementById("seller-tools").classList.remove("hidden");
   }
-  streetaddrtxt.innerText = data.address.replaceAll("-", ", ");
+  if (data.address){
+    streetaddrtxt.innerText = data.address.replaceAll("-", ", ");
+  }
+  
   phonetxt.innerText = `Phone Number: ${data.phone}`;
   current_version = data.timestamp;
   return data
@@ -226,6 +229,10 @@ async function getMessages() {
     return [];
   }
 }
+const backconvos = document.getElementById('back-to-convos')
+backconvos.addEventListener('click', () => {
+    document.getElementById('sidemsg-zone').classList.remove('-translate-x-full');
+});
 
 async function loadMessageBox() {
     const sendbtn = document.getElementById("senditbtn");
@@ -339,6 +346,16 @@ const renderConversations = () => {
         convoentries.append(entry);
 
     })
+
+    const messageoptions = document.querySelectorAll('.message-options');
+
+    document.addEventListener('click', (e)=>{
+        const clickedInside = [...messageoptions].some(el => el.contains(e.target));
+
+        if (clickedInside) {
+        document.getElementById('sidemsg-zone').classList.add('-translate-x-full');
+        }
+        })
 
 
 }

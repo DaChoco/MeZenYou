@@ -33,7 +33,7 @@ try{
 
 
     http_response_code(201);
-    echo json_encode([":orders"=> $results, ":id" => $user_id]);
+    echo json_encode(["orders"=> $results, "id" => $user_id]);
 }
 catch (PDOException $e){
     http_response_code(500);

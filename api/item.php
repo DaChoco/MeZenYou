@@ -32,7 +32,7 @@ try{
 
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $stmt = $conn->prepare("SELECT city FROM users WHERE id = :id");
+    $stmt = $conn->prepare("SELECT city FROM Users WHERE id = :id");
     $stmt->execute([":id"=>$id]);
     $city = $stmt->fetch(PDO::FETCH_ASSOC)['city'];
 

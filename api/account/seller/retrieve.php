@@ -20,7 +20,7 @@ if (!isset($_SESSION["user_id"])) {
 
 try {
     $stmt = $conn->prepare("SELECT id, product_name, image, price, category, is_active, location FROM Products WHERE id = :id");
-    $stmt->execute(['id' => $_SESSION["user_id"]]);
+    $stmt->execute([':id' => $_SESSION["user_id"]]);
 
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     http_response_code(200);
@@ -28,7 +28,7 @@ try {
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(["error" => "DB ERROR500" ]);
-    exit();
+    exit;
 }
 
 
