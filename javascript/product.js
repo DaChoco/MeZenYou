@@ -278,8 +278,8 @@ async function renderProduct(product, user) {
              <div class="lower-fourth flex flex-col space-y-5 rounded-sm [&_*]:w-full">
                 <a id="msgbtn" href="?id=${product["id"]}&rid=${product["userID"]}"><button type="button" class="p-3 shadow-md bg-slate-700 text-white rounded-sm hover:bg-hoverbtnred duration-150">MSG Seller</button></a>
                 <input id="qtyid" min="1" type="number" placeholder="Quantity" class="p-3 outline-none border border-black">
-                <button id="cartaddbtn" type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md">Add to Cart</button>
-                <a href="/pages/checkout.html"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md">Proceed to Checkout</button></a>
+                <button id="cartaddbtn" type="button" class="bg-slate-800 text-white rounded-sm p-3 shadow-md transition-shadow duration-100 ease-in active:scale-95 active:shadow-inner"">Add to Cart</button>
+                <a href="/pages/checkout.html"><button type="button" class="bg-red-700 hover:bg-hoverbtnred text-white rounded-sm p-3 shadow-md transition-transform duration-100 ease-in active:scale-95 active:shadow-inner"">Proceed to Checkout</button></a>
             </div>
 
             <div class="[&>*]:text-lg space-y-5">
