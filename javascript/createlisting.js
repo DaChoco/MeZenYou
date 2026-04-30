@@ -7,17 +7,18 @@ const plocation = document.getElementById('location')
 const author = document.getElementById('author')
 const stock = document.getElementById('stock')
 const description = document.getElementById('desc')
+const clean = (val) => DOMPurify.sanitize(val)
 
 submitform.addEventListener('submit', async (e) => {
     e.preventDefault()
     const formData = new FormData();
-    formData.append("product_name", pname.value);
-    formData.append("price", price.value);
-    formData.append("category", category.value);
-    formData.append("location", plocation.value);
-    formData.append("author", author.value);
-    formData.append("stock", stock.value);
-    formData.append("description", description.value)
+    formData.append("product_name", clean(pname.value));
+    formData.append("price", clean(price.value));
+    formData.append("category", clean(category.value));
+    formData.append("location", clean(plocation.value));
+    formData.append("author", clean(author.value));
+    formData.append("stock", clean(stock.value));
+    formData.append("description", clean(description.value))
     const file = document.getElementById('image');
     const selectedFile = file.files[0];
     console.log(description.value)

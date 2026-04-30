@@ -5,6 +5,9 @@ const type = params.get("type");
 const seller_registration = document.getElementById("buyerRegister");
 const buyer_login = document.getElementById("loginid");
 const buyer_register = document.getElementById("registerid");
+let is_signed = false
+
+const clean = (val) => DOMPurify.sanitize(val);
 
 function showElement(element) {
   element.classList.remove("hidden");
@@ -28,7 +31,8 @@ async function CheckIfLoggedIn(){
   const data = await response.json();
 
   if (data.logged === true){
-    window.location.href = data.redirect;
+    alert("You are already signed in")
+    is_signed = data.logged;
   }
 }
 
@@ -49,6 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById('buyerRegister').addEventListener("submit", async (e)=>{
   e.preventDefault();
+  if (is_signed){
+    alert("You are already signed in")
+    return;
+  }
   const email_seller = document.getElementById('selleremail');
   const name_seller = document.getElementById('sellername');
   const address_seller = document.getElementById('selleraddress');
@@ -63,7 +71,7 @@ document.getElementById('buyerRegister').addEventListener("submit", async (e)=>{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email: email_seller.value, password: password_seller.value, username: name_seller.value, is_seller: true, address: uaddress }),
+        body: JSON.stringify({ email: clean(email_seller.value), password: password_seller.value, username: clean(name_seller.value), is_seller: true, address: clean(uaddress) }),
       });
 
       const data = await res.json();
@@ -82,6 +90,10 @@ document.getElementById('buyerRegister').addEventListener("submit", async (e)=>{
 
 //CALL /api/register.php
 document.getElementById("registerid").addEventListener("submit", async (e) => {
+    if (is_signed){
+    alert("You are already signed in")
+    return;
+  }
     e.preventDefault(); 
 
     const email_register = document.getElementById("register_email_id").value;
@@ -95,7 +107,7 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email: email_register, password: password_register, username: username_register }),
+        body: JSON.stringify({ email: clean(email_register), password: password_register, username: clean(username_register) }),
       });
       if (!res.ok){
         const text = await res.text()
@@ -111,6 +123,10 @@ document.getElementById("registerid").addEventListener("submit", async (e) => {
   });
 
 document.getElementById("loginid").addEventListener("submit", async (e) => {
+    if (is_signed){
+    alert("You are already signed in")
+    return;
+  }
     e.preventDefault(); 
 
     const email_login = document.getElementById("login_email_id").value;

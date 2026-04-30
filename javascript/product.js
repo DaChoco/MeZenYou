@@ -1,3 +1,4 @@
+
 const queryString = window.location.search;
 const API_URL = window.ENV.API_URL;
 const urlParams = new URLSearchParams(queryString);
@@ -103,7 +104,7 @@ function renderMessages() {
                         <img src="${msg.avatar}?t=${current_version}"
                             class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
                         <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
-                            ${msg.messageText}
+                            ${clean(msg.messageText)}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
                         `;
@@ -114,7 +115,7 @@ function renderMessages() {
       sender.classList = "flex items-end flex-row-reverse gap-2";
       sender.innerHTML = `
                         <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
-                            ${msg.messageText}
+                            ${clean(msg.messageText)}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
             `;
@@ -240,7 +241,7 @@ async function loadReviews(ID) {
     const date = new Date(unixTimestamp * 1000);
 
     review.innerHTML = `<span class="flex flex-row justify-between">
-                <p>${item.username}</p><p>Rating: ${item.rating}</p><p>${date.toUTCString()}</p>
+                <p>${clean(item.username)}</p><p>Rating: ${item.rating}</p><p>${date.toUTCString()}</p>
             </span>
             <p>${clean(item.comment)}</p>`;
 

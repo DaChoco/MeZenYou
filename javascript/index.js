@@ -1,6 +1,7 @@
 const api = window.ENV.API_URL;
 const queryString = window.location.href;
 
+const clean = (val) => DOMPurify.sanitize(val)
 const urlbar = new URL(queryString);
 if (!urlbar.searchParams.has("pg")) {
   urlbar.searchParams.set("pg", "1");
@@ -77,10 +78,10 @@ function renderProducts(products, reviews) {
             </a>
 
             <div class="text-section w-full flex flex-col justify-center items-start line-clamp-1 truncate">
-                <span>${product.product_name}</span>
+                <span>${clean(product.product_name)}</span>
                 <p class="font-bold">R${product.price}</p>
                 <p class="font-semibold text-normalred">${product.category}</p>
-                <p class="text-gray-800">${product.location}</p>
+                <p class="text-gray-800">${clean(product.location)}</p>
                 <p class="text-yellow-600">${avg.toFixed(1)}</p>
             </div>
         `;

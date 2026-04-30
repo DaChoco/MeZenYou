@@ -1,4 +1,5 @@
 const api = window.ENV.API_URL;
+const clean = (val) => DOMPurify.sanitize(val);
 const order_zone = document.getElementById("order-zone");
 const messagebox = document.getElementById('messagebox');
 const msglink = document.getElementById('msgbtntab');
@@ -52,7 +53,7 @@ async function sendMessage(msgtxt) {
     alert("You need to be logged in to send messages. Sorry");
     return;
   }
-  const body = { icon: USER["icon"], message: msgtxt, rID: recieverID };
+  const body = { icon: USER["icon"], message: clean(msgtxt), rID: recieverID };
   const response = await fetch(url, {
     credentials: "include",
     body: JSON.stringify(body),
@@ -321,7 +322,7 @@ const renderConversations = () => {
                                 class="rounded-full w-9 h-9 object-cover flex-shrink-0" alt="Welt Yang">
                             <div class="min-w-0 flex-1">
                                 <span class="font-semibold text-sm block truncate">${convo.username ?? "UNKNOWN"}</span>
-                                <p class="text-xs text-gray-500 truncate">${convo.lastMessage}</p>
+                                <p class="text-xs text-gray-500 truncate">${clean(convo.lastMessage) ?? "..."}</p>
                             </div>
                          
                         </div>`;
@@ -376,7 +377,7 @@ const renderMessages = (recieverAvatar) => {
                         <img src="${recieverAvatar}?t=${current_version}"
                             class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
                         <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
-                            ${msg.messageText}
+                            ${clean(msg.messageText)}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
                         `
@@ -389,7 +390,7 @@ const renderMessages = (recieverAvatar) => {
       sender.classList = 'flex items-end flex-row-reverse gap-2'
       sender.innerHTML = `
                         <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
-                            ${msg.messageText}
+                            ${clean(msg.messageText)}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
             `;
@@ -488,13 +489,13 @@ document
     const deliveryinstructions = document.getElementById("del-instruct").value;
 
     const fields = {
-      street: streetaddress,
-      phone: phonenumber,
-      suburb: suburbaddress,
-      city: cityaddress,
-      province: province,
-      postalcode: postalcode,
-      delinstructions: deliveryinstructions,
+      street: clean(streetaddress),
+      phone: clean(phonenumber),
+      suburb: clean(suburbaddress),
+      city: clean(cityaddress),
+      province: clean(province),
+      postalcode: clean(postalcode),
+      delinstructions: clean(deliveryinstructions),
     };
     const response = await fetch(`${api}/api/account/updateaddress.php`, {
       method: "POST",

@@ -13,6 +13,7 @@ const backconvos = document.getElementById('back-to-convos')
 const headericon = document.getElementById('header-icon');
 const headerusername = document.getElementById('header-username')
 const scrollzone = document.getElementById('scroll-zone');
+const clean = (val) => DOMPurify.sanitize(val)
 
 function sKtoTime(sk){
     const timestamp = Number(sk.split('#')[1]); // extract ms timestamp
@@ -217,9 +218,9 @@ const renderMessages = (recieverAvatar) => {
       reciever.classList = 'flex items-end gap-2'
       reciever.innerHTML = `
                         <img src="${recieverAvatar}?t=${current_version}"
-                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${msg.username}">
+                            class="rounded-full w-8 h-8 object-cover flex-shrink-0" alt="${clean(msg.username)}">
                         <div class="max-w-[65%] bg-white border border-gray-200 rounded-tl rounded-tr-xl rounded-br-xl px-4 py-2.5 text-sm leading-relaxed">
-                            ${msg.messageText}
+                            ${clean(msg.messageText)}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
                         `
@@ -232,7 +233,7 @@ const renderMessages = (recieverAvatar) => {
       sender.classList = 'flex items-end flex-row-reverse gap-2'
       sender.innerHTML = `
                         <div class="max-w-[65%] bg-darkgray text-white rounded-tl-xl rounded-tr rounded-bl-xl px-4 py-2.5 text-sm leading-relaxed">
-                            ${msg.messageText}
+                            ${clean(msg.messageText)}
                         </div>
                         <span class="text-xs text-gray-400 pb-1 flex-shrink-0">${sKtoTime(msg.SK)}</span>
             `;
