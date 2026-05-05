@@ -1,7 +1,6 @@
 const api = window.ENV.API_URL;
 const queryString = window.location.href;
 
-const clean = (val) => DOMPurify.sanitize(val)
 const urlbar = new URL(queryString);
 if (!urlbar.searchParams.has("pg")) {
   urlbar.searchParams.set("pg", "1");
@@ -18,6 +17,26 @@ const closenav = document.getElementById("closeid");
 
 let currentCategory = "";
 
+async function fetchWithRetry(url, retries = 2) {
+  const res = await fetch(url, { credentials: "include" });
+
+  if (!res.ok) {
+    const text = await res.text();
+    console.error("HTTP error:", text);
+    throw new Error(`Request failed: ${res.status}`);
+  }
+
+  const text = await res.text();
+
+  if (text.startsWith("<html>") && retries > 0) {
+    console.warn("Blocked by host, retrying...");
+    await new Promise(r => setTimeout(r, 1000));
+    return fetchWithRetry(url, retries - 1);
+  }
+
+  return JSON.parse(text);
+}
+
 async function searchProducts() {
   let url = `${api}/api/browse/fullsearch.php?q=${searchParams}`;
 
@@ -33,21 +52,22 @@ async function loadProducts() {
 
   let url = `${api}/api/browse/products.php?category=${currentCategory}&min=${min.value}&max=${max.value}&pg=${pageNum}`;
 
-  const res = await fetch(url, {
-    credentials: "include",
-    
-  });
+  try {
+    const data = await fetchWithRetry(url, 3);
 
-  const data = await res.json();
-  
+    userEmail.textContent = data.user
+      ? `Signed in as: ${data.user}`
+      : "Not logged in";
 
-  userEmail.textContent = data.user
-    ? `Signed in as: ${data.user}`
-    : "Not logged in";
-  const reviews = await reviewscores();
-  renderProducts(data.products, reviews);
-  renderPageBoxes(data.totalpages);
+    const reviews = await reviewscores();
+    renderProducts(data.products, reviews);
+    renderPageBoxes(data.totalpages);
+
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+  }
 }
+
 async function reviewscores() {
   const response = await fetch(`${api}/api/browse/reviewscores.php`);
   const data = await response.json();
@@ -78,10 +98,10 @@ function renderProducts(products, reviews) {
             </a>
 
             <div class="text-section w-full flex flex-col justify-center items-start line-clamp-1 truncate">
-                <span>${clean(product.product_name)}</span>
+                <span>${product.product_name}</span>
                 <p class="font-bold">R${product.price}</p>
                 <p class="font-semibold text-normalred">${product.category}</p>
-                <p class="text-gray-800">${clean(product.location)}</p>
+                <p class="text-gray-800">${product.location}</p>
                 <p class="text-yellow-600">${avg.toFixed(1)}</p>
             </div>
         `;

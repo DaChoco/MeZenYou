@@ -3,18 +3,19 @@ ob_start();
 require_once __DIR__ . "/../utils/cors.php";
 require_once "../session.php";
 header('Content-Type: application/json');
-
 // Filters
 $category = isset($_GET['category']) && $_GET['category'] !== '' ? (string)$_GET['category']: null;
 $min = isset($_GET['min']) && $_GET['min'] !== '' ? (int)$_GET['min'] : null;
 $max = isset($_GET['max']) && $_GET['max'] !== '' ? (int)$_GET['max'] : null;
 $page = isset($_GET['pg']) && $_GET['pg'] !== '' ? (string)$_GET['pg']: null;
-
-//THE REAL RESULTS
-$conn = require __DIR__ . "/../conn.php";
 ob_clean();
 
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
 try {
+    //THE REAL RESULTS
+    $conn = require __DIR__ . "/../conn.php";
     $filters = [];
     $whereClauses = [];
 
