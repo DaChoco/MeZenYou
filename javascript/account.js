@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.className =
         "order-box grid grid-cols-[25%_75%] gap-x-3 grid-rows-1 bg-white p-3";
       card.innerHTML = `
-    <img class="object-contain" src="${order["image"]}" alt="">
+    <img loading="lazy" class="object-contain" src="${order["image"]}" alt="">
         <div class="flex flex-col">
           <h4 class="sm:text-base lg:text-xl font-bold">Order #${order["id"]}</h4>
           <span class="flex flex-row">
