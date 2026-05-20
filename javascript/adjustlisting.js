@@ -42,7 +42,7 @@ function renderProducts(products) {
             <button class="delete-btn absolute top-0 right-0 w-10 h-10 rounded-md bg-red-500 text-white p-1 flex items-center justify-center shadow-md hover:bg-red-600">
             <i class="fa-solid ${icon} fa-2x"></i>
             </button>
-            <a href="/pages/product.html?id=${product.id}">
+            <a href="/pages/seller/editlisting.php?id=${product.id}">
                 <div class="w-full h-52 flex items-center justify-center overflow-hidden bg-gray-100">
                     <img class="object-contain max-h-full" src="${product.image}" alt="Item Card" />
                 </div>

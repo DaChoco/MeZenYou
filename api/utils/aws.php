@@ -123,7 +123,7 @@ class AWSservice
     private function censorMessage($txt)
     {
         #this is just to censor messages
-        $PROFANITY_WORDS = ["shit", "crap", "asshole", "bastard", "fuck", "bitch"];
+        $PROFANITY_WORDS = ["shit", "crap", "asshole", "bastard", "fuck", "bitch", "keano", "neuvillette"];
         $pattern = '/\b(' . implode('|', $PROFANITY_WORDS) . ')\w*\b/i';
 
         return preg_replace_callback($pattern, function ($matches) {

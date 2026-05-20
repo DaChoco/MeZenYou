@@ -59,13 +59,13 @@ try {
     }
     //DOES THE USER EVEN HAVE A CART
     $statement = $conn->prepare("SELECT Carts.id FROM Carts INNER JOIN Users ON Carts.user_id = Users.id WHERE user_id = :userid AND user_status = 'ACTIVE'");
-    $statement->execute(["userid" => $userID]);
+    $statement->execute([":userid" => $userID]);
     $cart = $statement->fetch(PDO::FETCH_ASSOC);
 
 
     //INSERT CART OR EXTRACT THE CART ID
     if (!$cart) {
-        $conn->prepare("INSERT INTO Carts (user_id) VALUES (:userid)")->execute(["userid" => $userID]);
+        $conn->prepare("INSERT INTO Carts (user_id) VALUES (:userid)")->execute([":userid" => $userID]);
         $cartID = $conn->lastInsertId();
     } else {
         $cartID = $cart['id'];
@@ -88,7 +88,7 @@ try {
     ";
 
     $stmt = $conn->prepare($sql);
-    $stmt->execute(["cart" => $cartID, "product" => $productID, "q" => $qty]);
+    $stmt->execute([":cart" => $cartID, ":product" => $productID, ":q" => $qty]);
 
     $affected = $stmt->rowCount();
 
@@ -98,8 +98,8 @@ try {
         WHERE cart_id = :cart AND product_id = :product
     ");
         $check->execute([
-            "cart" => $cartID,
-            "product" => $productID
+            ":cart" => $cartID,
+            ":product" => $productID
         ]);
 
         if (!$check->fetch()) {

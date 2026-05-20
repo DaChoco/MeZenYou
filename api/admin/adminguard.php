@@ -17,4 +17,5 @@ if ($_SESSION['role'] === "ADMIN" || $_SESSION['role'] === "MODERATOR") {
         "logged" => false,
         "redirect" => "/"
     ]);
+    exit("You do not have right to access this page");
  }

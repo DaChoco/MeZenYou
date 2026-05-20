@@ -93,7 +93,4 @@ catch (Exception $e){
     echo json_encode(["error" => "INTERNAL SERVER ERROR" ]);
 
 }
-
-
-
 ?>
